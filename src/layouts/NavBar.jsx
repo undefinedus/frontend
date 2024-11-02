@@ -26,7 +26,7 @@ const NavBar = () => {
         <PiGearSixLight color="7D5C4D" size="36" />
       </div> */}
       <h1 className="text-3xl">시험 텍스트를 입력해 보세요.</h1>
-      <div className="fixed bottom-0 start-0 w-full flex justify-between px-3 py-4 border-t border-und_bgsub">
+      <div className="fixed bottom-0 start-0 w-full flex justify-between px-3 py-4 border-t border-und_bgsub bg-undbgmain">
         <PiHouseFill
           onClick={() => alert("clicked!")}
           color="C1BDB8"
