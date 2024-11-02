@@ -6,6 +6,7 @@ import { VitePWA } from "vite-plugin-pwa";
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
+  base: "/",
   plugins: [
     react(),
     mode === "development" ? basicSsl() : null,
@@ -38,10 +39,6 @@ export default defineConfig(({ mode }) => ({
   },
   server: {
     host: true,
-    // https: {
-    //   key: "./path/to/localhost/key",
-    //   cert: "./path/to/localhost.crt",
-    // },
     https: false,
   },
 }));
