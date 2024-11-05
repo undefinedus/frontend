@@ -14,9 +14,7 @@ const MainPage = () => {
 
   useEffect(() => {
     const animationDelay = setTimeout(() => {
-      // 로그인으로 보내기
-      // 일단 개발용으로 메인(내책장) 으로 보냄
-      navigate("myBook");
+      navigate("/member/");
     }, 2000);
     return () => clearTimeout(animationDelay);
   }, []);
