@@ -2,7 +2,7 @@ import React from "react";
 import Button from "../../components/commons/Button";
 import Input from "../../components/commons/Input";
 
-function FindPassword(props) {
+function FindPasswordPage(props) {
   return (
     <div className="flex flex-col items-center p-8 h-screen">
       <p className="mb-14 mt-5 font-bold text-undpoint text-xl">
@@ -28,4 +28,4 @@ function FindPassword(props) {
   );
 }
 
-export default FindPassword;
+export default FindPasswordPage;
