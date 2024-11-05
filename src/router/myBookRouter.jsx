@@ -1,42 +1,41 @@
 import { lazy, Suspense } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import LoadingPage from "../pages/LoadingPage";
 
-const MyBookShelf = lazy(() => import("../pages/myBook/MyBookShelfPage"));
-const MyBookList = lazy(() => import("../pages/myBook/MyBookListPage"));
-const MyBookMark = lazy(() => import("../pages/myBook/MyBookMarkPage"));
+const MyBookShelfPage = lazy(() => import("../pages/myBook/MyBookShelfPage"));
+const MyBookListPage = lazy(() => import("../pages/myBook/MyBookListPage"));
+const MyBookMarkPage = lazy(() => import("../pages/myBook/MyBookMarkPage"));
 
-const myBookRouter = () => {
-  return [
-    {
-      path: "",
-      element: <Navigate replace={true} to={"shelf/:id"} />,
-    },
-    {
-      path: "shelf/:id",
-      element: (
-        <Suspense fallback={<LoadingPage />}>
-          <MyBookShelf />
-        </Suspense>
-      ),
-    },
-    {
-      path: "list/:id",
-      element: (
-        <Suspense fallback={<LoadingPage />}>
-          <MyBookList />
-        </Suspense>
-      ),
-    },
-    {
-      path: "mark/:id",
-      element: (
-        <Suspense fallback={<LoadingPage />}>
-          <MyBookMark />
-        </Suspense>
-      ),
-    },
-  ];
+const MyBookRouter = () => {
+  return (
+    <Routes>
+      <Route path="" element={<Navigate replace to={"shelf"} />} />
+      <Route
+        path="shelf"
+        element={
+          <Suspense fallback={<LoadingPage />}>
+            <MyBookShelfPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="list"
+        element={
+          <Suspense fallback={<LoadingPage />}>
+            <MyBookListPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="mark"
+        element={
+          <Suspense fallback={<LoadingPage />}>
+            <MyBookMarkPage />
+          </Suspense>
+        }
+      />
+    </Routes>
+  );
 };
 
-export default myBookRouter;
+export default MyBookRouter;

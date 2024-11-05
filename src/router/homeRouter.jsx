@@ -1,6 +1,6 @@
 // 책추천, 토론왕, 독서왕 등 홈화면 라우터
-const homeRouter = () => {
+const HomeRouter = () => {
   return [];
 };
 
-export default homeRouter;
+export default HomeRouter;

@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../assets/logos/gongchaekWithText.png";
+import logo from "../../assets/logos/gongchaekWithText.png";
 
 const MainLogo = () => {
   return (
