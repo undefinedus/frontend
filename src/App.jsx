@@ -1,15 +1,6 @@
-import { Suspense, useState } from "react";
-import { RouterProvider } from "react-router-dom";
-import root from "./router/root";
-import Loading from "./components/commons/Loading";
 import "./App.css";
+import AppRouter from "./router/AppRouter";
 
-function App() {
-  return (
-    <Suspense fallback={<Loading />}>
-      <RouterProvider router={root} />
-    </Suspense>
-  );
-}
+const App = () => <AppRouter />;
 
 export default App;
