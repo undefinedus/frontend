@@ -6,13 +6,37 @@ import { PiX, PiArrowCounterClockwiseBold } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
 
 function SignUpPage() {
-  const [email, setEmail] = useState("");
-  const [isValid, setIsValid] = useState(null);
-  const [validText, setValidText] = useState("");
-  const [validNum, setValidNum] = useState(false);
-  const [buttonDisabled, setButtonDisabled] = useState(false);
-  const [inputHandler, setInputHandler] = useState(false);
-  const [ValidTimeExpired, setValidTimeExpired] = useState(false);
+  const initialState = {
+    email: "",
+    isValid: null,
+    validText: "",
+    validNum: false,
+    buttonDisabled: false,
+    inputHandler: false,
+    validTimeExpired: false,
+  };
+
+  const resetState = () => {
+    setEmail(initialState.email);
+    setIsValid(initialState.isValid);
+    setValidText(initialState.validText);
+    setValidNum(initialState.validNum);
+    setButtonDisabled(initialState.buttonDisabled);
+    setInputHandler(initialState.inputHandler);
+    setValidTimeExpired(initialState.validTimeExpired);
+  };
+
+  const [email, setEmail] = useState(initialState.email);
+  const [isValid, setIsValid] = useState(initialState.isValid);
+  const [validText, setValidText] = useState(initialState.validText);
+  const [validNum, setValidNum] = useState(initialState.validNum);
+  const [buttonDisabled, setButtonDisabled] = useState(
+    initialState.buttonDisabled
+  );
+  const [inputHandler, setInputHandler] = useState(initialState.inputHandler);
+  const [validTimeExpired, setValidTimeExpired] = useState(
+    initialState.validTimeExpired
+  );
 
   const firstInputRef = useRef(null);
   const secondInputRef = useRef(null);
@@ -36,10 +60,6 @@ function SignUpPage() {
       setButtonDisabled(true);
     } else {
       setButtonDisabled(true);
-    }
-
-    if (validNum === true) {
-      setValidText("");
     }
   }, [isValid, validNum]);
 
@@ -76,27 +96,31 @@ function SignUpPage() {
       </div>
       <div className="w-full h-full flex flex-col justify-between">
         <div className="w-full flex flex-col justify-center items-center gap-4">
-          <div className="relative ">
-            <Input
-              className={`focus:outline-none ${
-                isValid === null
-                  ? "border border-black"
-                  : isValid
-                  ? "border border-black"
-                  : " border border-red-500"
-              } `}
-              label="아이디"
-              type="email"
-              name="email"
-              value={email}
-              placeholder="이메일을 입력해 주세요."
-              onChange={handleChange}
-              disabled={inputHandler}
-            />
-            <PiArrowCounterClockwiseBold
-              className="absolute right-3 top-2/3 transform -translate-y-1/2"
-              onClick={() => navigate("/signup")}
-            />
+          <div>
+            <div className="relative">
+              <Input
+                className={`focus:outline-none ${
+                  isValid === null
+                    ? "border border-black"
+                    : isValid
+                    ? "border border-black"
+                    : " border border-red-500"
+                } `}
+                label="아이디"
+                type="email"
+                name="email"
+                value={email}
+                placeholder="이메일을 입력해 주세요."
+                onChange={handleChange}
+                disabled={inputHandler}
+              />
+              <PiArrowCounterClockwiseBold
+                className={`absolute right-3 top-2/3 transform -translate-y-1/2 cursor-pointer 
+              `}
+                onClick={resetState}
+              />
+            </div>
+
             {!isValid && (
               <p className="text-red-500 text-sm text-start">{validText}</p>
             )}
@@ -117,52 +141,52 @@ function SignUpPage() {
                     ref={firstInputRef}
                     className={`"w-auto text-center border font-bold w-[58px]  text-undtextdark"
                     ${
-                      ValidTimeExpired
+                      validTimeExpired
                         ? "border border-red-500"
                         : "border-unddisabled"
                     }`}
                     placeholder="-"
                     maxLength="1"
-                    disabled={ValidTimeExpired}
+                    disabled={validTimeExpired}
                     onChange={(e) => handleInputChange(e, secondInputRef)}
                   />
                   <Input
                     ref={secondInputRef}
                     className={`"w-auto text-center border font-bold w-[58px] text-undtextdark"
                     ${
-                      ValidTimeExpired
+                      validTimeExpired
                         ? "border border-red-500"
                         : "border-unddisabled"
                     }`}
                     placeholder="-"
                     maxLength="1"
-                    disabled={ValidTimeExpired}
+                    disabled={validTimeExpired}
                     onChange={(e) => handleInputChange(e, thirdInputRef)}
                   />
                   <Input
                     ref={thirdInputRef}
                     className={`"w-auto text-center border font-bold w-[58px] text-undtextdark"
                     ${
-                      ValidTimeExpired
+                      validTimeExpired
                         ? "border border-red-500"
                         : "border-unddisabled"
                     }`}
                     placeholder="-"
                     maxLength="1"
-                    disabled={ValidTimeExpired}
+                    disabled={validTimeExpired}
                     onChange={(e) => handleInputChange(e, fourthInputRef)}
                   />
                   <Input
                     ref={fourthInputRef}
                     className={`"w-auto text-center border font-bold w-[58px] text-undtextdark"
                     ${
-                      ValidTimeExpired
+                      validTimeExpired
                         ? "border border-red-500"
                         : "border-unddisabled"
                     }`}
                     placeholder="-"
                     maxLength="1"
-                    disabled={ValidTimeExpired}
+                    disabled={validTimeExpired}
                     onChange={(e) => handleInputChange(e, null)}
                   />
                 </div>
@@ -187,7 +211,7 @@ function SignUpPage() {
                 </Button>
               </div>
             )}
-            {ValidTimeExpired && (
+            {validTimeExpired && (
               <div>
                 <Button
                   className=" py-2.5 rounded-full w-[297px]"
