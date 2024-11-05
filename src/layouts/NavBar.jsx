@@ -1,49 +1,47 @@
 import React from "react";
 import {
-  PiHouseLight,
   PiBooksFill,
-  PiBooksLight,
   PiHouseFill,
-  PiUsersThreeLight,
   PiUsersThreeFill,
-  PiScalesLight,
   PiScalesFill,
-  PiGearSixLight,
   PiGearSixFill,
 } from "react-icons/pi";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
-  const domain = useParams();
+  const domain = useLocation().pathname;
+  const navigate = useNavigate();
+  const getColor = (path) => (domain.includes(path) ? "7D5C4D" : "C1BDB8");
 
   return (
     <>
-      {/* <div className="fixed bottom-10 start-0 w-full flex justify-between px-3 py-2">
-        <PiHouseLight color="7D5C4D" size="36" />
-        <PiUsersThreeLight color="7D5C4D" size="36" />
-        <PiBooksLight color="7D5C4D" size="36" />
-        <PiScalesLight color="7D5C4D" size="36" />
-        <PiGearSixLight color="7D5C4D" size="36" />
-      </div> */}
-      <h1 className="text-3xl">시험 텍스트를 입력해 보세요.</h1>
-      <div className="fixed bottom-0 start-0 w-full flex justify-between px-3 py-4 border-t border-und_bgsub">
+      <div className="fixed bottom-0 start-0 w-full flex justify-between px-3 py-4 border-t border-und_bgsub bg-undbgmain">
         <PiHouseFill
-          onClick={() => alert("clicked!")}
-          color="C1BDB8"
+          color={getColor("home")}
           size="36"
+          onClick={() => navigate({ pathname: "/home" })}
         />
-        <PiUsersThreeFill color="C1BDB8" size="36" />
-        <PiBooksFill color="C1BDB8" size="36" />
-        <PiScalesFill color="C1BDB8" size="36" />
-        <PiGearSixFill color="7D5C4D" size="36" />
+        <PiUsersThreeFill
+          color={getColor("social")}
+          size="36"
+          onClick={() => navigate({ pathname: "/social" })}
+        />
+        <PiBooksFill
+          color={getColor("myBook")}
+          size="36"
+          onClick={() => navigate({ pathname: "/myBook" })}
+        />
+        <PiScalesFill
+          color={getColor("forum")}
+          size="36"
+          onClick={() => navigate({ pathname: "/forum" })}
+        />
+        <PiGearSixFill
+          color={getColor("settings")}
+          size="36"
+          onClick={() => navigate({ pathname: "/settings" })}
+        />
       </div>
-      {/* <div className="fixed bottom-0 start-0 w-full flex justify-between px-3 py-2">
-        <PiHouseFill color="7D5C4D" size="36" />
-        <PiUsersThreeFill color="7D5C4D" size="36" />
-        <PiBooksFill color="7D5C4D" size="36" />
-        <PiScalesFill color="7D5C4D" size="36" />
-        <PiGearSixFill color="7D5C4D" size="36" />
-      </div> */}
     </>
   );
 };
