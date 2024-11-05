@@ -24,7 +24,7 @@ export default defineConfig(({ mode }) => ({
         theme_color: "#7D5C4D",
         icons: [
           {
-            src: "/gongchaek192.png",
+            src: "./src/assets/logos/gongchaekWithText.png",
             sizes: "192x192",
             type: "image/png",
           },
