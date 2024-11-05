@@ -2,15 +2,16 @@ import React, { useState, useEffect, useRef } from "react";
 import Button from "../../components/commons/Button";
 import Input from "../../components/commons/Input";
 import CountdownTimer from "../../components/commons/CountdownTimer";
-import { PiX } from "react-icons/pi";
-import { Link, useNavigate } from "react-router-dom";
+import { PiX, PiArrowCounterClockwiseBold } from "react-icons/pi";
+import { useNavigate } from "react-router-dom";
 
-function SignUp(props) {
+function SignUpPage() {
   const [email, setEmail] = useState("");
   const [isValid, setIsValid] = useState(null);
   const [validText, setValidText] = useState("");
   const [validNum, setValidNum] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [inputHandler, setInputHandler] = useState(false);
   const [ValidTimeExpired, setValidTimeExpired] = useState(false);
 
   const firstInputRef = useRef(null);
@@ -55,6 +56,7 @@ function SignUp(props) {
 
   const handleButtonHandler = () => {
     setValidNum(true);
+    setInputHandler(true);
   };
 
   const hanldeTimeEnd = () => {
@@ -74,7 +76,7 @@ function SignUp(props) {
       </div>
       <div className="w-full h-full flex flex-col justify-between">
         <div className="w-full flex flex-col justify-center items-center gap-4">
-          <div>
+          <div className="relative ">
             <Input
               className={`focus:outline-none ${
                 isValid === null
@@ -82,13 +84,18 @@ function SignUp(props) {
                   : isValid
                   ? "border border-black"
                   : " border border-red-500"
-              }`}
+              } `}
               label="아이디"
               type="email"
               name="email"
               value={email}
               placeholder="이메일을 입력해 주세요."
               onChange={handleChange}
+              disabled={inputHandler}
+            />
+            <PiArrowCounterClockwiseBold
+              className="absolute right-3 top-2/3 transform -translate-y-1/2"
+              onClick={() => navigate("/signup")}
             />
             {!isValid && (
               <p className="text-red-500 text-sm text-start">{validText}</p>
@@ -202,4 +209,4 @@ function SignUp(props) {
 
 // }
 
-export default SignUp;
+export default SignUpPage;
