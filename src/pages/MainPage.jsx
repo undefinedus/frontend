@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import MainLogo from "../components/commons/MainLogo";
 import { useNavigate } from "react-router-dom";
-import useCustomLogin from "../hooks/useCustomLogin";
 
 // 처음 어플 접속했을때
 // 애니메이션 살짝 들어간 로딩화면
