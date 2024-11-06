@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Book01 from "../../assets/img/Bookimg_01.png";
 
 function MyBook() {
   const [inputValue, setInputValue] = useState(0);
@@ -24,7 +23,11 @@ function MyBook() {
 
       <div className="grid grid-cols-MyBookGrid gap-4 w-full ">
         <div className="bg-stone-200 flex justify-center p-0.5">
-          <img className="w-auto h-auto" src={Book01} alt="Book01" />
+          <img
+            className="w-auto h-auto"
+            src="/assets/img/BookImg_01.png"
+            alt="Book01"
+          />
           {/* 책 이름과 정보를 받아올때는 수정 해야함. */}
         </div>
 

@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/commons/Button";
 import Input from "../../components/commons/Input";
-import logo from "../../assets/logos/gongchaekWithText.png";
-import kakaoLogin from "../../assets/img/kakao_login.png";
 
 const initState = {
   email: "",
@@ -24,7 +22,7 @@ function Login(props) {
   return (
     <div className="p-8">
       <div className="flex justify-center">
-        <img src={logo} alt="logo" />
+        <img src="/assets/logos/gongchaekWithText.png" alt="logo" />
       </div>
       <div className="flex flex-col gap-4 mt-4">
         <Input
@@ -54,7 +52,11 @@ function Login(props) {
           로그인
         </Button>
         <Button className="text-undpoint py-3 rounded-full font-semibold w-full">
-          <img className="rounded-full h-[45.6px]" src={kakaoLogin} alt="" />
+          <img
+            className="rounded-full h-[45.6px]"
+            src="/assets/img/kakao_login.png"
+            alt=""
+          />
         </Button>
       </div>
       <div className="flex justify-center mt-16  text-undpoint">
