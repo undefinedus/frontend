@@ -3,6 +3,15 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      keyframes: {
+        spinFull: {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(-360deg)" },
+        },
+      },
+      animation: {
+        spinFull: "spinFull 500ms ease-in-out", // 1초 동안 360도 회전
+      },
       gridTemplateColumns: {
         MyBookGrid: "0.4fr 1fr",
       },
