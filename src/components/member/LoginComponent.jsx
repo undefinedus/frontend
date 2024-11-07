@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/commons/Button";
 import Input from "../../components/commons/Input";
-import { useDispatch } from "react-redux";
-import { login, loginPostAsync } from "../../slices/loginSlice";
 import useCustomLogin from "../../hooks/useCustomLogin";
 
 const initState = {
@@ -14,7 +12,14 @@ const initState = {
 const LoginComponent = () => {
   const [loginParam, setLoginParam] = useState({ ...initState });
 
-  const { doLogin, moveToPath } = useCustomLogin();
+  const { doLogin, moveToPath, isLogin } = useCustomLogin();
+
+  useEffect(() => {
+    console.log("isLogin : " + isLogin);
+    if (isLogin) {
+      moveToPath("/myBook");
+    }
+  }, [isLogin]);
 
   const handleChange = (e) => {
     loginParam[e.target.name] = e.target.value;
