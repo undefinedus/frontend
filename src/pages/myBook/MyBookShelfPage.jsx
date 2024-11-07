@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import BasicLayout from "../../layouts/BasicLayout";
+import LogoutComponent from "../../components/member/LogoutComponent";
 
 const MyBookShelfPage = () => {
   useEffect(() => {
@@ -10,7 +11,12 @@ const MyBookShelfPage = () => {
     }
   });
 
-  return <BasicLayout>MyBookShelfPage</BasicLayout>;
+  return (
+    <>
+      <BasicLayout>MyBookShelfPage</BasicLayout>
+      <LogoutComponent />
+    </>
+  );
 };
 
 export default MyBookShelfPage;

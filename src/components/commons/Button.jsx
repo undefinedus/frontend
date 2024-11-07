@@ -1,4 +1,4 @@
-const Button = ({ className, color, children, ...props }) => {
+const Button = ({ className, color, onClick, children, ...props }) => {
   const colorClasses = {
     undpoint: "bg-undpoint text-white border ",
     unddisabled: "bg-unddisabled text-undtextgray",
@@ -7,7 +7,11 @@ const Button = ({ className, color, children, ...props }) => {
   };
 
   return (
-    <button {...props} className={`${colorClasses[color]} ${className}`}>
+    <button
+      {...props}
+      onClick={onClick}
+      className={`${colorClasses[color]} ${className}`}
+    >
       {children}
     </button>
   );

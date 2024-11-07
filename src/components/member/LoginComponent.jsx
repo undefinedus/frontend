@@ -2,14 +2,19 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/commons/Button";
 import Input from "../../components/commons/Input";
+import { useDispatch } from "react-redux";
+import { login, loginPostAsync } from "../../slices/loginSlice";
+import useCustomLogin from "../../hooks/useCustomLogin";
 
 const initState = {
   email: "",
-  password: "",
+  pw: "",
 };
 
-function Login(props) {
+const LoginComponent = () => {
   const [loginParam, setLoginParam] = useState({ ...initState });
+
+  const { doLogin, moveToPath } = useCustomLogin();
 
   const handleChange = (e) => {
     loginParam[e.target.name] = e.target.value;
@@ -17,7 +22,21 @@ function Login(props) {
     setLoginParam({ ...loginParam });
   };
 
-  const navigate = useNavigate();
+  const handleClickLogin = () => {
+    doLogin(loginParam).then((data) => {
+      if (data.error) {
+        alert("이메일 혹은 패스워드를 확인해 주세요.");
+      } else {
+        moveToPath("/myBook");
+      }
+    });
+  };
+
+  // const handleKeyDown = (e) => {
+  //   if (e.key === "Enter") {
+  //     handleClickLogin;
+  //   }
+  // };
 
   return (
     <div className="p-8">
@@ -27,14 +46,18 @@ function Login(props) {
       <div className="flex flex-col gap-4 mt-4">
         <Input
           label="아이디"
-          type="id"
-          name="id"
+          type="text"
+          name="email"
+          value={loginParam.email}
+          onChange={handleChange}
           placeholder={"아이디를 입력해 주세요."}
         />
         <Input
           label="비밀번호"
           type="password"
-          name="password"
+          name="pw"
+          value={loginParam.pw}
+          onChange={handleChange}
           placeholder={"비밀번호를 입력해 주세요."}
         />
       </div>
@@ -48,6 +71,7 @@ function Login(props) {
         <Button
           className="text-white py-2.5 rounded-full font-semibold w-full"
           color="undpoint"
+          onClick={handleClickLogin}
         >
           로그인
         </Button>
@@ -59,11 +83,12 @@ function Login(props) {
           />
         </Button>
       </div>
-      <div className="flex justify-center mt-16  text-undpoint">
+
+      <div className="flex justify-center mt-16 underline  text-undpoint">
         <Link to="/signup">회원가입</Link>
       </div>
     </div>
   );
-}
+};
 
-export default Login;
+export default LoginComponent;

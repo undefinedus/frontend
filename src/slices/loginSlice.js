@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { loginPost } from "../api/loginApi";
 import { getCookie, removeCookie, setCookie } from "../util/cookieUtil";
 
 const initState = {
@@ -6,11 +7,13 @@ const initState = {
 };
 
 const loadMemberCookie = () => {
-  return getCookie("member");
+  const memberInfo = getCookie("member");
+
+  return memberInfo;
 };
 
 export const loginPostAsync = createAsyncThunk("loginPostAsync", (param) =>
-  loginPostAsync(param)
+  loginPost(param)
 );
 
 const loginSlice = createSlice({
@@ -20,13 +23,12 @@ const loginSlice = createSlice({
     login: (state, action) => {
       console.log("login......", action);
       console.log(action.payload);
+      console.log("-----------------------");
 
-      setCookie("member", JSON.stringify(action.payload), 1);
-
-      return action.payload;
+      return { email: action.payload };
     },
-    logout: (state, action) => {
-      console.log("logout......");
+    logout: () => {
+      console.log("logout.....");
 
       removeCookie("member");
 
@@ -36,18 +38,23 @@ const loginSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(loginPostAsync.fulfilled, (state, action) => {
-        console.log("fulfilled.....");
+        console.log("fullfilled");
+
         const payload = action.payload;
+
         if (!payload.error) {
-          setCookie("member", JSON.stringify(payload));
+          setCookie("member", JSON.stringify(payload), 1);
         }
+
         return payload;
       })
+
       .addCase(loginPostAsync.pending, (state, action) => {
-        console.log("pending.....");
+        console.log("pending");
       })
+
       .addCase(loginPostAsync.rejected, (state, action) => {
-        console.log("rejected.....");
+        console.log("rejected");
       });
   },
 });
