@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import Button from "../commons/Button";
 import useCustomLogin from "../../hooks/useCustomLogin";
 
-function LogoutComponent(props) {
+function LogoutComponent() {
   const { doLogout, moveToPath } = useCustomLogin();
 
   const handleClickLogout = () => {
