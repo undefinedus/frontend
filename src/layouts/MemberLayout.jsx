@@ -1,17 +1,18 @@
 import React from "react";
 import { PiX } from "react-icons/pi";
+import { Link, useNavigate } from "react-router-dom";
 
-const MemberLayout = ({ children }) => {
+const MemberLayout = ({ children, value }) => {
   return (
-    <div className="">
-      <div>
-        <div className="flex justify-center w-full">
-          <div className="w-1/3"></div>
-          <div className="w-1/3 font-bold text-undpoint text-xl">회원가입</div>
-          <PiX className="w-1/3 " size={28} />
-        </div>
+    <div className="pt-10 px-8 pb-8 h-full flex flex-col">
+      <div className="grid grid-cols-MemberLayoutGrid mb-10">
+        <div></div>
+        <div className=" font-bold text-undpoint text-xl">{value}</div>
+        <Link to="/member/login" className="flex justify-end">
+          <PiX size={28} />
+        </Link>
       </div>
-      {children}
+      <div className="h-full">{children}</div>
     </div>
   );
 };

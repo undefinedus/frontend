@@ -1,7 +1,14 @@
 import React from "react";
 import { PiCaretRight } from "react-icons/pi";
 
-function CheckBox({ checked, onChange, value, showMessage = false }) {
+function CheckBox({
+  checked,
+  onChange,
+  value,
+  peer,
+  checkedPeer,
+  showMessage = false,
+}) {
   return (
     <div className="flex justify-between">
       <div className="flex justify-start">
@@ -9,11 +16,15 @@ function CheckBox({ checked, onChange, value, showMessage = false }) {
           <label className="flex items-center cursor-pointer relative mr-2 ">
             <input
               type="checkbox"
-              className="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded-full bg-white border-2 border-undtextgray checked:bg-undpoint checked:border-undpoint"
+              className={`${
+                !peer && "peer p-2"
+              } h-5 w-5 cursor-pointer transition-all appearance-none rounded-full bg-white border-2 border-undtextgray checked:bg-undpoint checked:border-undpoint`}
               checked={checked}
               onChange={({ target: { checked } }) => onChange(checked)}
             />
-            <span className="absolute text-undpoint peer-checked:opacity-100 peer-checked:text-undbgmain top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <span
+              className={`absolute text-undpoint p-3 peer-checked:opacity-100 peer-checked:text-undbgmain top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2`}
+            >
               <svg
                 className="h-3 w-3"
                 viewBox="0 0 20 20"

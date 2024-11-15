@@ -14,6 +14,7 @@ export default {
       },
       gridTemplateColumns: {
         MyBookGrid: "0.4fr 1fr",
+        MemberLayoutGrid: "0.4fr 1fr 0.4fr",
       },
 
       fontFamily: {

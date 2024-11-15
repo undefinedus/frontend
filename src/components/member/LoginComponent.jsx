@@ -109,13 +109,13 @@ const LoginComponent = () => {
 
   return (
     <div className="flex flex-col p-8 h-full gap-14">
-      <div className="flex justify-center mt-10">
+      <div className="flex justify-center mt-10 w-full">
         <img src="/public/assets/logos/gongchaekWithTextLogin.png" alt="" />
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col w-full">
         <Input
-          className="mb-4"
-          label="아이디"
+          className="mb-4 w-full border border-undtextgray"
+          labeltext="아이디"
           type="text"
           name="email"
           value={loginParam.email}
@@ -123,7 +123,8 @@ const LoginComponent = () => {
           placeholder={"아이디를 입력해 주세요."}
         />
         <Input
-          label="비밀번호"
+          className="w-full border border-undtextgray"
+          labeltext="비밀번호"
           type="password"
           name="pw"
           value={loginParam.pw}
