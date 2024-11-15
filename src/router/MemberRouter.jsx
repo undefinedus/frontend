@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import LoadingPage from "../pages/LoadingPage";
 import LoginPage from "../pages/member/LoginPage";
-import SignUpPage from "../pages/member/SignUpPage";
+import SignUpPage from "../pages/member/SignuppPage";
 import FindPasswordPage from "../pages/member/FindPasswordPage";
 
 // 로그인, 회원가입, 추가정보입력, 비밀번호 찾기 라우터

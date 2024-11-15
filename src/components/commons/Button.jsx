@@ -1,6 +1,13 @@
-const Button = ({ className, color, onClick, children, ...props }) => {
+const Button = ({
+  buttonDisabled,
+  className,
+  color,
+  onClick,
+  children,
+  ...props
+}) => {
   const colorClasses = {
-    undpoint: "bg-undpoint text-white border ",
+    undpoint: "bg-undpoint text-white",
     unddisabled: "bg-unddisabled text-undtextgray",
 
     // 필요한 색상 추가
@@ -10,6 +17,7 @@ const Button = ({ className, color, onClick, children, ...props }) => {
     <button
       {...props}
       onClick={onClick}
+      disabled={buttonDisabled}
       className={`${colorClasses[color]} ${className}`}
     >
       {children}
