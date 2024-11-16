@@ -10,14 +10,7 @@ const MemberRouter = () => {
   return (
     <Routes>
       <Route path="" element={<Navigate replace to={"login"} />} />
-      <Route
-        path="login"
-        element={
-          <Suspense fallback={<LoadingPage />}>
-            <LoginPage />
-          </Suspense>
-        }
-      />
+      <Route path="login" element={<LoginPage />} />
       <Route
         path="signup"
         element={
