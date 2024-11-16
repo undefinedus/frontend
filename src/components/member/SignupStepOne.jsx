@@ -316,7 +316,7 @@ function SignupStepOne({ onEmailVerified }) {
                 인증번호 전송
               </Button>
             )}
-            {validTimeExpired && !isVerified && (
+            {validNum && (
               <Button
                 onClick={handleButtonHandler}
                 className="py-2.5 rounded-full w-full"

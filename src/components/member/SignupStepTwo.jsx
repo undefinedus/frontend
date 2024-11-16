@@ -5,9 +5,12 @@ import Button from "../../components/commons/Button";
 import PropTypes from "prop-types";
 import { registMember } from "../../api/signupApi";
 
-const SingupStepTwo = ({ email }) => {
+const SignupStepTwo = ({ email, nextButton, onPasswordSubmit }) => {
   const [password, setPassword] = useState("");
   const [strength, setStrength] = useState("");
+  const [passwordErrorText, setPasswordErrorText] = useState(
+    "영문, 숫자, 특수문자 혼용 12~20자로 입력해 주세요"
+  );
   const [confirmPasswordError, setConfirmPasswordError] = useState(""); // 비밀번호 확인 에러 메시지 상태
   const [confirmPassword, setConfirmPassword] = useState("");
   const [buttonDisableCondition, setButtonDisableCondition] = useState(true);
@@ -25,14 +28,10 @@ const SingupStepTwo = ({ email }) => {
 
   const handleRegister = async () => {
     try {
-      const registerData = {
-        email: email,
-        password: password,
-      };
-
-      const { result, member } = await registMember(registerData);
+      onPasswordSubmit(password);
+      nextButton();
     } catch (err) {
-      console.log("회원가입 실패.");
+      console.log("비밀번호 설정 실패");
     }
   };
 
@@ -76,24 +75,35 @@ const SingupStepTwo = ({ email }) => {
     const value = e.target.value;
     setConfirmPassword(value);
 
-    if (password !== value) {
+    if (value === "") {
+      setConfirmPasswordError("");
+    } else if (password !== value) {
       setConfirmPasswordError("비밀번호가 일치하지 않습니다");
     } else {
       setConfirmPasswordError("");
     }
   };
 
+  // 비밀번호 강도 평가
   const handleChange = (e) => {
     const newPassword = e.target.value;
+    const newStrength = evaluateStrength(newPassword);
     setPassword(newPassword);
-    setStrength(evaluateStrength(newPassword)); // 비밀번호 강도 평가
+    setStrength(newStrength);
+
+    if (newStrength === "안전" || newStrength === "보통") {
+      setPasswordErrorText("사용 가능한 패스워드 입니다.");
+    } else {
+      setPasswordErrorText("영문, 숫자, 특수문자 혼용 12~20자로 입력해 주세요");
+    }
   };
+
   return (
     <div className="flex flex-col justify-between h-full w-full">
       <div className="flex flex-col gap-4">
         <div>
           <Input
-            className="border border-undtextgray w-full"
+            className="border border-undtextgray w-full rounded-full"
             labeltext="아이디"
             readonly={true}
             value={email}
@@ -126,9 +136,16 @@ const SingupStepTwo = ({ email }) => {
           </Input>
           <span
             className={`text-xs text-undtextgray flex justify-start mt-1`}
-            style={{ color: strength === "불가" ? "red" : "" }}
+            style={{
+              color:
+                strength === "안전" || strength === "보통"
+                  ? "gray"
+                  : strength === "불가"
+                  ? "red"
+                  : "gray",
+            }}
           >
-            영문, 숫자, 특수문자 혼용 12~20자로 입력해 주세요
+            {passwordErrorText}
           </span>
         </div>
         <div>
@@ -159,8 +176,10 @@ const SingupStepTwo = ({ email }) => {
   );
 };
 
-SingupStepTwo.propTypes = {
+SignupStepTwo.propTypes = {
   email: PropTypes.string.isRequired,
+  nextButton: PropTypes.func.isRequired,
+  onPasswordSubmit: PropTypes.func.isRequired,
 };
 
-export default SingupStepTwo;
+export default SignupStepTwo;

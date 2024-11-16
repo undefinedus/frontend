@@ -2,12 +2,12 @@
 import React, { useState, useEffect } from "react";
 
 const CountdownTimer = ({ onTimeEnd, restart }) => {
-  const [timeLeft, setTimeLeft] = useState(20); // 3분
+  const [timeLeft, setTimeLeft] = useState(180); // 3분
   const [isVisible, setIsVisible] = useState(true);
 
   // restart prop이 변경될 때마다 타이머 재시작
   useEffect(() => {
-    setTimeLeft(20);
+    setTimeLeft(180);
     setIsVisible(true);
   }, [restart]);
 

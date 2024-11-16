@@ -25,7 +25,7 @@ const MyPageInput = forwardRef((props, ref) => {
         <div className="text-sm">{children}</div>
       </label>
       <input
-        className={`block p-2.5 rounded-full ${
+        className={`block p-2.5 rounded-full${
           readonly
             ? "focus:outline-none text-undtextdark bg-opacity-10 bg-undtextgray text-opacity-60"
             : ""
