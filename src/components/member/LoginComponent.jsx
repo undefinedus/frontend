@@ -29,6 +29,15 @@ const LoginComponent = () => {
   const openSignupModal = () => setIsModalOpen(true);
   const closeSignupModal = () => {
     setIsModalOpen(false);
+    setCheckboxStates({
+      allAgree: false,
+      serviceAgree: false,
+      privacyAgree: false,
+    });
+    setAgeCheck({
+      under14: false,
+      over14: false,
+    });
   };
 
   const { doLogin, moveToPath, isLogin } = useCustomLogin();
@@ -170,6 +179,7 @@ const LoginComponent = () => {
             onClose={closeSignupModal}
             confirmText={"회원가입"}
             buttonDisabled={!signupButtonHandler()}
+            Bottom={true}
           >
             <BigCheckBox
               checked={checkboxStates.allAgree}

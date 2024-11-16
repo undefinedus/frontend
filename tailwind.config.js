@@ -23,6 +23,7 @@ export default {
 
       colors: {
         undpoint: "#7D5C4D",
+        undlightpoint: "#A68171",
         undbgmain: "#FDFCFA",
         undbgsub: "#F9F7F5",
         undtextgray: "#78716C",
