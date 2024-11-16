@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => ({
         enabled: mode === "development", // 개발 모드에서 PWA 활성화
       },
       manifest: {
-        name: "공유해요, 당신의 책장",
+        name: "공책 - 공유해요, 당신의 책장",
         short_name: "공책",
         start_url: "/",
         display: "standalone",
@@ -24,7 +24,7 @@ export default defineConfig(({ mode }) => ({
         theme_color: "#7D5C4D",
         icons: [
           {
-            src: "./src/assets/logos/gongchaekWithText.png",
+            src: "/assets/logos/Logo1.png",
             sizes: "192x192",
             type: "image/png",
           },

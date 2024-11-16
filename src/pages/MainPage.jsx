@@ -19,7 +19,7 @@ const MainPage = () => {
   }, []);
 
   return (
-    <div className="h-screen">
+    <div className="h-screen bg-white">
       <MainLogo />
     </div>
   );
