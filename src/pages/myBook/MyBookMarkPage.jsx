@@ -1,7 +1,7 @@
 import React from "react";
 
 const MyBookMarkPage = () => {
-  return <div>MyBookMarkPage</div>;
+  return;
 };
 
 export default MyBookMarkPage;

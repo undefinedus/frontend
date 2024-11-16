@@ -6,6 +6,7 @@ import ISBNScanner from "../../components/home/ISBNScanner";
 import ISBNReader from "../../components/home/ISBNReader";
 import ISBNOptionsModal from "../../components/modal/ISBNOptionsModal";
 import BookmarkScanner from "../../components/myBook/BookmarkScanner";
+import LogoutComponent from "../../components/member/LogoutComponent";
 
 // 기능 개발용 페이지
 const MyBookShelfPage = () => {
@@ -109,6 +110,8 @@ const MyBookShelfPage = () => {
           스캔된 ISBN: {isbn}
         </div>
       )}
+
+      <LogoutComponent />
     </BasicLayout>
   );
 };

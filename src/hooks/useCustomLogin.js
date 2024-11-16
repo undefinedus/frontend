@@ -7,7 +7,7 @@ const useCustomLogin = () => {
   const dispatch = useDispatch();
   const loginState = useSelector((state) => state.loginSlice);
 
-  const isLogin = loginState.email ? true : false;
+  const isLogin = loginState.username ? true : false;
 
   const doLogin = async (loginParam) => {
     const action = await dispatch(loginPostAsync(loginParam));
