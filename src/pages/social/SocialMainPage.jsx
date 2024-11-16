@@ -2,8 +2,8 @@
 import React from "react";
 import BasicLayout from "../../layouts/BasicLayout";
 
-const SocialPage = () => {
+const SocialMainPage = () => {
   return <BasicLayout>SocialPage</BasicLayout>;
 };
 
-export default SocialPage;
+export default SocialMainPage;
