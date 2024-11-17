@@ -22,13 +22,22 @@ export default {
       },
 
       colors: {
-        undpoint: "#7D5C4D",
-        undlightpoint: "#A68171",
-        undbgmain: "#FDFCFA",
-        undbgsub: "#F9F7F5",
-        undtextgray: "#78716C",
-        undtextdark: "#0C0A09",
-        unddisabled: "#EEE9E4",
+        undclickbrown: "#51392F", // click 브라운(상단 타이틀)
+        undhoverbrown: "#65493C", // hover 브라운
+        undpoint: "#7D5C4D", // 포인트 커피색
+        undlightpoint: "#A68171", // 연한 갈색
+        undbgmain: "#FDFCFA", // 배경색(연한 화이트)
+        undbgsub: "#F9F7F5", // 보조 배경색(연한 베이지)
+        undtextgray: "#78716C", // 회색 텍스트
+        undtextdark: "#0C0A09", // 진한 텍스트(거의 검정)
+        unddisabled: "#EEE9E4", // 비활성화 버튼 컬러
+        undgold: "#FFD400", // 1순위(금)
+        undsilver: "#CDCDCD", // 2순위(은)
+        undbronze: "#8D6627", // 2순위(은)
+        undred: "#D55636", // 빨강(경고 문구)
+        undgreen: "#07BE60", // 초록(안전 문구)
+        undagree: "#A0CDDF", // 찬성
+        unddisagree: "#DFA0B5", // 반대
       },
     },
   },
