@@ -1,11 +1,13 @@
 import React from "react";
 import BasicLayout from "../../layouts/BasicLayout";
+import { OnlyTitle } from "../../layouts/TopLayout";
 import MenuBox from "../../components/settings/MenuBox";
 import ProfileBox from "../../components/settings/ProfileBox";
 
 const SettingsPage = () => {
   return (
     <BasicLayout>
+      <OnlyTitle title="설정" showLine={true} />
       <div className="w-full flex flex-col px-7 py-8 gap-4">
         <div className="w-full">
           <ProfileBox />
