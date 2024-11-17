@@ -12,13 +12,10 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.3.0",
     "axios": "^1.7.7",
-<<<<<<< HEAD
     "html5-qrcode": "^2.3.8",
     "quagga": "^0.12.1",
-=======
     "date-fns": "^4.1.0",
     "my-react-project": "file:",
->>>>>>> 62df34849a3e339b52e3ae3194f8baf10491ca09
     "react": "^18.3.1",
     "react-cookie": "^7.2.2",
     "react-datepicker": "^7.5.0",
