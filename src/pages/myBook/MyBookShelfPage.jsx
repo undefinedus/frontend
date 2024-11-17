@@ -110,8 +110,6 @@ const MyBookShelfPage = () => {
           스캔된 ISBN: {isbn}
         </div>
       )}
-
-      <LogoutComponent />
     </BasicLayout>
   );
 };
