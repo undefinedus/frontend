@@ -4,11 +4,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { PiCaretLeft, PiPlus } from "react-icons/pi";
 
 // 제목만
-export const OnlyTitle = ({ title }) => {
+export const OnlyTitle = ({ title, showLine = true }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="px-6 py-4 h-16 flex items-center relative">
+    <div
+      className={`px-6 h-16 flex items-center relative ${
+        showLine && "border-unddisabled border-b"
+      }`}
+    >
       <div className="font-bold text-undclickbrown text-xl mx-auto">
         {title}
       </div>
@@ -17,11 +21,15 @@ export const OnlyTitle = ({ title }) => {
 };
 
 // 이전 버튼 + 제목
-export const PrevTitle = ({ title }) => {
+export const PrevTitle = ({ title, showLine = true }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="px-6 py-4 h-16 flex items-center relative">
+    <div
+      className={`px-6 h-16 flex items-center relative ${
+        showLine && "border-unddisabled border-b"
+      }`}
+    >
       {/* 이전 버튼 */}
       <button onClick={() => navigate(-1)} className="absolute left-6">
         <PiCaretLeft size={28} color="#51392F" />
@@ -35,11 +43,15 @@ export const PrevTitle = ({ title }) => {
 };
 
 // 이전 버튼 + 책 담기
-export const PrevAddBook = () => {
+export const PrevAddBook = ({ showLine = true }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="px-6 py-4 h-16 flex items-center relative">
+    <div
+      className={`px-6 h-16 flex items-center relative ${
+        showLine && "border-unddisabled border-b"
+      }`}
+    >
       {/* 이전 버튼 */}
       <button onClick={() => navigate(-1)} className="absolute left-6">
         <PiCaretLeft size={28} color="#51392F" />

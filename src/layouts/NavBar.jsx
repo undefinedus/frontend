@@ -20,7 +20,7 @@ const NavBar = () => {
 
   return (
     <>
-      <div className="fixed bottom-0 start-0 w-full flex justify-between px-4 py-4 border-t border-unddisabled bg-undbgmain">
+      <div className="h-16 fixed bottom-0 start-0 w-full flex items-center justify-between px-5 border-t border-unddisabled bg-undbgmain">
         {isOwnPath("home") ? (
           <PiHouseFill
             color="7D5C4D"

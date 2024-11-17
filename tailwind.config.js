@@ -39,6 +39,13 @@ export default {
         undagree: "#A0CDDF", // 찬성
         unddisagree: "#DFA0B5", // 반대
       },
+      fontSize: {
+        und24: "1.5rem", // text-2xl와 동일한 크기
+        und20: "1.25rem", // xl와 동일한 크기
+        und16: "1rem", // text-base와 동일한 크기
+        und14: "0.0.875rem", // text-sm와 동일한 크기
+        und12: "0.75rem", // text-xs와 동일한 크기
+      },
     },
   },
 
