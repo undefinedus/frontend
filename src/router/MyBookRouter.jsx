@@ -11,7 +11,7 @@ const MyBookRouter = () => {
     <Routes>
       <Route path="" element={<Navigate replace to={"shelf"} />} />
       <Route
-        path="shelf"
+        path="list"
         element={
           <Suspense fallback={<LoadingPage />}>
             <MyBookShelfPage />
@@ -19,7 +19,7 @@ const MyBookRouter = () => {
         }
       />
       <Route
-        path="list"
+        path="shelf"
         element={
           <Suspense fallback={<LoadingPage />}>
             <MyBookListPage />
