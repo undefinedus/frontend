@@ -11,9 +11,8 @@ const BookDetail = lazy(() => import("../pages/home/BookDetailPage"));
 const HomeRouter = () => {
   return (
     <Routes>
-      <Route path="" element={<Navigate replace to={"main"} />} />
       <Route
-        path="main"
+        path=""
         element={
           <Suspense fallback={<LoadingPage />}>
             <HomeMain />
