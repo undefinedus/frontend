@@ -8,15 +8,27 @@ export default {
           "0%": { transform: "rotate(0deg)" },
           "100%": { transform: "rotate(-360deg)" },
         },
+        slideUp: {
+          "0%": { transform: "translateY(100%)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
+        },
+        slideDown: {
+          "0%": { transform: "translateY(0)", opacity: "1" },
+          "100%": { transform: "translateY(100%)", opacity: "0" },
+        },
       },
       animation: {
         spinFull: "spinFull 500ms ease-in-out", // 1초 동안 360도 회전
+        slideUp: "slideUp 0.3s ease-out",
+        slideDown: "slideDown 0.3s ease-in",
       },
       gridTemplateColumns: {
         MyBookGrid: "0.4fr 1fr",
         MemberLayoutGrid: "0.4fr 1fr 0.4fr",
       },
-
+      backdropBlur: {
+        xs: "2px", // 2px 블러 강도 추가
+      },
       fontFamily: {
         sans: ["NanumSquareNeo", "sans-serif"], // 기본 글꼴 설정
       },
