@@ -26,7 +26,7 @@ export const PrevTitle = ({ title, showLine = true }) => {
     <div
       className={`px-6 h-16 flex items-center relative ${
         showLine && "border-unddisabled border-b"
-      }`}
+      } bg-undbgmain`}
     >
       {/* 이전 버튼 */}
       <button onClick={() => navigate(-1)} className="absolute left-6">

@@ -12,7 +12,7 @@ const ListNotice = ({ type }) => {
   const { icon, message } = content[type] || {};
 
   return (
-    <div className="flex flex-col justify-items-center">
+    <div className="flex flex-col justify-center items-center h-full w-full">
       <div className="flex justify-center">{icon}</div>
       <div className="flex justify-center">{message}</div>
     </div>

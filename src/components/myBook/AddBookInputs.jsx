@@ -1,5 +1,6 @@
 import React from "react";
 import AddBookDate from "./AddBookDate";
+import AddBookPage from "./AddBookPage";
 
 const AddBookInputs = ({ state }) => {
   const end = () => {
@@ -15,8 +16,12 @@ const AddBookInputs = ({ state }) => {
 
   return (
     <div>
-      {state !== "읽고 싶은 책" && <AddBookDate end={end()} />}
-      {}
+      <div className={`${state === "읽고 있는 책" ? "mb-7" : "mb-4"}`}>
+        {state !== "읽고 싶은 책" && <AddBookDate end={end()} />}
+      </div>
+      {(state === "읽고 있는 책" || state === "중단한 책") && (
+        <AddBookPage state={state} />
+      )}
     </div>
   );
 };
