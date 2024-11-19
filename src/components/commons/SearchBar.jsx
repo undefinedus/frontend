@@ -17,7 +17,7 @@ export const IsbnBookSearch = ({ onSearchSubmit }) => {
   };
 
   return (
-    <div className="flex h-10 justify-center items-center">
+    <div className="w-full flex h-10 justify-center items-center bg-undbgmain">
       <div
         className="w-72 h-full px-2.5 flex items-center justify-between border
     border-unddisabled rounded-full bg-white"
