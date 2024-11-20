@@ -1,10 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BasicLayout from "../../layouts/BasicLayout";
 import ReadingBook from "../../components/myBook/ReadingBook";
 import { OnlyTitle } from "../../layouts/TopLayout";
+import useCustomLogin from "../../hooks/useCustomLogin";
+import { getBookList } from "../../api/bookApi";
+import ScrollActionButtons from "../../components/commons/ScrollActionButtons";
+import AddBookModal from "../../components/modal/books/AddBookModal";
 
 const MyBookListPage = () => {
-  const books = [1, 2, 3, 4];
+  const books = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
+  const { loginState } = useCustomLogin();
+  const [openAddModal, setOpenAddModal] = useState(false);
+
+  useEffect(() => {
+    console.log(loginState);
+    fetchBookList();
+  });
+
+  const fetchBookList = async (status) => {
+    try {
+      const list = await getBookList();
+      console.log(list);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleOpenModal = () => {
+    setOpenAddModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenAddModal(false);
+  };
 
   return (
     <BasicLayout>
@@ -21,6 +49,8 @@ const MyBookListPage = () => {
           </div>
         ))}
       </div>
+      {openAddModal && <AddBookModal onClose={handleCloseModal} />}
+      <ScrollActionButtons mainLabel={"책 담기"} mainAction={handleOpenModal} />
     </BasicLayout>
   );
 };

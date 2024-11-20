@@ -22,9 +22,9 @@ function MyBook() {
       {/* 임시 % 입력 */}
 
       <div className="grid grid-cols-MyBookGrid gap-4 w-full ">
-        <div className="bg-stone-200 flex justify-center p-0.5">
+        <div className="flex justify-center p-0.5">
           <img
-            className="w-auto h-auto"
+            className="w-16 h-24"
             src="/assets/img/BookImg_01.png"
             alt="Book01"
           />
