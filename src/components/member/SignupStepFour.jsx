@@ -4,6 +4,7 @@ import { registMember } from "../../api/signupApi";
 import BasicModal from "../../components/modal/commons/BasicModal";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import useCustomLogin from "../../hooks/useCustomLogin";
 // 화면에 보여줄 카테고리와 실제 전송될 Enum 값을 매핑
 const CATEGORY_MAPPING = {
   잡지: "잡지",
@@ -82,6 +83,8 @@ const SignupStepFour = ({ registerData }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
+  const { doLogin } = useCustomLogin();
+
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -124,14 +127,30 @@ const SignupStepFour = ({ registerData }) => {
     }
   };
 
-  const startButtonHandler = () => {
-    handleRegister()
-      .then(() => {
-        navigate("/MyBook/shelf");
-      })
-      .catch((err) => {
-        console.error("회원가입 후 처리 실패:", err);
+  const handleBackgroundClick = () => {
+    startButtonHandler();
+  };
+
+  const startButtonHandler = async () => {
+    try {
+      await handleRegister();
+
+      // 회원가입 성공 후 자동 로그인 시도
+      const loginResult = await doLogin({
+        email: registerData.username,
+        pw: registerData.password,
       });
+
+      if (!loginResult.error) {
+        navigate("/myBook/shelf", { replace: true });
+      } else {
+        console.error("자동 로그인 실패");
+        navigate("/member/login", { replace: true });
+      }
+    } catch (err) {
+      console.error("처리 실패:", err);
+      navigate("/member/login", { replace: true });
+    }
   };
 
   return (
@@ -166,6 +185,7 @@ const SignupStepFour = ({ registerData }) => {
       {isModalOpen && (
         <BasicModal
           isOpen={isModalOpen}
+          onBackgroundClick={handleBackgroundClick}
           onClose={closeModal}
           confirmText={"시작하기"}
           className={"w-full h-56"}
