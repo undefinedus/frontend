@@ -2,12 +2,13 @@ import React, { useRef } from "react";
 import { PiXCircleFill } from "react-icons/pi";
 import Button from "../../commons/Button";
 
-const SignupModal = ({
+const BasicModal = ({
   isOpen,
   confirmText,
   Bottom,
   onConfirm,
   onClose,
+  onBackgroundClick, // 새로 추가된 prop
   children,
   className,
   bgClassName,
@@ -17,9 +18,15 @@ const SignupModal = ({
 
   const closeModal = (e) => {
     if (e.target === modalBackground.current) {
-      onClose();
+      // 커스텀 핸들러가 있으면 그것을 사용, 없으면 기본 onClose 사용
+      if (onBackgroundClick) {
+        onBackgroundClick();
+      } else {
+        onClose();
+      }
     }
   };
+
   return (
     <div
       className={`fixed inset-0 z-50 bg-black bg-opacity-50 ${
@@ -55,4 +62,4 @@ const SignupModal = ({
   );
 };
 
-export default SignupModal;
+export default BasicModal;

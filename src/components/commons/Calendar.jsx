@@ -110,6 +110,10 @@ const Calendar = ({
     }
   };
 
+  const handleChangeRaw = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <div className="text-start w-full">
       <label className="text-undtextdark flex justify-between" htmlFor={id}>
@@ -118,6 +122,7 @@ const Calendar = ({
       </label>
       <div className="w-full">
         <DatePicker
+          onChangeRaw={handleChangeRaw}
           formatWeekDay={(nameOfDay) => nameOfDay.substring(0, 1)}
           dateFormat="yyyy-MM-dd"
           shouldCloseOnSelect
@@ -132,7 +137,9 @@ const Calendar = ({
           showMonthDropdown
           dropdownMode="select"
           wrapperClassName="w-full"
-          className={`block p-2.5 w-full rounded-full ${className || ""}`}
+          className={`block p-2.5 w-full rounded-full cursor-pointer ${
+            className || ""
+          }`}
           placeholderText="생년월일을 선택해주세요"
           dayClassName={(d) => {
             if (!is14YearsOld(d)) {
