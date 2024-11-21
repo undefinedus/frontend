@@ -1,12 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PiMagnifyingGlass, PiBarcode } from "react-icons/pi";
 
 // 책 제목, 작가명, ISBN으로 검색
-export const IsbnBookSearch = ({ onSearchSubmit }) => {
+export const IsbnBookSearch = ({ onSearchSubmit, searchHistory = null }) => {
   const [searchKeyword, setSearchKeyword] = useState(""); // 검색어 상태 관리
+
+  useEffect(() => {
+    if (searchHistory) {
+      setSearchKeyword(searchHistory);
+    }
+  }, [searchHistory]);
+
   // 검색 실행 처리
   const handleSearch = () => {
-    onSearchSubmit(searchKeyword); // 상위 컴포넌트로 검색 실행
+    if (searchKeyword) {
+      onSearchSubmit(searchKeyword); // 상위 컴포넌트로 검색 실행
+    }
   };
 
   // 엔터키 처리

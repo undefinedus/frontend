@@ -1,9 +1,9 @@
 import { lazy, Suspense } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import LoadingPage from "../pages/LoadingPage";
 const HomeMain = lazy(() => import("../pages/home/HomeMainPage"));
 const HomeSearchBook = lazy(() => import("../pages/home/SearchBookPage"));
-const BookDetail = lazy(() => import("../pages/home/BookDetailPage"));
+const BookDetail = lazy(() => import("../pages/book/BookDetailPage"));
 
 // main : AI추천도서 + 취향추천도서 + 알라딘 베스트셀러
 // searchbook : 책 전체 검색
@@ -28,7 +28,7 @@ const HomeRouter = () => {
         }
       />
       <Route
-        path="bookdetail/:id"
+        path="searchbook/detail/:isbn13"
         element={
           <Suspense fallback={<LoadingPage />}>
             <BookDetail />
