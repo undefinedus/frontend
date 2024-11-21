@@ -4,7 +4,7 @@ import { PiCaretDown } from "react-icons/pi";
 // 목록 아이템 개수 및 정렬
 export const ItemCount = ({ count, unit }) => {
   return (
-    <div className="w-24 h-6">
+    <div className="w-24 h-6 ">
       <div className="flex h-full items-center justify-between">
         <p className="text-und14 text-undtextgray">
           {count}
@@ -33,7 +33,7 @@ export const SortDropdown = ({ onChange, option1, option2 }) => {
   };
 
   return (
-    <div className="relative w-24">
+    <div className="relative w-24 bg-undbgmain">
       {/* 선택된 옵션 및 드롭다운 토글 */}
       <div
         className="flex justify-end items-center cursor-pointer"
