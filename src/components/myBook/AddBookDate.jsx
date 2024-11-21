@@ -1,12 +1,12 @@
 import React from "react";
 
-const AddBookDate = ({ end = null }) => {
+const AddBookDate = ({ end = null, dates }) => {
   return (
     <div className="w-full flex flex-col">
-      <div className="flex justify-start text-und16 text-undtextdark font-bold mb-2.5">
+      <div className="flex justify-start text-und16 text-undtextdark font-bold">
         독서 기간
       </div>
-      <div className={`flex ${end && "gap-5"}`}>
+      <div className={`flex ${end && "gap-5"} mt-2.5`}>
         <div
           className={`flex ${
             end ? "flex-col w-1/2 gap-1" : "justify-between w-full"
@@ -21,10 +21,10 @@ const AddBookDate = ({ end = null }) => {
           </div>
           <div
             className={`${
-              end ? "w-full" : "w-1/2"
+              end ? "w-full mt-1" : "w-1/2"
             } flex justify-center text-und14 text-undtextgray rounded-s-full rounded-e-full bg-undbgsub`}
           >
-            2024.11.02
+            {dates[0]}
           </div>
         </div>
         {end && (
@@ -32,8 +32,8 @@ const AddBookDate = ({ end = null }) => {
             <div className="w-full flex justify-start text-und14 text-undtextgray font-bold">
               {end}
             </div>
-            <div className="w-full flex justify-center text-und14 text-undtextgray rounded-s-full rounded-e-full bg-undbgsub">
-              2024.11.02
+            <div className="w-full mt-1 flex justify-center text-und14 text-undtextgray rounded-s-full rounded-e-full bg-undbgsub">
+              {dates[1]}
             </div>
           </div>
         )}
