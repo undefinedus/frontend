@@ -23,6 +23,7 @@ function SignupStepOne({ onEmailVerified }) {
     validCheckUsername: false,
   };
 
+  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState(initialState.email);
   const [isValid, setIsValid] = useState(initialState.isValid);
   const [validText, setValidText] = useState(initialState.validText);
@@ -95,6 +96,7 @@ function SignupStepOne({ onEmailVerified }) {
   // 인증번호 전송
   const handleButtonHandler = async () => {
     try {
+      setIsLoading(true);
       const response = await sendVerificationEmail(email);
       if (response.result) {
         setIsVerified(false); // 이전 인증 상태 초기화
@@ -110,6 +112,8 @@ function SignupStepOne({ onEmailVerified }) {
       }
     } catch (err) {
       setValidText(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -154,6 +158,7 @@ function SignupStepOne({ onEmailVerified }) {
   // 인증번호 확인
   const verifyCode = async (code) => {
     try {
+      setIsLoading(true); // 로딩 상태 추가
       const response = await verifyEmailCode(email, code);
       setIsVerified(response.result);
       setVerificationMessage(response.message);
@@ -166,6 +171,8 @@ function SignupStepOne({ onEmailVerified }) {
     } catch (err) {
       setIsVerified(false);
       setVerificationMessage(err.message);
+    } finally {
+      setIsLoading(false); // 로딩 상태 해제
     }
   };
 
@@ -255,13 +262,13 @@ function SignupStepOne({ onEmailVerified }) {
           </div>
 
           {validNum && (
-            <div>
-              <div>
+            <div className="w-full">
+              <div className="w-full">
                 <p className="mt-14 mb-3 text-sm font-semibold">
                   이메일로 전송된 인증번호를 입력해 주세요.
                 </p>
                 <CountdownTimer onTimeEnd={handleTimeEnd} restart={timerKey} />
-                <div className="flex justify-between gap-5">
+                <div className="w-full flex justify-between gap-5">
                   {[
                     { ref: firstInputRef, nextRef: secondInputRef },
                     { ref: secondInputRef, nextRef: thirdInputRef },
@@ -271,7 +278,8 @@ function SignupStepOne({ onEmailVerified }) {
                     <Input
                       key={index}
                       ref={input.ref}
-                      className={`w-14 text-center font-bold text-undtextdark border border-undtextgray
+                      width={"w-1/4"}
+                      className={`w-full text-center font-bold text-undtextdark border border-undtextgray
                         ${
                           validTimeExpired
                             ? "border border-red-500"
@@ -308,9 +316,12 @@ function SignupStepOne({ onEmailVerified }) {
               <Button
                 onClick={handleButtonHandler}
                 className="py-2.5 rounded-full w-full"
-                buttonDisabled={!isValid || !validCheckUsername}
+                buttonDisabled={!isValid || !validCheckUsername || isLoading}
+                isLoading={isLoading}
                 color={
-                  !isValid || !validCheckUsername ? "unddisabled" : "undpoint"
+                  !isValid || !validCheckUsername || isLoading
+                    ? "unddisabled"
+                    : "undpoint"
                 }
               >
                 인증번호 전송
@@ -320,7 +331,8 @@ function SignupStepOne({ onEmailVerified }) {
               <Button
                 onClick={handleButtonHandler}
                 className="py-2.5 rounded-full w-full"
-                color="undpoint"
+                color={`${!isLoading ? "undpoint" : "unddisabled"}`}
+                isLoading={isLoading}
               >
                 인증번호 재전송
               </Button>

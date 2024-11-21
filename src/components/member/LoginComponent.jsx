@@ -67,11 +67,11 @@ const LoginComponent = () => {
     });
   };
 
-  // const handleKeyDown = (e) => {
-  //   if (e.key === "Enter") {
-  //     handleClickLogin;
-  //   }
-  // };
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleClickLogin();
+    }
+  };
 
   // 전체 동의 체크박스 핸들러
   const handleAllAgree = (checked) => {
@@ -117,7 +117,7 @@ const LoginComponent = () => {
   };
 
   return (
-    <div className="flex flex-col p-8 h-full gap-14">
+    <div className="flex flex-col p-6 h-full gap-14">
       <div className="flex justify-center mt-10 w-full">
         <img src="/public/assets/logos/gongchaekWithTextLogin.png" alt="" />
       </div>
@@ -128,6 +128,7 @@ const LoginComponent = () => {
           type="text"
           name="email"
           value={loginParam.email}
+          onKeyDown={handleKeyDown}
           onChange={handleChange}
           placeholder={"아이디를 입력해 주세요."}
         />
@@ -137,6 +138,7 @@ const LoginComponent = () => {
           type="password"
           name="pw"
           value={loginParam.pw}
+          onKeyDown={handleKeyDown}
           onChange={handleChange}
           placeholder={"비밀번호를 입력해 주세요."}
         />
@@ -153,7 +155,7 @@ const LoginComponent = () => {
         </Button>
         <Button className="text-undpoint py-3 rounded-full font-semibold w-full">
           <img
-            className="rounded-full h-[45.6px]"
+            className="rounded-full"
             src="/assets/img/kakao_login.png"
             alt=""
           />
