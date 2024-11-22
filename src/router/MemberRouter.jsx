@@ -4,6 +4,7 @@ import LoadingPage from "../pages/LoadingPage";
 import LoginPage from "../pages/member/LoginPage";
 import SignUpPage from "../pages/member/SignupPage";
 import FindPasswordPage from "../pages/member/FindPasswordPage";
+import KakaoRedirect from "../pages/member/KakaoRedirectPage";
 
 // 로그인, 회원가입, 추가정보입력, 비밀번호 찾기 라우터
 const MemberRouter = () => {
@@ -24,6 +25,14 @@ const MemberRouter = () => {
         element={
           <Suspense fallback={<LoadingPage />}>
             <FindPasswordPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="kakao"
+        element={
+          <Suspense fallback={<LoadingPage />}>
+            <KakaoRedirect />
           </Suspense>
         }
       />

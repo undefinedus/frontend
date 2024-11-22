@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 // import { PiX } from "react-icons/pi";
 import {
   PiCaretLeftBold,
@@ -15,8 +15,8 @@ import {
 export const OnlyTitle = ({ title, showLine = true }) => {
   return (
     <div
-      className={`px-6 h-16 flex items-center relative ${
-        showLine && "border-unddisabled border-b"
+      className={`h-16 flex items-center relative ${
+        showLine && "border-unddisabled border-b px-6"
       }`}
     >
       <div className="font-bold text-undclickbrown text-xl mx-auto">
@@ -30,12 +30,12 @@ export const OnlyTitle = ({ title, showLine = true }) => {
 export const PrevTitle = ({ title, showLine = true, onClick }) => {
   return (
     <div
-      className={`px-6 h-16 flex items-center relative ${
+      className={`h-16 flex items-center relative px-6 ${
         showLine && "border-unddisabled border-b"
       } bg-undbgmain`}
     >
       {/* 이전 버튼 */}
-      <button onClick={onClick} className="absolute left-6">
+      <button onClick={onClick} className="absolute">
         <PiCaretLeftBold size={28} color="#51392F" />
       </button>
       {/* 제목 */}
@@ -58,12 +58,12 @@ export const PrevAddBook = ({
   });
   return (
     <div
-      className={`px-6 h-16 flex items-center justify-between relative ${
-        showLine && "border-unddisabled border-b"
+      className={`h-16 flex items-center justify-between relative ${
+        showLine && "border-unddisabled border-b px-6"
       }`}
     >
       {/* 이전 버튼 */}
-      <button onClick={onClick} className="flex justify-start">
+      <button onClick={onClick} className="flex">
         <PiCaretLeftBold size={28} color="#51392F" />
       </button>
 
@@ -71,7 +71,7 @@ export const PrevAddBook = ({
       {status === null && (
         <button
           onClick={onAddBook}
-          className="flex items-center justify-end gap-1"
+          className="flex items-center justify-end gap-1 right-0"
         >
           <PiPlusBold size={28} color="#51392F" />
           <p className="text-right font-bold text-undclickbrown text-und18">
@@ -80,22 +80,22 @@ export const PrevAddBook = ({
         </button>
       )}
       {status === "COMPLETED" && (
-        <div className="absolute right-6 flex items-center">
+        <div className="right-0 flex items-center">
           <PiBookFill size={28} color="#51392F" />
         </div>
       )}
       {status === "WISH" && (
-        <div className="absolute right-6 flex items-center space-x-1.5">
+        <div className="right-0 flex items-center">
           <PiBookBookmarkFill size={28} color="#51392F" />
         </div>
       )}
       {status === "READING" && (
-        <div className="absolute right-6 flex items-center space-x-1.5">
+        <div className="right-0 flex items-center">
           <PiBookOpenTextFill size={28} color="#51392F" />
         </div>
       )}
       {status === "STOPPED" && (
-        <div className="absolute right-6 flex items-center space-x-1.5">
+        <div className="right-0 flex items-center">
           <PiPauseFill size={28} color="#51392F" />
         </div>
       )}
@@ -107,8 +107,8 @@ export const PrevAddBook = ({
 export const TitleSearch = ({ title, showLine = true }) => {
   return (
     <div
-      className={`px-6 h-16 flex items-center relative ${
-        showLine && "border-unddisabled border-b"
+      className={`h-16 flex items-center justify-start relative ${
+        showLine && "border-unddisabled border-b px-6"
       }`}
     >
       {/* 제목 */}
@@ -116,7 +116,7 @@ export const TitleSearch = ({ title, showLine = true }) => {
         {title}
       </div>
       {/* 검색 버튼 */}
-      <Link to="./searchbook" className="absolute right-6">
+      <Link to="./searchbook" replace={true} className="absolute right-6">
         <PiMagnifyingGlass size={28} color="#51392F" />
       </Link>
     </div>
