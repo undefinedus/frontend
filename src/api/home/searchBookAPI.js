@@ -10,6 +10,8 @@ export const getSearchBookList = async (keyword, sort, page) => {
     const res = await jwtAxios.get(`${host}/keyword`, {
       params: { keyword, sort, page },
     });
+    console.log("*********res:", res);
+
     return res.data;
   } catch (error) {
     console.error(error, "검색 결과를 불러오는 데 실패하였습니다");

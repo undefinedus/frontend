@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import Quagga from "quagga";
+import SlrModalLayout from "../../layouts/SlrModalLayout";
+import Button from "../../components/commons/Button";
 
+// ISBN 스캔 카메라 모달
 const ISBNScanner = ({ onSwitchToCapture, onCloseScannner, onSuccessScan }) => {
   const [error, setError] = useState(null);
 
@@ -13,8 +16,8 @@ const ISBNScanner = ({ onSwitchToCapture, onCloseScannner, onSuccessScan }) => {
           target: document.querySelector("#isbn-scanner"), // HTML 요소
           constraints: {
             facingMode: "environment", // 후면 카메라
-            width: { ideal: 1920 }, // 해상도 설정
-            height: { ideal: 1080 },
+            width: "100%",
+            height: "100%",
           },
         },
         decoder: {
@@ -52,36 +55,50 @@ const ISBNScanner = ({ onSwitchToCapture, onCloseScannner, onSuccessScan }) => {
   };
 
   return (
-    <div className="flex flex-col items-center w-full max-w-lg mx-auto p-4">
-      <h2 className="text-xl font-bold mb-4">ISBN 실시간 스캔</h2>
+    <SlrModalLayout size={""} onClose={onCloseScannner}>
+      <div className="flex w-full h-full flex-col justify-start items-center">
+        <div className="flex w-full h-80 flex-col justify-start items-center gap-auto">
+          {/* 상단 제목 */}
+          <h2 className="text-xl font-bold mb-4">ISBN 스캔</h2>
 
-      <div
-        id="isbn-scanner"
-        className="relative w-full aspect-video bg-black rounded-lg overflow-hidden mb-4"
-        style={{ width: "100%", height: "300px" }}
-      ></div>
-
-      {error && (
-        <div className="w-full p-4 mb-4 bg-red-100 text-red-700 rounded-lg">
-          {error}
+          {/* 스캔 컨테이너 */}
+          <div
+            id="isbn-scanner"
+            className="relative w-full h-80 bg-white overflow-hidden mb-4"
+            style={{ width: "100%" }}
+          >
+            {/* 비디오 요소 스타일 강제 적용 */}
+            <style>
+              {`
+          #isbn-scanner video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%; /* 컨테이너 너비 채움 */
+            height: 100%; /* 컨테이너 높이 채움 */
+            object-fit: cover; /* 화면 비율 유지하며 채우기 */
+          }
+        `}
+            </style>
+          </div>
+          {/* 안내 메시지 */}
+          <p className="text-undpoint text-und16 font-bold">
+            기기에 따라 스캔 인식률이 낮을 수 있습니다
+            <br />
+            직접 촬영 모드로 전환하여 재시도해 주세요
+          </p>
         </div>
-      )}
 
-      <div className="flex justify-around mt-4">
-        <button
+        {/* 버튼들 */}
+        <Button
           onClick={onSwitchToCapture}
-          className="bg-gray-300 text-gray-800 py-2 px-4 rounded-lg"
+          color="undpoint"
+          className="h-12 rounded-3xl fixed bottom-8 left-6 right-6 text-und18 font-bold"
         >
-          촬영 모드로 전환
-        </button>
-        <button
-          onClick={onCloseScannner}
-          className="bg-gray-500 text-white py-2 px-4 rounded-lg"
-        >
-          스캔 종료
-        </button>
+          직접 촬영
+        </Button>
       </div>
-    </div>
+    </SlrModalLayout>
   );
 };
 
