@@ -10,6 +10,7 @@ const ListNotice = ({ type }) => {
   };
 
   const { icon, message } = content[type] || {};
+  console.log("******검색결과 타입:", type);
 
   return (
     <div className="flex flex-col justify-center items-center h-full w-full">

@@ -36,6 +36,7 @@ const BookDetail = () => {
       "../searchbook",
       {
         state: state,
+        replace: true,
       } // 기존 검색 상태를 그대로 전달
     );
   };
@@ -55,24 +56,26 @@ const BookDetail = () => {
 
   return (
     <BasicLayout>
-      <div className="fixed top-0 left-0 w-full z-50 bg-undbgmain">
-        <PrevAddBook
-          showLine={true}
-          onClick={handleBackClick}
-          status={book.status}
-          onAddBook={handleOpenAddBookModal}
-        />
+      <div>
+        <div className="fixed justify-start w-full z-50 bg-undbgmain">
+          <PrevAddBook
+            showLine={true}
+            onClick={handleBackClick}
+            status={book.status}
+            onAddBook={handleOpenAddBookModal}
+          />
+        </div>
+        <div className="pt-20 pb-4">
+          <BookCoverTitle book={book} />
+        </div>
+        <div className="pb-20">
+          <BookInformation book={book} />
+        </div>
+        {/* 모달 렌더링 */}
+        {isModalOpen && (
+          <AddBookModal book={book} onClose={handleCloseAddBookModal} />
+        )}
       </div>
-      <div className="pt-20 pb-4">
-        <BookCoverTitle book={book} />
-      </div>
-      <div className="pb-20">
-        <BookInformation book={book} />
-      </div>
-      {/* 모달 렌더링 */}
-      {isModalOpen && (
-        <AddBookModal book={book} onClose={handleCloseAddBookModal} />
-      )}
     </BasicLayout>
   );
 };

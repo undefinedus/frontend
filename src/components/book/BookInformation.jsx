@@ -40,9 +40,9 @@ const BookInformation = ({ book }) => {
         </div>
       </div>
       {/* 책 소개 */}
-      <div className="flex">
+      <div className="">
         {/* 고정된 너비의 "책 소개" 라벨 */}
-        <p className="w-14 text-und14 text-left font-bold text-undtextdark flex-shrink-0">
+        <p className="w-14 text-und14 text-left font-bold text-undtextdark flex-shrink-0 pb-1">
           책 소개
         </p>
         {/* 내용이 길어질 경우 줄 바꿈 및 overflow 처리 */}
