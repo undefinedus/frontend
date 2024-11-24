@@ -30,6 +30,25 @@ export const emailDuplicateCheck = async (username) => {
   }
 };
 
+// 비밀번호 찾기용 이메일 체크
+export const checkEmailExists = async (username) => {
+  try {
+    const res = await axios.get(`${host}/login/username-check`, {
+      params: { username },
+    });
+
+    return {
+      result: res.data.result === "error", // error면 true(회원있음), success면 false(회원없음)
+      message:
+        res.data.result === "error"
+          ? "등록된 이메일입니다."
+          : "등록되지 않은 이메일입니다.",
+    };
+  } catch (error) {
+    handleError(error, "이메일 확인 중 오류가 발생했습니다.");
+  }
+};
+
 export const nicknameDuplicateCheck = async (nickname) => {
   try {
     const res = await axios.get(`${host}/login/nickname-check`, {

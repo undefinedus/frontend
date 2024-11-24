@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
 // 공통 입력 필드 컴포넌트
-const MyPageInput = forwardRef((props, ref) => {
+const Input = forwardRef((props, ref) => {
   const {
     id,
     labeltext,
@@ -16,10 +16,12 @@ const MyPageInput = forwardRef((props, ref) => {
     children,
     readonly,
     onInput,
+    onKeyDown,
+    width,
   } = props;
 
   return (
-    <div className="text-start w-full">
+    <div className={`text-start ${width || "w-full"}`}>
       <label className={` text-undtextdark flex justify-between`} htmlFor={id}>
         <div>{labeltext}</div>
         <div className="text-sm">{children}</div>
@@ -41,11 +43,12 @@ const MyPageInput = forwardRef((props, ref) => {
         ref={ref}
         readOnly={readonly}
         onInput={onInput}
+        onKeyDown={onKeyDown}
       />
     </div>
   );
 });
 
-MyPageInput.displayName = "MyPageInput";
+Input.displayName = "Input";
 
-export default MyPageInput;
+export default Input;

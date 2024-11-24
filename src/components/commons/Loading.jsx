@@ -1,11 +1,7 @@
 const Loading = () => {
   return (
     <div>
-      <img
-        src="/assets/logos/gongchaekWithText.png"
-        alt="logoWithText"
-        className="w-10 h-10"
-      />
+      <img src="/assets/Logo2.gif" alt="logoWithText" className="" />
     </div>
   );
 };

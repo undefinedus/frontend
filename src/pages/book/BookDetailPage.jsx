@@ -37,6 +37,7 @@ const BookDetail = () => {
       "../searchbook",
       {
         state: state,
+        replace: true,
       } // 기존 검색 상태를 그대로 전달
     );
   };
