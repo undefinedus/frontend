@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import BasicLayout from "../../layouts/BasicLayout";
-import ReadingBook from "../../components/myBook/ReadingBook";
 import { OnlyTitle } from "../../layouts/TopLayout";
-import useCustomLogin from "../../hooks/useCustomLogin";
 import { getBookList } from "../../api/bookApi";
 import ScrollActionButtons from "../../components/commons/ScrollActionButtons";
-import AddBookModal from "../../components/modal/books/AddBookModal";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../components/commons/SearchBar";
 import {

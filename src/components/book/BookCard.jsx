@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PiStarFill } from "react-icons/pi";
 import PercentageBar from "../commons/PercentageBar";
-import AddBookRating from "../myBook/AddBookRating";
 import useDateDiff from "../../hooks/useDateDiff";
 
 // 책 카드형 목록
@@ -48,7 +47,6 @@ const BookCard = ({ book, onClick }) => {
         {/* 책 표지 */}
         <div className="w-16 h-24 object-contain flex-shrink-0">
           <img src={book.cover} alt={book.title} className="w-full h-full" />
-          <img src={book.cover} alt={book.title} className="w-full h-full" />
         </div>
 
         {/* 책 정보 */}
@@ -56,11 +54,9 @@ const BookCard = ({ book, onClick }) => {
           {/* 제목 */}
           <p className="text-undtextdark text-und14 font-bold w-56 h-5 text-left truncate">
             {book.title}
-            {book.title}
           </p>
           {/* 저자 */}
           <p className="text-undtextgray text-und14 w-56 h-5 text-left truncate">
-            {book.author}
             {book.author}
           </p>
           {state === "WISH" && (
@@ -98,9 +94,9 @@ const BookCard = ({ book, onClick }) => {
               )}%`}</div>
             </div>
           )}
-          {state === "COMPLETED" && (
+          {/* {state === "COMPLETED" && (
             <AddBookRating rating={book.myRating} noTitle={true} />
-          )}
+          )} */}
           {state === "READING" && (
             <p className="text-undtextgray text-und14 w-56 h-5 text-left truncate">
               {differenceInDays}일 동안 {book.updateCount}회 읽었어요!
