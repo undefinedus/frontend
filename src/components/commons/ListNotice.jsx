@@ -1,11 +1,15 @@
 import React from "react";
-import { PiWarningCircleDuotone } from "react-icons/pi";
+import { PiBookOpenDuotone, PiWarningCircleDuotone } from "react-icons/pi";
 
 const ListNotice = ({ type }) => {
   const content = {
     noResult: {
       icon: <PiWarningCircleDuotone size={28} color="#51392F" />,
       message: "검색 결과가 없습니다",
+    },
+    emptyBook: {
+      icon: <PiBookOpenDuotone size={32} color="#51392F" />,
+      message: "책장이 비어 있어요",
     },
   };
 
