@@ -2,7 +2,7 @@ import React from "react";
 import { PiStarFill, PiArrowSquareOut } from "react-icons/pi";
 
 // 책 정보(저자, 출판사, 평점, 책 소개, 더 알아보기) 컴포넌트
-const BookInformation = ({ book }) => {
+const BookInformation = ({ book, hasDescription = true }) => {
   const { author, publisher, customerReviewRank, fullDescription, link } = book; // book 객체에서 필요한 값 구조 분해
 
   const handleLinkClick = () => {
@@ -39,22 +39,24 @@ const BookInformation = ({ book }) => {
           </p>
         </div>
       </div>
-      {/* 책 소개 */}
-      <div className="flex">
-        {/* 고정된 너비의 "책 소개" 라벨 */}
-        <p className="w-14 text-und14 text-left font-bold text-undtextdark flex-shrink-0">
-          책 소개
-        </p>
-        {/* 내용이 길어질 경우 줄 바꿈 및 overflow 처리 */}
-        <p className="text-und14 text-left text-undtextgray">
-          {(fullDescription || "").split(/<br\s*\/?>/i).map((line, index) => (
-            <React.Fragment key={index}>
-              {line}
-              <br />
-            </React.Fragment>
-          ))}
-        </p>
-      </div>
+      {hasDescription && (
+        //책 소개
+        <div className="">
+          {/* 고정된 너비의 "책 소개" 라벨 */}
+          <p className="w-14 text-und14 text-left font-bold text-undtextdark flex-shrink-0 pb-1">
+            책 소개
+          </p>
+          {/* /* 내용이 길어질 경우 줄 바꿈 및 overflow 처리 */}
+          <p className="text-und14 text-left text-undtextgray">
+            {(fullDescription || "").split(/<br\s*\/?>/i).map((line, index) => (
+              <React.Fragment key={index}>
+                {line}
+                <br />
+              </React.Fragment>
+            ))}
+          </p>
+        </div>
+      )}
 
       {/* 더 알아보기 */}
       <div className="flex cursor-pointer" onClick={handleLinkClick}>

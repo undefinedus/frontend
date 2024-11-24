@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PiCaretDown } from "react-icons/pi";
 
 // 목록 아이템 개수 및 정렬
@@ -16,9 +16,13 @@ export const ItemCount = ({ count, unit }) => {
 };
 
 // 정렬 드롭다운
-export const SortDropdown = ({ onChange, option1, option2 }) => {
+export const SortDropdown = ({ onChange, option1, option2, activeOption }) => {
   const [isOpen, setIsOpen] = useState(false); // 드롭다운 열림 상태
   const [selectedOption, setSelectedOption] = useState(option1); // 정렬 기본값: option1
+
+  useEffect(() => {
+    if (activeOption) setSelectedOption(activeOption);
+  }, [activeOption]);
 
   // 드롭다운 열고 닫는 핸들러
   const toggleDropdown = () => {

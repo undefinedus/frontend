@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { getSearchBookList } from "../../api/home/searchBookAPI";
 import BasicLayout from "../../layouts/BasicLayout";
 import { PrevTitle } from "../../layouts/TopLayout";
-import { IsbnBookSearch } from "../../components/commons/SearchBar";
+import { IsbnBookSearch } from "../../components/home/ISBNSearchBar";
 import {
   ItemCount,
   SortDropdown,

@@ -6,6 +6,7 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import BookCoverTitle from "../../components/book/BookCoverTitle";
 import BookInformation from "../../components/book/BookInformation";
 import AddBookModal from "../../components/modal/books/AddBookModal";
+import MyBookModal from "../../components/modal/books/MyBookModal";
 
 // 책 상세정보 페이지
 const BookDetail = () => {
@@ -71,7 +72,12 @@ const BookDetail = () => {
       </div>
       {/* 모달 렌더링 */}
       {isModalOpen && (
-        <AddBookModal book={book} onClose={handleCloseAddBookModal} />
+        // <AddBookModal book={book} onClose={handleCloseAddBookModal} />
+        <MyBookModal
+          mode={"ADD"}
+          book={book}
+          onClose={handleCloseAddBookModal}
+        />
       )}
     </BasicLayout>
   );

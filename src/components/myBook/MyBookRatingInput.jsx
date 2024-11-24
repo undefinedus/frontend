@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { PiStar, PiStarFill } from "react-icons/pi";
 
-const AddBookRating = ({ rating, handleRate }) => {
+const MyBookRatingInput = ({ myRating, handleRate }) => {
   const [ratingList, setRatingList] = useState([]);
 
   useEffect(() => {
     const list = Array.from({ length: 5 }, (_, i) =>
-      i + 1 <= rating ? "fill" : "empty"
+      i + 1 <= myRating ? "fill" : "empty"
     );
     setRatingList(list);
-  }, [rating]);
+  }, [myRating]);
 
   const renderRatings = () => {
     return (
@@ -21,7 +21,7 @@ const AddBookRating = ({ rating, handleRate }) => {
               color={"#FFD400"}
               size={24}
               onClick={() => {
-                handleRate(i + 1);
+                handleRate && handleRate(i + 1);
               }}
             />
           ) : (
@@ -30,7 +30,7 @@ const AddBookRating = ({ rating, handleRate }) => {
               color={"#FFD400"}
               size={24}
               onClick={() => {
-                handleRate(i + 1);
+                handleRate && handleRate(i + 1);
               }}
             />
           );
@@ -42,9 +42,10 @@ const AddBookRating = ({ rating, handleRate }) => {
   return (
     <div className="w-full flex items-center justify-between">
       <div className="text-und16 text-undtextdark font-bold">별점</div>
+
       <div>{renderRatings()}</div>
     </div>
   );
 };
 
-export default AddBookRating;
+export default MyBookRatingInput;
