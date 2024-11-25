@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { deleteBook, getBookDetail } from "../../api/bookApi";
 import BasicLayout from "../../layouts/BasicLayout";
 import { PrevTitleModifyDelete } from "../../layouts/TopLayout";
@@ -8,6 +8,7 @@ import BookInformation from "../../components/book/BookInformation";
 import useBookStatus from "../../hooks/useBookStatus";
 import TwoButtonModal from "../../components/modal/commons/TwoButtonModal";
 import MyBookModal from "../../components/modal/books/MyBookModal";
+import BookCustomInformation from "../../components/book/BookCustomInformation";
 
 const initData = {
   status: "",
@@ -21,13 +22,19 @@ const initData = {
 
 const MyBookDetailPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { bookId } = useParams();
   const { getStatusInKorean } = useBookStatus();
   const [book, setBook] = useState([]);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [modifyModalOpen, setModifyModalOpen] = useState(false);
 
+  const { prevActiveTab, prevSearch, prevSort, prevScrollLeft } =
+    location.state;
+
   useEffect(() => {
+    console.log("prevScrollLeft: ", prevScrollLeft);
+
     let isMounted = true;
 
     const fetchBookDetail = async () => {
@@ -46,17 +53,6 @@ const MyBookDetailPage = () => {
     };
   }, [bookId]);
 
-  const end = () => {
-    switch (book.status) {
-      case "READING":
-        return null;
-      case "COMPLETED":
-        return "종료일";
-      case "STOPPED":
-        return "중단일";
-    }
-  };
-
   const fetchDeleteBook = async () => {
     try {
       const res = await deleteBook(bookId);
@@ -69,7 +65,18 @@ const MyBookDetailPage = () => {
 
   const handleClick = async (option) => {
     if (option === "back") {
-      navigate({ pathname: "../list" }, { replace: true });
+      navigate(
+        { pathname: "../list" },
+        {
+          replace: true,
+          state: {
+            prevActiveTab,
+            prevSearch,
+            prevSort,
+            prevScrollLeft,
+          },
+        }
+      );
     } else if (option === "modify") {
       setModifyModalOpen(true);
     } else if (option === "delete") {
@@ -98,25 +105,7 @@ const MyBookDetailPage = () => {
 
       {book.status !== "WISH" && (
         <div className="flex flex-col gap-4 px-6">
-          {/* {book.status !== "WISH" && (
-            <AddBookDate
-              end={end()}
-              dates={[book.startDate, book.endDate]}
-              book={book}
-            />
-          )}
-          {(book.status === "READING" || book.status === "STOPPED") && (
-            <AddBookPage state={book.status} bookInfo={book} />
-          )}
-          {book.status === "COMPLETED" && (
-            <AddBookRating rating={book.myRating} />
-          )}
-          {(book.status === "COMPLETED" || book.status === "STOPPED") && (
-            <AddBookReview
-              state={book.status}
-              oneLineReview={book.oneLineReview}
-            />
-          )} */}
+          <BookCustomInformation book={book} />
         </div>
       )}
 
@@ -158,11 +147,6 @@ const MyBookDetailPage = () => {
         </TwoButtonModal>
       )}
       {modifyModalOpen && (
-        // <ModifyBookModal
-        //   book={book}
-        //   state={book.status}
-        //   onClose={() => setModifyModalOpen(false)}
-        // />
         <MyBookModal
           mode={"MODIFY"}
           book={book}

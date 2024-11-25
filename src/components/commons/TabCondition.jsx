@@ -1,13 +1,24 @@
-import React, { useState } from "react";
+import { forwardRef, useEffect } from "react";
 
-const TabCondition = ({
-  tabs = [],
-  setActiveTab,
-  activeTab,
-  showLine = true,
-}) => {
+const TabCondition = forwardRef(function TabCondition(
+  {
+    tabs = [],
+    setActiveTab,
+    activeTab,
+    showLine = true,
+    initialScrollLeft = 0,
+  },
+  ref
+) {
+  useEffect(() => {
+    if (ref?.current) {
+      ref.current.scrollLeft = initialScrollLeft;
+    }
+  }, [initialScrollLeft, ref]);
+
   return (
     <div
+      ref={ref}
       className={`px-6 flex overflow-x-auto w-full scrollbar-hide ${
         showLine && "border-unddisabled border-b"
       }`}
@@ -34,6 +45,6 @@ const TabCondition = ({
       </div>
     </div>
   );
-};
+});
 
 export default TabCondition;
