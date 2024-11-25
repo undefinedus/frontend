@@ -1,11 +1,15 @@
 import React from "react";
-import BasicLayout from "../../layouts/BasicLayout";
+import { CommonTopLayout } from "../../layouts/TopLayout";
+import NavBar from "../../layouts/NavBar";
+import CategoryComponent from "../../components/settings/record/CategoryComponent";
 
 const RecordPage = () => {
   return (
-    <BasicLayout>
-      <div>독서 기록 통계 페이지</div>
-    </BasicLayout>
+    <div className=" bg-undbgmain">
+      <CommonTopLayout title={"통계"} showLine={false} />
+      <CategoryComponent />
+      <NavBar />
+    </div>
   );
 };
 
