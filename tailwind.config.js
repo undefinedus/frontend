@@ -32,6 +32,9 @@ export default {
       fontFamily: {
         sans: ["NanumSquareNeo", "sans-serif"], // 기본 글꼴 설정
       },
+      fontWeight: {
+        heavy: "900", // Custom weight
+      },
 
       colors: {
         undclickbrown: "#51392F", // click 브라운(상단 타이틀)
@@ -62,5 +65,5 @@ export default {
     },
   },
 
-  plugins: [],
+  plugins: [require("tailwind-scrollbar-hide")],
 };

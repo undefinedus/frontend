@@ -1,4 +1,4 @@
-import React, { Children, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 // import { PiX } from "react-icons/pi";
 import {
@@ -10,14 +10,19 @@ import {
   PiBookFill,
   PiPauseFill,
   PiInfo,
+  PiPencil,
+  PiTrash,
+  PiTrashSimple,
+  PiPencilSimple,
 } from "react-icons/pi";
 
 // 제목만
 export const OnlyTitle = ({ title, showLine = true }) => {
   return (
     <div
-      className={`h-16 flex items-center relative ${
-        showLine && "border-unddisabled border-b px-6"
+
+      className={`h-16 flex items-center relative px-6 ${
+        showLine && "border-unddisabled border-b"
       }`}
     >
       <div className="font-bold text-undclickbrown text-xl mx-auto">
@@ -100,6 +105,30 @@ export const PrevAddBook = ({
           <PiPauseFill size={28} color="#51392F" />
         </div>
       )}
+    </div>
+  );
+};
+
+// 이전 버튼 + 제목 + 수정 + 삭제
+export const PrevTitleModifyDelete = ({ onClick, title }) => {
+  return (
+    <div className="px-6 h-16 flex items-center justify-between relative border-unddisabled border-b">
+      {/* 이전 버튼 */}
+      <button className="absolute left-6" onClick={() => onClick("back")}>
+        <PiCaretLeftBold size={28} color="#51392F" />
+      </button>
+      {/* 제목 */}
+      <div className="font-bold text-undclickbrown text-xl mx-auto">
+        {title}
+      </div>
+      <div className="absolute right-6 flex gap-3">
+        <button onClick={() => onClick("modify")}>
+          <PiPencilSimple size={28} color="#51392F" />
+        </button>
+        <button onClick={() => onClick("delete")}>
+          <PiTrashSimple size={28} color="#51392F" />
+        </button>
+      </div>
     </div>
   );
 };

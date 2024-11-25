@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { PiStarFill } from "react-icons/pi";
 
-const AddBookWish = ({ book }) => {
+const MyBookWishInput = ({ book }) => {
   return (
     <div className="w-full flex flex-col gap-4">
       <div className="w-full flex flex-col gap-3.5">
@@ -34,11 +34,11 @@ const AddBookWish = ({ book }) => {
           페이지 수
         </div>
         <div className="flex justify-end items-center text-und14 text-undtextgray gap-1">
-          {book.subInfo.itemPage}
+          {book.itemPage}
         </div>
       </div>
     </div>
   );
 };
 
-export default AddBookWish;
+export default MyBookWishInput;

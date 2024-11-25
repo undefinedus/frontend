@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import BasicLayout from "../../layouts/BasicLayout";
 import { PrevAddBook } from "../../layouts/TopLayout";
 import { getSearchBookDetail } from "../../api/home/searchBookAPI";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import BookCoverTitle from "../../components/book/BookCoverTitle";
 import BookInformation from "../../components/book/BookInformation";
-import AddBookModal from "../../components/modal/books/AddBookModal";
+import MyBookModal from "../../components/modal/books/MyBookModal";
 
 // 책 상세정보 페이지
 const BookDetail = () => {
@@ -33,9 +33,10 @@ const BookDetail = () => {
   // 기존 검색 상태를 함께 navigate로 전달
   const handleBackClick = () => {
     navigate(
-      "../searchbook",
+      `${state ? "../searchbook" : "/home"}`,
       {
         state: state,
+        replace: true,
       } // 기존 검색 상태를 그대로 전달
     );
   };
@@ -47,11 +48,6 @@ const BookDetail = () => {
   const handleCloseAddBookModal = () => {
     setIsModalOpen(false); // 모달 닫기
   };
-
-  console.log(
-    "*********카드 클릭 -> 넘겨받은 기존 검색값 :",
-    state.searchKeyword
-  );
 
   return (
     <BasicLayout>
@@ -71,7 +67,11 @@ const BookDetail = () => {
       </div>
       {/* 모달 렌더링 */}
       {isModalOpen && (
-        <AddBookModal book={book} onClose={handleCloseAddBookModal} />
+        <MyBookModal
+          mode={"ADD"}
+          book={book}
+          onClose={handleCloseAddBookModal}
+        />
       )}
     </BasicLayout>
   );

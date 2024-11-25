@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ImageSelectionModal from "../modal/ImageSelectionModal";
+import ImageSelectionModal from "../modal/books/ImageSelectionModal";
 
 const BookmarkScanner = ({ onSuccessExtract }) => {
   const [imageUrl, setImageUrl] = useState(null);

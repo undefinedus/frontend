@@ -14,8 +14,16 @@ const HomeRouter = () => {
       <Route
         path=""
         element={
+          // <Suspense fallback={<LoadingPage />}>
+          <HomeMain />
+          // </Suspense>
+        }
+      />
+      <Route
+        path="detail/:isbn13"
+        element={
           <Suspense fallback={<LoadingPage />}>
-            <HomeMain />
+            <BookDetail />
           </Suspense>
         }
       />
