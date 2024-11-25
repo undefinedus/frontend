@@ -97,6 +97,28 @@ export const registMember = async (registerData) => {
   }
 };
 
+export const socialRegistMember = async (registerData) => {
+  try {
+    const res = await axios.post(`${host}/social-register`, registerData);
+    if (res.data.result === "success") {
+      return {
+        result: true,
+        member: res.data.member,
+      };
+    }
+    return {
+      result: false,
+      message: res.data.message || "회원가입에 실패했습니다.",
+    };
+  } catch (error) {
+    if (error.response?.data?.message) {
+      throw new Error(error.response.data.message);
+    } else {
+      throw new Error("회원가입 처리 중 오류가 발생했습니다.");
+    }
+  }
+}
+
 export const verifyEmailCode = async (email, code) => {
   try {
     const res = await axios.post(`${host}/email/verify`, null, {
