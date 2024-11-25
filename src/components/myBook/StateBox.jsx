@@ -11,27 +11,39 @@ import {
 } from "react-icons/pi";
 
 const StateBox = ({ state, isActive, setActive }) => {
+  const translateState = () => {
+    switch (state) {
+      case "READING":
+        return "읽고 있는 책";
+      case "WISH":
+        return "읽고 싶은 책";
+      case "COMPLETED":
+        return "다 읽은 책";
+      case "STOPPED":
+        return "중단한 책";
+    }
+  };
   const getIcon = () => {
     switch (state) {
-      case "읽고 있는 책":
+      case "READING":
         return isActive ? (
           <PiBookOpenTextFill color="#ffffff" size={28} />
         ) : (
           <PiBookOpenText color="#7d5c4d" size={28} />
         );
-      case "읽고 싶은 책":
+      case "WISH":
         return isActive ? (
           <PiBookBookmarkFill color="#ffffff" size={28} />
         ) : (
           <PiBookBookmark color="#7d5c4d" size={28} />
         );
-      case "다 읽은 책":
+      case "COMPLETED":
         return isActive ? (
           <PiBookFill color="#ffffff" size={28} />
         ) : (
           <PiBook color="#7d5c4d" size={28} />
         );
-      case "중단한 책":
+      case "STOPPED":
         return isActive ? (
           <PiPauseFill color="#ffffff" size={28} />
         ) : (
@@ -50,7 +62,7 @@ const StateBox = ({ state, isActive, setActive }) => {
       onClick={() => setActive(state)}
     >
       <div className="flex justify-center">{getIcon()}</div>
-      <div className="flex justify-center">{state}</div>
+      <div className="flex justify-center">{translateState()}</div>
     </div>
   );
 };

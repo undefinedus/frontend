@@ -1,5 +1,5 @@
 import React from "react";
-import { PiWarningCircleDuotone } from "react-icons/pi";
+import { PiBookOpenDuotone, PiWarningCircleDuotone } from "react-icons/pi";
 
 const ListNotice = ({ type }) => {
   const content = {
@@ -14,6 +14,10 @@ const ListNotice = ({ type }) => {
     noFollowing: {
       icon: <PiWarningCircleDuotone size={28} color="#51392F" />,
       message: "팔로잉하는 친구가 없어요",
+
+    emptyBook: {
+      icon: <PiBookOpenDuotone size={32} color="#51392F" />,
+      message: "책장이 비어 있어요",
     },
   };
 
