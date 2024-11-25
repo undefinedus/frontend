@@ -35,6 +35,7 @@ export const getCategoryBest = async () => {
 export const getAIRecommend = async () => {
   try {
     const res = await jwtAxios.get(`${gptHost}/recommended`);
+    console.log("**********res", res);
     return res.data;
   } catch (error) {
     console.error(error, "AI 추천 목록을 불러오는 데 실패하였습니다");

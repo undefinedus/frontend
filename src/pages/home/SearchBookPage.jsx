@@ -81,11 +81,12 @@ const SearchBookPage = () => {
     console.log("isSearchExecuted updated:", isSearchExecuted);
     console.log("totalResults updated:", totalResults);
   }, [isSearchExecuted, totalResults]);
-
+  // 검색 결과 없음 log
   useEffect(() => {
     console.log("Condition check: ", isSearchExecuted && totalResults === 0);
   }, [isSearchExecuted, totalResults]);
 
+  // 무한 스크롤
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;

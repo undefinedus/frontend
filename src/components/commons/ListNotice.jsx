@@ -7,9 +7,18 @@ const ListNotice = ({ type }) => {
       icon: <PiWarningCircleDuotone size={28} color="#51392F" />,
       message: "검색 결과가 없습니다",
     },
-    emptyBook: {
-      icon: <PiBookOpenDuotone size={32} color="#51392F" />,
-      message: "책장이 비어 있어요",
+    noFollower: {
+      icon: <PiWarningCircleDuotone size={28} color="#51392F" />,
+      message: "팔로우하는 친구가 없어요",
+    },
+    noFollowing: {
+      icon: <PiWarningCircleDuotone size={28} color="#51392F" />,
+      message: "팔로잉하는 친구가 없어요",
+
+      emptyBook: {
+        icon: <PiBookOpenDuotone size={32} color="#51392F" />,
+        message: "책장이 비어 있어요",
+      },
     },
   };
 
