@@ -9,6 +9,7 @@ import {
   PiBookBookmarkFill,
   PiBookFill,
   PiPauseFill,
+  PiInfo,
   PiPencil,
   PiTrash,
   PiTrashSimple,
@@ -19,6 +20,7 @@ import {
 export const OnlyTitle = ({ title, showLine = true }) => {
   return (
     <div
+
       className={`h-16 flex items-center relative px-6 ${
         showLine && "border-unddisabled border-b"
       }`}
@@ -147,6 +149,31 @@ export const TitleSearch = ({ title, showLine = true }) => {
       <Link to="./searchbook" replace={true} className="absolute right-6">
         <PiMagnifyingGlass size={28} color="#51392F" />
       </Link>
+    </div>
+  );
+};
+
+export const CommonTopLayout = ({ title, showLine, onClick, chlidren }) => {
+  return (
+    <div
+      className={`h-16 flex justify-between items-center w-full ${
+        showLine && "border-unddisabled border-b"
+      } bg-undbgmain`}
+    >
+      {/* 이전 버튼 */}
+      <div className="w-1/3 flex justify-start pl-8 ">
+        <button onClick={onClick}>
+          <PiCaretLeftBold size={28} color="#51392F" />
+        </button>
+      </div>
+      {/* 제목 */}
+      <div className="flex justify-center items-center font-bold text-undclickbrown text-xl mx-auto w-1/3">
+        {title}
+      </div>
+      <div className="w-1/3 flex justify-end pr-6">
+        <PiInfo size={28} />
+      </div>
+      <div>{chlidren}</div>
     </div>
   );
 };
