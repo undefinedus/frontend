@@ -23,7 +23,9 @@ const TabCondition = ({
             }`}
             onClick={() => setActiveTab(tab)}
           >
+            {/* 탭 이름 */}
             {tab.replace(/_/g, "/")}
+            {/* 활성화 탭에 밑줄 */}
             {activeTab === tab && (
               <div className="absolute bottom-0 left-0 w-full h-1 bg-undpoint rounded-t-lg"></div>
             )}

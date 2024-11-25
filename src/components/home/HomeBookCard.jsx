@@ -28,7 +28,10 @@ const HomeBookCard = ({ book, onClick }) => {
   return (
     <div
       className="w-full flex flex-col border-b border-unddisabled first:pt-0 last:border-none last:pb-0"
-      onClick={onClick} // 클릭 이벤트 적용
+      onClick={() => {
+        console.log("HomeBookCard onClick triggered"); // 디버깅
+        onClick();
+      }} // 클릭 이벤트 적용
     >
       <div className="flex flex-col items-center">
         <div className="w-28 h-40 mb-2.5 relative">

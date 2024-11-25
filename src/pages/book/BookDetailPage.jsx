@@ -33,7 +33,7 @@ const BookDetail = () => {
   // 기존 검색 상태를 함께 navigate로 전달
   const handleBackClick = () => {
     navigate(
-      "../searchbook",
+      `${state ? "../searchbook" : "/home"}`,
       {
         state: state,
         replace: true,
@@ -48,11 +48,6 @@ const BookDetail = () => {
   const handleCloseAddBookModal = () => {
     setIsModalOpen(false); // 모달 닫기
   };
-
-  console.log(
-    "*********카드 클릭 -> 넘겨받은 기존 검색값 :",
-    state.searchKeyword
-  );
 
   return (
     <BasicLayout>

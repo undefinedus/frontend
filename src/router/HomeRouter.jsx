@@ -20,6 +20,14 @@ const HomeRouter = () => {
         }
       />
       <Route
+        path="detail/:isbn13"
+        element={
+          <Suspense fallback={<LoadingPage />}>
+            <BookDetail />
+          </Suspense>
+        }
+      />
+      <Route
         path="searchbook"
         element={
           <Suspense fallback={<LoadingPage />}>
