@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import BasicLayout from "../../layouts/BasicLayout";
 import { OnlyTitle } from "../../layouts/TopLayout";
 import { getBookList } from "../../api/bookApi";
 import ScrollActionButtons from "../../components/commons/ScrollActionButtons";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SearchBar from "../../components/commons/SearchBar";
 import {
   ItemCount,
@@ -12,6 +12,7 @@ import {
 import ListNotice from "../../components/commons/ListNotice";
 import BookList from "../../components/book/BookList";
 import TabCondition from "../../components/commons/TabCondition";
+import useBookStatus from "../../hooks/useBookStatus";
 
 const statusTranslator = {
   "읽고 있는 책": "READING",
@@ -22,13 +23,23 @@ const statusTranslator = {
 
 const MyBookListPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { prevActiveTab, prevSearch, prevSort, prevScrollLeft } =
+    location.state || {};
   const [openAddModal, setOpenAddModal] = useState(false);
   const [data, setData] = useState({});
   const [books, setBooks] = useState([]);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeTab, setActiveTab] = useState("읽고 있는 책");
-  const [sort, setSort] = useState("최신순");
-  const [search, setSearch] = useState("");
+  const [activeTab, setActiveTab] = useState(prevActiveTab || "읽고 있는 책");
+  const [search, setSearch] = useState(prevSearch || "");
+  const [sort, setSort] = useState(prevSort || "최신순");
+  const { getStatusInEnglish } = useBookStatus();
+  const tabRef = useRef(null);
+  const [tabScrollLeft, setTabScrollLeft] = useState(prevScrollLeft || 0);
+
+  useEffect(() => {
+    fetchBookList();
+  }, [activeTab, sort, search]);
 
   // 스크롤 관리
   useEffect(() => {
@@ -43,13 +54,16 @@ const MyBookListPage = () => {
     };
   }, []);
 
+  // 스크롤 복원
   useEffect(() => {
-    fetchBookList();
-  }, [activeTab, sort, search]);
+    if (tabRef.current) {
+      tabRef.current.scrollLeft = tabScrollLeft;
+    }
+  }, [tabScrollLeft]);
 
   const fetchBookList = async () => {
     try {
-      const status = statusTranslator[activeTab];
+      const status = getStatusInEnglish(activeTab);
       const sorts = sort === "최신순" ? "desc" : "asc";
       const res = await getBookList(status, sorts, search);
       console.log("res: ", res);
@@ -60,16 +74,14 @@ const MyBookListPage = () => {
     }
   };
 
-  const handleOpenModal = () => {
-    setOpenAddModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpenAddModal(false);
-  };
-
   const handleTabChange = (tab) => {
     setActiveTab(tab);
+
+    // 현재 스크롤 위치 저장
+    if (tabRef.current) {
+      setTabScrollLeft(tabRef.current.scrollLeft);
+    }
+
     setSort("최신순");
   };
 
@@ -79,13 +91,23 @@ const MyBookListPage = () => {
 
   const handleSearch = (search) => {
     console.log(search);
-
     setSearch(search);
   };
 
   const moveToDetail = (book) => {
     const bookId = book.id;
-    navigate({ pathname: `../detail/${bookId}` }, { replace: true });
+    navigate(
+      { pathname: `../detail/${bookId}` },
+      {
+        replace: true,
+        state: {
+          prevActiveTab: activeTab,
+          prevSearch: search,
+          prevSort: sort,
+          prevScrollLeft: tabScrollLeft,
+        },
+      }
+    );
   };
 
   return (
@@ -99,12 +121,14 @@ const MyBookListPage = () => {
               <SearchBar
                 placeholder={"책 제목, 저자로 검색"}
                 onChange={handleSearch}
+                searchHistory={search}
               />
             </div>
           )}
 
           <div className="px-0">
             <TabCondition
+              ref={tabRef}
               tabs={[
                 "읽고 있는 책",
                 "읽고 싶은 책",
@@ -114,6 +138,7 @@ const MyBookListPage = () => {
               ]}
               activeTab={activeTab}
               setActiveTab={handleTabChange}
+              initialScrollLeft={tabScrollLeft}
             />
           </div>
 
@@ -143,7 +168,6 @@ const MyBookListPage = () => {
           </div>
         )}
 
-        {openAddModal && <AddBookModal onClose={handleCloseModal} />}
         <ScrollActionButtons
           mainLabel={"책 담기"}
           mainAction={() =>
