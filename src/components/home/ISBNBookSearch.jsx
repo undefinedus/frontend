@@ -82,12 +82,6 @@ const ISBNBookSearch = ({ onSearchSubmit, searchHistory = null }) => {
           />
         </div>
       )}
-      {/* ISBN 촬영 모달 렌더링 */}
-      {/* {isReaderActive && (
-        <div className="mt-10">
-          <ISBNReader onSuccessRead={handleSuccessToGetISBN} />
-        </div>
-      )} */}
     </div>
   );
 };
