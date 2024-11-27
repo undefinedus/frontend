@@ -4,11 +4,12 @@ import {
   getMySocialList,
   patchFollow,
   getMySocialInfo, // 최신 프로필 정보 가져오는 API 추가
-} from "../../api/social/socialMainAPI";
+} from "../../api/social/mySocialAPI";
 import BasicLayout from "../../layouts/BasicLayout";
 import { PrevTitle } from "../../layouts/TopLayout";
 import FollowTabs from "../../components/social/FollowTabs";
 import SocialList from "../../components/social/SocialList";
+import SearchBar from "../../components/commons/SearchBar";
 
 const SocialListPage = () => {
   const navigate = useNavigate();
@@ -17,21 +18,15 @@ const SocialListPage = () => {
   const [tabs] = useState(["팔로워", "팔로잉"]); // 탭 종류
   const {
     tabCondition,
-    search,
+    prevSearch,
     mySocialProfile: initialProfile,
   } = location.state || {};
-  const [socialList, setSocialList] = useState({ content: [], hasNext: true });
-  const [activeTab, setActiveTab] = useState(tabCondition || tabs[0]);
+  const [socialList, setSocialList] = useState({ content: [], hasNext: true }); // 팔로워or팔로잉 목록
+  const [activeTab, setActiveTab] = useState(tabCondition || tabs[0]); // 팔로워or팔로잉 탭 관리
   const [isLoading, setIsLoading] = useState(false);
-  const [page, setPage] = useState(1);
-
-  // 최신 프로필 상태
-  const [socialProfile, setSocialProfile] = useState(initialProfile);
-
-  // 이전 버튼 클릭
-  const handleBackClick = () => {
-    navigate("/social", { replace: true });
-  };
+  const [page, setPage] = useState(1); // 목록 초기 페이지 지정
+  const [search, setSearch] = useState(""); // 검색어 상태
+  const [socialProfile, setSocialProfile] = useState(initialProfile); // 최신 프로필 상태
 
   // 최신 프로필 API 호출
   const fetchMySocialInfo = async () => {
@@ -100,6 +95,7 @@ const SocialListPage = () => {
     fetchSocialList(1);
   }, [activeTab, fetchSocialList]);
 
+  // 프로필 정보 업데이트
   useEffect(() => {
     const fetchSocialProfile = async () => {
       try {
@@ -143,6 +139,34 @@ const SocialListPage = () => {
     fetchPatchFollow(id);
   };
 
+  // 닉네임 검색 핸들러
+  const handleSearch = (search) => {
+    console.log(search);
+    setSearch(search);
+  };
+
+  // 이전 버튼 클릭
+  const handleBackClick = () => {
+    navigate("/social", { replace: true });
+  };
+
+  // 유저 검색 목록 카드 클릭 시 유저 책장으로 이동
+  const handleCardClick = (profile) => {
+    // 현재 스크롤 위치 저장
+    // scrollPositionRef.current =
+    // window.scrollY || document.documentElement.scrollTop;
+    console.log("Navigating to bookshelf 프로필:", profile);
+    console.log("Navigating to bookshelf 프로필 아이디:", profile.id);
+    navigate(`../bookshelf/${profile.id}`, {
+      replace: true,
+      state: {
+        profile,
+        search: search, // 현재 검색어
+        // searchUserList: searchUserList, // 검색 결과 목록
+        // scrollPosition: scrollPositionRef.current, // 스크롤 위치 저장
+      },
+    });
+  };
   return (
     <BasicLayout>
       <div className="fixed top-0 w-full">
@@ -159,16 +183,24 @@ const SocialListPage = () => {
           setActiveTab={setActiveTab}
           socialProfile={socialProfile}
         />
+        {/* 유저 검색 */}
+        <div className="flex w-full py-3 px-6 bg-undbgmain">
+          <SearchBar placeholder={"닉네임으로 검색"} onChange={handleSearch} />
+        </div>
       </div>
-      {/* 소셜 목록 */}
-      <div className="px-6 pt-36 pb-20 h-full">
-        <SocialList
-          socialList={socialList}
-          activeTab={activeTab}
-          onFollowClick={handleFollowClick}
-          onUnfollowClick={handleUnfollowClick}
-        />
-        {isLoading && <p className="text-center py-4">로딩 중...</p>}
+      <div className="px-6 pt-48 pb-20 h-full flex flex-col">
+        {/* 소셜 목록 */}
+        <div className="flex-grow">
+          <SocialList
+            socialList={socialList}
+            activeTab={activeTab}
+            search={search}
+            onFollowClick={handleFollowClick}
+            onUnfollowClick={handleUnfollowClick}
+            onCardClick={handleCardClick}
+          />
+          {isLoading && <p className="text-center py-4">로딩 중...</p>}
+        </div>
       </div>
     </BasicLayout>
   );

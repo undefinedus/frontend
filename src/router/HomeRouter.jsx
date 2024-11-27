@@ -14,9 +14,9 @@ const HomeRouter = () => {
       <Route
         path=""
         element={
-          // <Suspense fallback={<LoadingPage />}>
-          <HomeMain />
-          // </Suspense>
+          <Suspense fallback={<LoadingPage />}>
+            <HomeMain />
+          </Suspense>
         }
       />
       <Route

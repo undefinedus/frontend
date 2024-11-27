@@ -27,7 +27,7 @@ const HomeBookCard = ({ book, onClick }) => {
 
   return (
     <div
-      className="w-full flex flex-col border-b border-unddisabled first:pt-0 last:border-none last:pb-0"
+      className="w-full flex flex-col first:pt-0 last:border-none last:pb-0"
       onClick={() => {
         console.log("HomeBookCard onClick triggered"); // 디버깅
         onClick();
@@ -63,7 +63,7 @@ const HomeBookCard = ({ book, onClick }) => {
             {book.title}
           </p>
           {/* 저자 및 출판사 */}
-          <p className="text-undtextgray text-und14 text-left font-bold line-clamp-1 pb-1">
+          <p className="text-undtextgray text-und14 text-left font-bold line-clamp-1">
             {getAuthorName()} · {getpublisher()}
           </p>
         </div>
