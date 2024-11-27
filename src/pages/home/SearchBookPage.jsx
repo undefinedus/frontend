@@ -32,7 +32,7 @@ const SearchBookPage = () => {
 
   const option1 = "관련도 순"; // 정렬 옵션1 지정
   const option2 = "출간일 순"; // 정렬 옵션2 지정
-  const [sortOption, setSortOption] = useState(option1); // 정렬 기본값 설정
+  const [sortOption, setSortOption] = useState(state?.sortOption || option1); // 정렬 기본값 설정
 
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태
@@ -76,15 +76,12 @@ const SearchBookPage = () => {
     }
   }, [location.state, location.key]);
 
-  // 검색 결과 없음 log
+  // 검색어 또는 정렬 옵션 변경 시 데이터를 새로 가져옴
   useEffect(() => {
-    console.log("isSearchExecuted updated:", isSearchExecuted);
-    console.log("totalResults updated:", totalResults);
-  }, [isSearchExecuted, totalResults]);
-  // 검색 결과 없음 log
-  useEffect(() => {
-    console.log("Condition check: ", isSearchExecuted && totalResults === 0);
-  }, [isSearchExecuted, totalResults]);
+    if (searchKeyword) {
+      fetchBooks(searchKeyword, sortMappings[sortOption], 1, true);
+    }
+  }, [searchKeyword, sortOption]);
 
   // 무한 스크롤
   useEffect(() => {
@@ -113,7 +110,7 @@ const SearchBookPage = () => {
   const handleSearchSubmit = (keyword) => {
     setSearchKeyword(keyword); // 입력값 업데이트
     console.log("*****검색어:", keyword);
-    fetchBooks(keyword, sortMappings[sortOption]);
+    fetchBooks(keyword, sortMappings[sortOption], 1, true); // isNew 플래그 설정
     setIsSearchExecuted(true);
   };
 
@@ -123,7 +120,7 @@ const SearchBookPage = () => {
     console.log("*****선택된 정렬 옵션:", option);
     if (searchKeyword) {
       console.log("*****정렬 옵션 변경으로 재검색 실행:", option);
-      await fetchBooks(searchKeyword, sortMappings[option]); // API 재호출
+      await fetchBooks(searchKeyword, sortMappings[option], 1, true); // API 재호출
     }
   };
 
@@ -132,15 +129,17 @@ const SearchBookPage = () => {
     keyword,
     sort = sortOption,
     page = 1,
-    isNew = false
+    isNew = false // 기존 데이터를 초기화할지 여부
   ) => {
     try {
       setIsLoading(true);
+      if (isNew) setBooks([]); // 새 데이터 요청 시 기존 데이터 초기화
+
       const response = await getSearchBookList(keyword, sort, page);
       const newBooks = response.data.items || []; // 데이터 목록
       const total = response.data.totalResults; // 검색 결과 수
 
-      setBooks((prevBooks) => (isNew ? newBooks : [...prevBooks, ...newBooks])); // 기존 데이터에 추가
+      setBooks((prevBooks) => (isNew ? newBooks : [...prevBooks, ...newBooks])); // 기존 데이터 초기화 또는 추가
       setTotalResults(total);
       setHasMore(newBooks.length > 0); // 새로운 데이터가 없으면 무한 스크롤 종료
       setCurrentPage(page);
@@ -163,6 +162,7 @@ const SearchBookPage = () => {
         searchKeyword, // 현재 검색어
         books, // 현재 검색 결과 목록
         totalResults, // 검색 결과 개수
+        sortOption, // 정렬 옵션
         isSearchExecuted,
         scrollPosition: scrollPositionRef.current, // 스크롤 위치 저장
       },
@@ -175,6 +175,7 @@ const SearchBookPage = () => {
     navigate("/home", { replace: true });
   };
 
+  // 무한 스크롤 관리
   const loadMoreBooks = useCallback(() => {
     if (!searchKeyword || isLoading || !hasMore) return;
     fetchBooks(searchKeyword, sortMappings[sortOption], currentPage + 1);
@@ -206,6 +207,7 @@ const SearchBookPage = () => {
                       onChange={handleSortChange}
                       option1={option1}
                       option2={option2}
+                      activeOption={sortOption}
                     />
                   </div>
                 </div>

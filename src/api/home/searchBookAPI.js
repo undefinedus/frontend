@@ -10,7 +10,7 @@ export const getSearchBookList = async (keyword, sort, page) => {
     const res = await jwtAxios.get(`${host}/keyword`, {
       params: { keyword, sort, page },
     });
-    console.log("*********res:", res);
+    console.log("*********res.data:", res.data);
 
     return res.data;
   } catch (error) {

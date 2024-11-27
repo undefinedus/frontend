@@ -8,7 +8,7 @@ const HomeBooksList = ({ books, onCardClick }) => {
 
   return (
     <div>
-      <div className="flex flex-low overflow-x-auto w-full items-baseline gap-4 pr-6">
+      <div className="flex flex-low overflow-x-auto scrollbar-hide w-full items-baseline gap-4 pr-6">
         {books.map((book, index) => (
           <HomeBookCard
             key={index}
