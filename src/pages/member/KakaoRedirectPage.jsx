@@ -1,4 +1,5 @@
 
+
 import React, { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -12,8 +13,7 @@ function KakaoRedirectPage(props) {
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const authCode = searchParams.get('code');
-
-
+  
   useEffect(() => {
     const processKakaoLogin = async () => {
       try {

@@ -1,43 +1,25 @@
 import React, { useState, useEffect, useRef } from "react";
 import { debounce } from "lodash";
-import Button from "../commons/Button";
-import Input from "../commons/Input";
-import CountdownTimer from "../commons/CountdownTimer";
-import { PiArrowCounterClockwiseBold } from "react-icons/pi";
+import CountdownTimer from "../../components/commons/CountdownTimer";
+import Button from "../../components/commons/Button";
+import Input from "../../components/commons/Input";
 import {
-  emailDuplicateCheck,
+  checkEmailExists,
   sendVerificationEmail,
   verifyEmailCode,
 } from "../../api/signupApi";
 import PropTypes from "prop-types";
 
-function SignupStepOne({ onEmailVerified }) {
-  const initialState = {
-    email: "",
-    isValid: null,
-    validText: "",
-    validNum: false,
-    buttonDisabled: true,
-    inputHandler: false,
-    validTimeExpired: false,
-    validCheckUsername: false,
-  };
-
+function FindPasswordStepOneComponent({ onCheckedEmail }) {
   const [isLoading, setIsLoading] = useState(false);
-  const [email, setEmail] = useState(initialState.email);
-  const [isValid, setIsValid] = useState(initialState.isValid);
-  const [validText, setValidText] = useState(initialState.validText);
-  const [validNum, setValidNum] = useState(initialState.validNum);
-  const [buttonDisabled, setButtonDisabled] = useState(
-    initialState.buttonDisabled
-  );
-  const [inputHandler, setInputHandler] = useState(initialState.inputHandler);
-  const [validTimeExpired, setValidTimeExpired] = useState(
-    initialState.validTimeExpired
-  );
-  const [validCheckUsername, setValidCheckUsername] = useState(
-    initialState.validCheckUsername
-  );
+  const [email, setEmail] = useState("");
+  const [isValid, setIsValid] = useState(null);
+  const [validText, setValidText] = useState("");
+  const [validNum, setValidNum] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [inputHandler, setInputHandler] = useState(false);
+  const [validTimeExpired, setValidTimeExpired] = useState(false);
+  const [validCheckUsername, setValidCheckUsername] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
   const [isVerified, setIsVerified] = useState(false);
   const [verificationMessage, setVerificationMessage] = useState("");
@@ -74,15 +56,17 @@ function SignupStepOne({ onEmailVerified }) {
       }
 
       try {
-        const { result } = await emailDuplicateCheck(email);
+        const { result } = await checkEmailExists(email);
 
         if (result) {
+          // 이메일이 존재하면
           setIsValid(true);
-          setValidText("사용 가능한 메일입니다.");
+          setValidText("유효한 이메일입니다.");
           setValidCheckUsername(true);
         } else {
+          // 이메일이 존재하지 않으면
           setIsValid(false);
-          setValidText("이미 등록된 메일입니다.");
+          setValidText("존재하지 않는 이메일입니다.");
           setValidCheckUsername(false);
         }
       } catch (err) {
@@ -158,7 +142,7 @@ function SignupStepOne({ onEmailVerified }) {
   // 인증번호 확인
   const verifyCode = async (code) => {
     try {
-      setIsLoading(true); // 로딩 상태 추가
+      setIsLoading(true);
       const response = await verifyEmailCode(email, code);
       setIsVerified(response.result);
       setVerificationMessage(response.message);
@@ -166,13 +150,13 @@ function SignupStepOne({ onEmailVerified }) {
       if (!response.result) {
         resetVerificationInputs();
       } else {
-        onEmailVerified(email);
+        onCheckedEmail(email);
       }
     } catch (err) {
       setIsVerified(false);
       setVerificationMessage(err.message);
     } finally {
-      setIsLoading(false); // 로딩 상태 해제
+      setIsLoading(false);
     }
   };
 
@@ -195,20 +179,6 @@ function SignupStepOne({ onEmailVerified }) {
     resetVerificationInputs();
   };
 
-  const resetState = () => {
-    setEmail(initialState.email);
-    setIsValid(initialState.isValid);
-    setValidText(initialState.validText);
-    setValidNum(initialState.validNum);
-    setButtonDisabled(initialState.buttonDisabled);
-    setInputHandler(initialState.inputHandler);
-    setValidTimeExpired(initialState.validTimeExpired);
-    setValidCheckUsername(initialState.validCheckUsername);
-    setVerificationCode("");
-    setIsVerified(false);
-    setVerificationMessage("");
-  };
-
   useEffect(() => {
     return () => {
       debouncedEmailCheck.cancel();
@@ -217,16 +187,16 @@ function SignupStepOne({ onEmailVerified }) {
 
   useEffect(() => {
     if (isVerified) {
-      onEmailVerified(email);
+      checkEmailExists(email);
     }
-  }, [isVerified, email, onEmailVerified]);
+  }, [isVerified, email, checkEmailExists]);
 
   return (
     <div className="flex flex-col justify-between h-full items-center ">
       <div className="w-full h-full flex flex-col justify-between gap-4">
         <div className="w-full flex flex-col justify-center items-center gap-4">
           <div className="w-full">
-            <div className="relative w-full">
+            <div className="w-full">
               <Input
                 className={`focus:outline-none w-full border ${
                   isValid === null
@@ -239,13 +209,9 @@ function SignupStepOne({ onEmailVerified }) {
                 type="email"
                 name="email"
                 value={email}
-                placeholder="이메일을 입력해 주세요"
+                placeholder="이메일을 입력해 주세요."
                 onChange={handleChange}
                 disabled={inputHandler || isVerified}
-              />
-              <PiArrowCounterClockwiseBold
-                className="absolute right-3 top-2/3 transform -translate-y-1/2 cursor-pointer"
-                onClick={resetState}
               />
             </div>
             <p
@@ -262,13 +228,13 @@ function SignupStepOne({ onEmailVerified }) {
           </div>
 
           {validNum && (
-            <div className="w-full">
-              <div className="w-full">
+            <div>
+              <div>
                 <p className="mt-14 mb-3 text-sm font-semibold">
                   이메일로 전송된 인증번호를 입력해 주세요
                 </p>
                 <CountdownTimer onTimeEnd={handleTimeEnd} restart={timerKey} />
-                <div className="w-full flex justify-between gap-5">
+                <div className="flex justify-between gap-5">
                   {[
                     { ref: firstInputRef, nextRef: secondInputRef },
                     { ref: secondInputRef, nextRef: thirdInputRef },
@@ -278,8 +244,7 @@ function SignupStepOne({ onEmailVerified }) {
                     <Input
                       key={index}
                       ref={input.ref}
-                      width={"w-1/4"}
-                      className={`w-full text-center font-bold text-undtextdark border border-undtextgray
+                      className={`w-14 text-center font-bold text-undtextdark border border-undtextgray
                         ${
                           validTimeExpired
                             ? "border border-red-500"
@@ -309,7 +274,6 @@ function SignupStepOne({ onEmailVerified }) {
             </div>
           )}
         </div>
-
         <div className="w-full">
           <div className="w-full">
             {!validNum && (
@@ -344,8 +308,8 @@ function SignupStepOne({ onEmailVerified }) {
   );
 }
 
-SignupStepOne.propTypes = {
-  onEmailVerified: PropTypes.func.isRequired,
+FindPasswordStepOneComponent.propTypes = {
+  checkEmailExists: PropTypes.func.isRequired,
 };
 
-export default SignupStepOne;
+export default FindPasswordStepOneComponent;

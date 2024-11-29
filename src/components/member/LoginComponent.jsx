@@ -146,7 +146,7 @@ const LoginComponent = () => {
         <p className="text-sm text-red-500">{loginError}</p>
       </div>
 
-      <div className="flex flex-col justify-center gap-2">
+      <div className="flex flex-col justify-center gap-4">
         <Button
           className="text-white py-2.5 rounded-full font-semibold w-full"
           color="undpoint"
