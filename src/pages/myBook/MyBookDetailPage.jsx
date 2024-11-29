@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { deleteBook, getBookDetail } from "../../api/bookApi";
+import { deleteBook, getBookDetail } from "../../api/book/bookApi";
 import BasicLayout from "../../layouts/BasicLayout";
 import { PrevTitleModifyDelete } from "../../layouts/TopLayout";
 import BookCoverTitle from "../../components/book/BookCoverTitle";

@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState, startTransition } from "react";
+import { useEffect, useState, startTransition } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   getAIRecommend,

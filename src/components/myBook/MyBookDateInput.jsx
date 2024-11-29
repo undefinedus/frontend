@@ -1,12 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import DatePickerSlider from "../commons/DatePickerSlider";
 
 const MyBookDateInput = ({ state, startDate, endDate, setDate }) => {
   const today = new Date().toISOString().split("T")[0];
+  const [startDateInput, setStartDateInput] = useState();
 
   useEffect(() => {
     startDate === "today" && setDate("start", today);
     endDate === "today" && setDate("end", today);
   }, [startDate, endDate]);
+
+  const handleDate = (where, date) => {
+    setDate(where, date);
+  };
 
   return (
     <div className="w-full flex flex-col">
@@ -33,7 +39,15 @@ const MyBookDateInput = ({ state, startDate, endDate, setDate }) => {
               state !== "READING" ? "w-full mt-1" : "w-1/2"
             } flex justify-center text-und14 text-undtextgray rounded-s-full rounded-e-full bg-undbgsub`}
           >
-            {startDate === "today" ? today : startDate}
+            <DatePickerSlider
+              setDate={(date) => handleDate("start", date)}
+              minDate={"1900-01-01"}
+              maxDate={"today"}
+            >
+              <div className="w-full">
+                {startDate === "today" ? today : startDate}
+              </div>
+            </DatePickerSlider>
           </div>
         </div>
         {state !== "READING" && (
@@ -42,7 +56,15 @@ const MyBookDateInput = ({ state, startDate, endDate, setDate }) => {
               {state === "COMPLETED" ? "종료일" : "중단일"}
             </div>
             <div className="w-full mt-1 flex justify-center text-und14 text-undtextgray rounded-s-full rounded-e-full bg-undbgsub">
-              {endDate === "today" ? today : endDate}
+              <DatePickerSlider
+                setDate={(date) => handleDate("end", date)}
+                minDate={startDate}
+                maxDate={"today"}
+              >
+                <div className="w-full">
+                  {endDate === "today" ? today : endDate}
+                </div>
+              </DatePickerSlider>
             </div>
           </div>
         )}

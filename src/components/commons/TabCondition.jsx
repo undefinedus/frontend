@@ -1,4 +1,4 @@
-import { forwardRef, useEffect } from "react";
+import { forwardRef, useEffect, useRef } from "react";
 
 const TabCondition = forwardRef(function TabCondition(
   {
@@ -8,13 +8,45 @@ const TabCondition = forwardRef(function TabCondition(
     showLine = true,
     initialScrollLeft = 0,
   },
-  ref
+  externalRef
 ) {
+  const internalRef = useRef();
+
+  const ref = externalRef || internalRef;
+
   useEffect(() => {
     if (ref?.current) {
-      ref.current.scrollLeft = initialScrollLeft;
+      const maxScrollLeft = ref.current.scrollWidth - ref.current.offsetWidth;
+      ref.current.scrollLeft = Math.min(initialScrollLeft, maxScrollLeft);
     }
   }, [initialScrollLeft, ref]);
+
+  useEffect(() => {
+    if (ref?.current) {
+      const container = ref.current;
+      const index = tabs.indexOf(activeTab);
+      if (index === -1) return;
+
+      const tabElement = container.children[0].children[index];
+      if (!tabElement) return;
+
+      const containerWidth = container.offsetWidth;
+      const tabOffsetLeft = tabElement.offsetLeft;
+      const tabWidth = tabElement.offsetWidth;
+      const maxScrollLeft = container.scrollWidth - containerWidth;
+
+      const scrollTo = Math.min(
+        tabOffsetLeft - containerWidth / 2 + tabWidth / 2,
+        maxScrollLeft
+      );
+
+      container.scrollTo({ left: Math.max(scrollTo, 0), behavior: "smooth" });
+    }
+  }, [activeTab, ref, tabs]);
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+  };
 
   return (
     <div
@@ -35,7 +67,7 @@ const TabCondition = forwardRef(function TabCondition(
                 ? "text-undpoint font-extrabold"
                 : "text-undtextgray font-medium"
             }`}
-            onClick={() => setActiveTab(tab)}
+            onClick={() => handleTabClick(tab, index)}
           >
             {/* 탭 이름 */}
             {tab.replace(/_/g, "/")}
