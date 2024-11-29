@@ -11,7 +11,7 @@ import {
   getMemberYears,
   getTotalStatisticsYearsBookInfo,
 } from "../../../api/statistics/statisticsApi";
-import YearDropdown from "../../settings/record/YearDropDown";
+import YearDropdown from "../../settings/record/YearDropdown";
 
 function YearlyMonthlyStatisticsComponent() {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());

@@ -233,7 +233,7 @@ const MyBookListPage = () => {
 
         {/* 검색 결과가 없을 때 공지 표시 */}
         {activeTab !== "책갈피" && totalElements === 0 && (
-          <div className="w-full h-full flex justify-center items-center">
+          <div className="w-full h-screen flex justify-center items-center">
             <ListNotice type={"emptyBook"} />
           </div>
         )}
