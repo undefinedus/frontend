@@ -20,7 +20,6 @@ import {
 export const OnlyTitle = ({ title, showLine = true }) => {
   return (
     <div
-
       className={`h-16 flex items-center relative px-6 ${
         showLine && "border-unddisabled border-b"
       }`}
@@ -153,7 +152,7 @@ export const TitleSearch = ({ title, showLine = true }) => {
   );
 };
 
-export const CommonTopLayout = ({ title, showLine, onClick, chlidren }) => {
+export const PrevTitleInfo = ({ title, showLine, onClick, chlidren }) => {
   return (
     <div
       className={`h-16 flex justify-between items-center w-full ${
@@ -170,7 +169,7 @@ export const CommonTopLayout = ({ title, showLine, onClick, chlidren }) => {
       <div className="flex justify-center items-center font-bold text-undclickbrown text-xl mx-auto w-1/3">
         {title}
       </div>
-      <div className="w-1/3 flex justify-end pr-6">
+      <div className="w-1/3 flex justify-end pr-6" onClick={onClick}>
         <PiInfo size={28} />
       </div>
       <div>{chlidren}</div>

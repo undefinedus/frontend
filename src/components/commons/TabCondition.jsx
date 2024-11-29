@@ -8,7 +8,7 @@ const TabCondition = ({
 }) => {
   return (
     <div
-      className={`px-6 flex overflow-x-auto w-full scrollbar-hide ${
+      className={`flex overflow-x-auto w-full scrollbar-hide justify-center ${
         showLine && "border-unddisabled border-b"
       }`}
     >
