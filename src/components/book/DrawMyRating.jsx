@@ -15,9 +15,9 @@ const DrawMyRating = ({ myRating }) => {
     <>
       {ratingList.map((item, i) => {
         return item === "fill" ? (
-          <PiStarFill key={i} color={"#FFD400"} size={24} />
+          <PiStarFill key={i} color={"#FFD400"} size={20} />
         ) : (
-          <PiStar key={i} color={"#FFD400"} size={24} />
+          <PiStar key={i} color={"#FFD400"} size={20} />
         );
       })}
     </>

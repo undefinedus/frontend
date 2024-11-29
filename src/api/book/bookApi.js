@@ -1,12 +1,14 @@
-import { API_SERVER_HOST } from "./commonApi";
-import jwtAxios from "../util/jwtUtil";
+import { API_SERVER_HOST } from "../commonApi";
+import jwtAxios from "../../util/jwtUtil";
 
 const host = `${API_SERVER_HOST}/api/books`;
 
-export const getBookList = async (status, sort, search) => {
-  const res = await jwtAxios.get(
-    `${host}?status=${status}&sort=${sort}&search=${search}`
-  );
+export const getBookList = async (status, sort, search, lastId = null) => {
+  let apiRoute = `${host}?status=${status}&sort=${sort}&search=${search}`;
+  if (lastId) {
+    apiRoute += `&lastId=${lastId}`;
+  }
+  const res = await jwtAxios.get(apiRoute);
   console.log("=========getBookList from api: ", res);
   return res.data.data;
 };

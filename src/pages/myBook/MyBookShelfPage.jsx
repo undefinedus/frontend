@@ -7,6 +7,8 @@ import ISBNScanner from "../../components/home/ISBNScanner";
 import ISBNReader from "../../components/home/ISBNReader";
 
 import BookmarkScanner from "../../components/myBook/BookmarkScanner";
+import TwoButtonModal from "../../components/modal/commons/TwoButtonModal";
+import DatePickerSlider from "../../components/commons/DatePickerSlider";
 
 // 기능 개발용 페이지
 const MyBookShelfPage = () => {
@@ -16,6 +18,9 @@ const MyBookShelfPage = () => {
   const [isbn, setIsbn] = useState("");
   const [isBookmarkScannerActive, setIsBookmarkScannerActive] = useState(false);
   const [extractedText, setExtractedText] = useState("");
+
+  const [modal, setModal] = useState(false);
+  const [date, setDate] = useState("2024-11-27");
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -110,6 +115,16 @@ const MyBookShelfPage = () => {
           스캔된 ISBN: {isbn}
         </div>
       )}
+
+      <DatePickerSlider
+        setDate={setDate}
+        minDate={"2000-01-01"}
+        maxDate={"2024-11-27"}
+      >
+        <div className="w-full mt-1 flex justify-center text-und14 text-undtextgray rounded-s-full rounded-e-full bg-undbgsub">
+          {date}
+        </div>
+      </DatePickerSlider>
     </BasicLayout>
   );
 };

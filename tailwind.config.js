@@ -31,6 +31,7 @@ export default {
       },
       fontFamily: {
         sans: ["NanumSquareNeo", "sans-serif"], // 기본 글꼴 설정
+        bookmark: ["NanumMyeongjo"],
       },
       fontWeight: {
         heavy: "900", // Custom weight
