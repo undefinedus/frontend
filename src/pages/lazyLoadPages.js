@@ -1,5 +1,5 @@
 import { lazy } from "react";
 
-export const Login = lazy(() => import("./member/LoginPage"));
-export const SignUp = lazy(() => import("./member/SignUpPage"));
+export const SignUp = lazy(() => import("./member/SignupPage"));
 export const FindPassword = lazy(() => import("./member/findPassword"));
+export const KakaoRedirect = lazy(() => import("./member/KakaoRedirectPage"));

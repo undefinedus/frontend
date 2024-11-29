@@ -1,0 +1,133 @@
+/* 기본 래퍼 스타일 */
+.datepicker-wrapper,
+.react-datepicker-wrapper,
+.react-datepicker__input-container {
+  width: 100%;
+}
+
+/* 인풋 스타일링 */
+.react-datepicker__input-container input {
+  width: 100%;
+  border: 1px solid #78716c;
+  color: #0c0a09;
+  padding: 0.625rem 1rem;
+  border-radius: 9999px;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.react-datepicker__input-container input::placeholder {
+  color: #78716c;
+}
+
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__month-text--keyboard-selected,
+.react-datepicker__quarter-text--keyboard-selected,
+.react-datepicker__year-text--keyboard-selected {
+  background-color: #a68171;
+  color: white;
+}
+/* 달력 컨테이너 스타일링 */
+.react-datepicker {
+  font-family: "Noto Sans KR", sans-serif;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* 헤더 스타일링 */
+.react-datepicker__header {
+  background-color: #7d5c4d;
+  border-bottom: none;
+}
+
+/* 요일 헤더 스타일링 */
+.react-datepicker__day-names {
+  margin-bottom: 0.5rem;
+}
+
+.react-datepicker__day-name {
+  color: #fdfcfa;
+  width: 2.25rem;
+  height: 2.25rem;
+  line-height: 2.25rem;
+  font-size: 0.875rem;
+}
+
+/* 날짜 스타일링 */
+.react-datepicker__day {
+  width: 2.25rem;
+  height: 2.25rem;
+  line-height: 2.25rem;
+  color: #0c0a09;
+  border-radius: 9999px;
+  transition: all 0.2s ease-in-out;
+}
+
+.react-datepicker__day:hover:not(.react-datepicker__day--disabled):not(
+    .react-datepicker__day--outside-month
+  ) {
+  background-color: #7d5c4d;
+  border-radius: 9999px;
+}
+
+/* 선택된 날짜 스타일링 */
+.react-datepicker__day--selected {
+  background-color: #7d5c4d !important;
+  color: white !important;
+}
+
+.react-datepicker__day--selected:hover {
+  background-color: #7d5c4d !important;
+  color: white !important;
+}
+
+/* 비활성화된 날짜 스타일링 */
+.react-datepicker__day--disabled {
+  color: #4b5563;
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
+/* 이전/다음 달 날짜 숨기기 */
+.react-datepicker__day--outside-month {
+  visibility: hidden;
+  cursor: default;
+}
+
+.react-datepicker__header.react-datepicker__header--custom {
+  /* padding: 0.5rem 0 0.5rem 0; */
+  padding-bottom: 0px;
+}
+
+/* 드롭다운 스타일링 */
+.react-datepicker__year-dropdown,
+.react-datepicker__month-dropdown {
+  background-color: #a68171;
+  border: 1px solid #a68171;
+  border-radius: 0.5rem;
+}
+
+.react-datepicker__year-option,
+.react-datepicker__month-option {
+  color: #ffffff;
+  padding: 0.5rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.react-datepicker__year-option:hover,
+.react-datepicker__month-option:hover {
+  background-color: #a68171;
+}
+
+/* 네비게이션 버튼 스타일링 */
+.react-datepicker__navigation {
+  top: 1rem;
+}
+
+.react-datepicker__navigation:hover {
+  background-color: #a68171;
+  border-radius: 9999px;
+}
