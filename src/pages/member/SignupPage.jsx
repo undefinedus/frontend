@@ -6,6 +6,7 @@ import SignupStepThree from "../../components/member/SignupStepThree";
 import SignupStepFour from "../../components/member/SignupStepFour";
 
 function SignupPage() {
+
   const [currentStep, setCurrentStep] = useState(1);
   const [registerData, setRegisterData] = useState({
     username: "",

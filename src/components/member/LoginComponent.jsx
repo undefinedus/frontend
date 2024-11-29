@@ -6,10 +6,11 @@ import useCustomLogin from "../../hooks/useCustomLogin";
 import SignupModal from "../modal/member/SignupModal";
 import BigCheckBox from "../commons/BigCheckBox";
 import CheckBox from "../commons/CheckBox";
+import KakaoLoginComponent from "./KakaoLoginComponent";
 
 const initState = {
-  email: "",
-  pw: "",
+  username: "",
+  password: "",
 };
 
 const LoginComponent = () => {
@@ -126,8 +127,8 @@ const LoginComponent = () => {
           className="mb-4 w-full border border-undtextgray"
           labeltext="아이디"
           type="text"
-          name="email"
-          value={loginParam.email}
+          name="username"
+          value={loginParam.username}
           onKeyDown={handleKeyDown}
           onChange={handleChange}
           placeholder={"아이디를 입력해 주세요."}
@@ -136,8 +137,8 @@ const LoginComponent = () => {
           className="w-full border border-undtextgray"
           labeltext="비밀번호"
           type="password"
-          name="pw"
-          value={loginParam.pw}
+          name="password"
+          value={loginParam.password}
           onKeyDown={handleKeyDown}
           onChange={handleChange}
           placeholder={"비밀번호를 입력해 주세요."}
@@ -145,7 +146,7 @@ const LoginComponent = () => {
         <p className="text-sm text-red-500">{loginError}</p>
       </div>
 
-      <div className="flex flex-col justify-center gap-2">
+      <div className="flex flex-col justify-center gap-4">
         <Button
           className="text-white py-2.5 rounded-full font-semibold w-full"
           color="undpoint"
@@ -153,13 +154,7 @@ const LoginComponent = () => {
         >
           로그인
         </Button>
-        <Button className="text-undpoint py-3 rounded-full font-semibold w-full">
-          <img
-            className="rounded-full"
-            src="/assets/img/kakao_login.png"
-            alt=""
-          />
-        </Button>
+        <KakaoLoginComponent />
       </div>
 
       <div className="flex justify-center gap-4 ">
