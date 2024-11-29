@@ -9,8 +9,8 @@ import CheckBox from "../commons/CheckBox";
 import KakaoLoginComponent from "./KakaoLoginComponent";
 
 const initState = {
-  email: "",
-  pw: "",
+  username: "",
+  password: "",
 };
 
 const LoginComponent = () => {
@@ -127,8 +127,8 @@ const LoginComponent = () => {
           className="mb-4 w-full border border-undtextgray"
           labeltext="아이디"
           type="text"
-          name="email"
-          value={loginParam.email}
+          name="username"
+          value={loginParam.username}
           onKeyDown={handleKeyDown}
           onChange={handleChange}
           placeholder={"아이디를 입력해 주세요."}
@@ -137,8 +137,8 @@ const LoginComponent = () => {
           className="w-full border border-undtextgray"
           labeltext="비밀번호"
           type="password"
-          name="pw"
-          value={loginParam.pw}
+          name="password"
+          value={loginParam.password}
           onKeyDown={handleKeyDown}
           onChange={handleChange}
           placeholder={"비밀번호를 입력해 주세요."}

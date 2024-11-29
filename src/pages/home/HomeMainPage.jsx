@@ -124,7 +124,7 @@ const HomePage = () => {
                 AI 추천 도서
               </p>
             </div>
-            {/* <HomeBooksList books={AIRecommend} onCardClick={handleCardClick} /> */}
+            <HomeBooksList books={AIRecommend} onCardClick={handleCardClick} />
           </div>
           {/* 취향 맞춤 추천 도서 목록 */}
           <div className="pb-10">

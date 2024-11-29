@@ -3,36 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { PiStarFill } from "react-icons/pi";
 import PercentageBar from "../commons/PercentageBar";
 import useDateDiff from "../../hooks/useDateDiff";
+import DrawMyRating from "./DrawMyRating";
 
 // 책 카드형 목록
 const BookCard = ({ book, onClick }) => {
   const { diffToday } = useDateDiff();
-  // let differenceInDays = null;
-
-  // if (book.startDate) {
-  //   const today = new Date();
-  //   const startDateObject = new Date(book.startDate);
-
-  //   // 날짜만 비교 (시간 정보 제거)
-  //   const todayDateOnly = new Date(
-  //     today.getFullYear(),
-  //     today.getMonth(),
-  //     today.getDate()
-  //   );
-  //   const startDateOnly = new Date(
-  //     startDateObject.getFullYear(),
-  //     startDateObject.getMonth(),
-  //     startDateObject.getDate()
-  //   );
-
-  //   // 날짜 차이 계산
-  //   const differenceInMilliseconds =
-  //     todayDateOnly.getTime() - startDateOnly.getTime();
-
-  //   differenceInDays = Math.ceil(
-  //     differenceInMilliseconds / (1000 * 60 * 60 * 24) + 1
-  //   );
-  // }
 
   const differenceInDays = diffToday(book.startDate);
 
@@ -94,9 +69,11 @@ const BookCard = ({ book, onClick }) => {
               )}%`}</div>
             </div>
           )}
-          {/* {state === "COMPLETED" && (
-            <AddBookRating rating={book.myRating} noTitle={true} />
-          )} */}
+          {state === "COMPLETED" && (
+            <div className="flex gap-0.5">
+              <DrawMyRating myRating={book.myRating} />
+            </div>
+          )}
           {state === "READING" && (
             <p className="text-undtextgray text-und14 w-56 h-5 text-left truncate">
               {differenceInDays}일 동안 {book.updateCount}회 읽었어요!

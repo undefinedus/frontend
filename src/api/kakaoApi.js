@@ -1,61 +1,52 @@
 import axios from "axios";
 import { API_SERVER_HOST } from "./commonApi";
 
-const rest_api_key = import.meta.env.VITE_KAKAO_REST_API_KEY;
-const redirect_uri = import.meta.env.VITE_REDIRECT_URI;
+const rest_api_key = '433f010a1fa5963afe5402f4fa79bbb4';
+const redirect_uri = 'http://localhost:5173/member/kakao';
+// 카카오 개발자 콘솔에서 Client Secret 값을 가져와야 합니다
+const client_secret = 'TZRwcwKgGbDJh9NrqfQPHP9obzZULtNE';
 
-const auth_code_path = `http://kauth.kakao.com/oauth/authorize`;
-
-const access_token_url = "http://kauth.kakao.com/oauth/token";
+const auth_code_path = 'https://kauth.kakao.com/oauth/authorize';
+const access_token_url = 'https://kauth.kakao.com/oauth/token';
 
 export const getKakaoLoginLink = () => {
   const kakaoURL = `${auth_code_path}?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
-
   return kakaoURL;
 };
 
 export const getAccessToken = async (authCode) => {
+
+  const header = {headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"}}
+
+  // URLSearchParams를 사용하여 파라미터를 form-data 형식으로 변환
+  const params = new URLSearchParams();
+  params.append('grant_type', 'authorization_code');
+  params.append('client_id', rest_api_key);
+  params.append('client_secret', client_secret);  // client_secret 추가
+  params.append('redirect_uri', redirect_uri);
+  params.append('code', authCode);
+
   try {
-    const params = new URLSearchParams();
-    params.append("grant_type", "authorization_code");
-    params.append("client_id", rest_api_key);
-    params.append("redirect_uri", redirect_uri);
-    params.append("code", authCode);
-
-    const response = await axios.post(access_token_url, params, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-      },
-    });
-
-    return response.data.access_token;
-  } catch (error) {
-    console.error("Access Token Error:", error);
-    throw new Error("액세스 토큰 발급 실패");
+    const res = await axios.post(access_token_url, params, header);
+    const accessToken = res.data.access_token;
+    return accessToken;
+  } catch (error) { 
+    console.error('Token Error:', error.response?.data || error);
+    throw error;
   }
-};
+}
 
 export const getMemberWithAccessToken = async (accessToken) => {
   try {
-    const response = await axios.get(`${API_SERVER_HOST}/api/member/kakao`, {
-      params: { accessToken },
+     const res = await axios.get(`${API_SERVER_HOST}/api/member/kakao`, {
+      params: {
+        accessToken: accessToken  // 파라미터 이름을 정확히 일치시킴
+      }
     });
-    return response.data;
+    return res.data
   } catch (error) {
-    console.error("Member Info Error:", error);
-    throw new Error("회원 정보 조회 실패");
+    console.error('Member API Error Response:', error.response?.data);
+    throw error;
   }
-};
 
-export const registerSocialMember = async (registerData) => {
-  try {
-    const response = await axios.post(
-      `${API_SERVER_HOST}/api/member/social-register`,
-      registerData
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Social Register Error:", error);
-    throw new Error(error.response?.data?.msg || "회원가입 실패");
-  }
-};
+}

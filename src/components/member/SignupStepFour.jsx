@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Button from "../../components/commons/Button";
-import { registMember } from "../../api/signupApi";
+import { registMember, socialRegistMember } from "../../api/signupApi";
 import BasicModal from "../../components/modal/commons/BasicModal";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -76,7 +76,7 @@ const CategoryButton = ({ label, isSelected, onClick, disabled }) => (
   </button>
 );
 
-const SignupStepFour = ({ registerData }) => {
+const SignupStepFour = ({ registerData, isSocial = false}) => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [buttonDisableCondition, setButtonDisableCondition] = useState(true);
   const maxSelections = 3;
@@ -115,7 +115,7 @@ const SignupStepFour = ({ registerData }) => {
         ), // 선택된 카테고리 배열
       };
 
-      const response = await registMember(finalRegisterData);
+      const response = isSocial ? await socialRegistMember(finalRegisterData) : await registMember(finalRegisterData);
       if (response.result) {
         openModal();
       } else {
@@ -137,12 +137,12 @@ const SignupStepFour = ({ registerData }) => {
 
       // 회원가입 성공 후 자동 로그인 시도
       const loginResult = await doLogin({
-        email: registerData.username,
-        pw: registerData.password,
+        username: registerData.username,
+        password: isSocial ? "pw_" + registerData.password : registerData.password,
       });
 
       if (!loginResult.error) {
-        navigate("/myBook/shelf", { replace: true });
+        navigate("/myBook", { replace: true });
       } else {
         console.error("자동 로그인 실패");
         navigate("/member/login", { replace: true });

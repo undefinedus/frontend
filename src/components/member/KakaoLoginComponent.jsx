@@ -1,21 +1,25 @@
-import React from "react";
+import { Link } from "react-router-dom";
 import { getKakaoLoginLink } from "../../api/kakaoApi";
-import { Link, replace, useNavigate } from "react-router-dom";
 
-const link = getKakaoLoginLink();
+const link = getKakaoLoginLink;
 
-function KakaoLoginComponent(props) {
-  const navigate = useNavigate();
-  return (
-    <div>
-      <Link to={link}>
+const KakaoLoginComponent = (props) => {
+
+  const handleKakaoLogin = (e) => {
+    e.preventDefault();
+    const kakaoAuthUrl = getKakaoLoginLink();
+    window.location.href = kakaoAuthUrl;
+  };
+
+  return ( 
+    <button onClick={handleKakaoLogin} className="w-full">
         <img
-          className="rounded-full w-full"
-          src="/public/assets//img/kakao_login.png"
-          alt="카카오로 시작하기 버튼 이미지"
-        />
-      </Link>
-    </div>
+            className="rounded-full"
+            src="/assets/img/kakao_login.png"
+            alt="카카오 로그인"
+          />
+          <Link to={link}></Link>
+    </button>
   );
 }
 

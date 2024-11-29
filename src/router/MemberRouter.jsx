@@ -4,7 +4,10 @@ import LoadingPage from "../pages/LoadingPage";
 import LoginPage from "../pages/member/LoginPage";
 import SignUpPage from "../pages/member/SignupPage";
 import FindPasswordPage from "../pages/member/FindPasswordPage";
-import KakaoRedirect from "../pages/member/KakaoRedirectPage";
+import KakaoRedirectPage from "../pages/member/KakaoRedirectPage";
+import SocialSignupPage from "../pages/member/SocialSignupPage";
+import Loading from "../components/commons/Loading";
+
 
 // 로그인, 회원가입, 추가정보입력, 비밀번호 찾기 라우터
 const MemberRouter = () => {
@@ -28,11 +31,19 @@ const MemberRouter = () => {
           </Suspense>
         }
       />
+      <Route 
+        path="kakao" 
+        element={
+        <Suspense fallback={<LoadingPage />}>
+          <KakaoRedirectPage />
+        </Suspense>
+        }
+      />
       <Route
-        path="kakao"
+        path="socialSignup"
         element={
           <Suspense fallback={<LoadingPage />}>
-            <KakaoRedirect />
+            <SocialSignupPage />
           </Suspense>
         }
       />
