@@ -15,6 +15,7 @@ import TabCondition from "../../components/commons/TabCondition";
 import useBookStatus from "../../hooks/useBookStatus";
 import BookMarkList from "../../components/bookmark/BookMarkList";
 import { getBookmarkList } from "../../api/book/bookMarkApi";
+import BookMarkModal from "../../components/modal/bookmarks/BookMarkModal";
 
 const MyBookListPage = () => {
   const location = useLocation();
@@ -35,6 +36,9 @@ const MyBookListPage = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const tabRef = useRef(null);
   const [tabScrollLeft, setTabScrollLeft] = useState(prevScrollLeft || 0);
+  const [isBookmarkOpen, setIsBookmarkOpen] = useState(false);
+  const [activeBookmark, setActiveBookmark] = useState({});
+  const [refresh, setRefresh] = useState(false);
 
   const observer = useRef(null);
   const sentinelRef = useRef(null);
@@ -42,7 +46,7 @@ const MyBookListPage = () => {
   useEffect(() => {
     if (activeTab !== "책갈피") fetchBookList();
     else if (activeTab === "책갈피") fetchBookmarkList();
-  }, [activeTab, sort, search]);
+  }, [activeTab, sort, search, refresh]);
 
   // 스크롤 관리
   useEffect(() => {
@@ -181,7 +185,15 @@ const MyBookListPage = () => {
     );
   };
 
-  const handleBookmarkDetail = () => {};
+  const handleOpenBookmarkDetail = (bookmark) => {
+    setIsBookmarkOpen(true);
+    setActiveBookmark(bookmark);
+  };
+
+  const handleCloseBookmarkDetail = () => {
+    setIsBookmarkOpen(false);
+    setActiveBookmark(null);
+  };
 
   return (
     <BasicLayout>
@@ -256,7 +268,7 @@ const MyBookListPage = () => {
           <div className="pt-52 pb-16 flex justify-center px-6">
             <BookMarkList
               bookmarks={bookmarks}
-              onCardClick={handleBookmarkDetail}
+              onCardClick={handleOpenBookmarkDetail}
             />
           </div>
         )}
@@ -264,6 +276,15 @@ const MyBookListPage = () => {
         {/* Sentinel item - 마지막 아이템을 감지하는 요소 */}
         {totalElements > 0 && !loading && (
           <div ref={sentinelRef} className="h-1"></div>
+        )}
+
+        {isBookmarkOpen && (
+          <BookMarkModal
+            modes={"READ"}
+            bookmark={activeBookmark}
+            onClose={handleCloseBookmarkDetail}
+            setRefresh={() => setRefresh((prev) => !prev)}
+          />
         )}
 
         <ScrollActionButtons
