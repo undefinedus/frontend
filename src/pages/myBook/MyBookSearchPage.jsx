@@ -149,7 +149,7 @@ const MyBookSearchPage = () => {
       <ScrollActionButtons onlyTop={true} />
       {openBookmarkModal && currentBook && (
         <BookMarkModal
-          mode={"ADD"}
+          modes={"ADD"}
           onClose={handleCloseBookmarkModal}
           book={currentBook}
         />

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const BookmarkMarkInput = ({ mark, setMark }) => {
+const BookmarkMarkInput = ({ mode, mark, setMark }) => {
   const [activatePlaceholder, setActivePlaceholder] = useState(mark === "");
 
   const handleChange = (e) => {
@@ -19,11 +19,12 @@ const BookmarkMarkInput = ({ mark, setMark }) => {
       <textarea
         className={`w-full h-full bg-undbgsub px-6 py-10 rounded-xl text-center snap-center content-center ${
           mark && "text-undtextgray"
-        } scroll-hide`}
+        } scroll-hide font-bookmark italic`}
         value={mark}
         onChange={handleChange}
         onFocus={() => handleActivatePlaceholder(false)}
         onBlur={() => handleActivatePlaceholder(mark === "")}
+        readOnly={mode === "READ"}
       />
       {activatePlaceholder && (
         <div
