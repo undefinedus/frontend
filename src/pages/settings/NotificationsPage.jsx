@@ -106,7 +106,7 @@ const NotificationsPage = () => {
         showLine={false}
         onClick={() => navigate("/settings")}
       />
-      <div className="px-7 pt-4 flex flex-col gap-4">
+      <div className="px-7 flex flex-col gap-6">
         <NotificationsComponent
           subtitle={"책장"}
           notificationItems={bookshelfItems}

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { PiCaretDown } from "react-icons/pi";
-import { getMemberYears } from "../../../api/statistics/statisticsApi";
 
 export const YearDropdown = ({ options, onChange, activeOption }) => {
   const [isOpen, setIsOpen] = useState(false);
