@@ -1,7 +1,8 @@
 import React from "react";
+import StatisticsFullCalendar from "../../commons/StatisticsFullCalendar";
 
-function DailyStatisticsComponent(props) {
-  return <div>일자별</div>;
+function DailyStatisticsComponent() {
+  return <StatisticsFullCalendar />;
 }
 
 export default DailyStatisticsComponent;
