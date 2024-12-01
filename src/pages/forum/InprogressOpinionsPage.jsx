@@ -1,8 +1,8 @@
 import React from "react";
 
 // 진행중 토론 의견 목록
-const OpinionsPage = () => {
+const InprogressOpinions = () => {
   return <div></div>;
 };
 
-export default OpinionsPage;
+export default InprogressOpinions;

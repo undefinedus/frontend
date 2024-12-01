@@ -74,13 +74,11 @@ const ISBNBookSearch = ({ onSearchSubmit, searchHistory = null }) => {
       </button>
       {/* ISBN 스캔 모달 렌더링 */}
       {isScannerActive && (
-        <div className="mt-10">
-          <ISBNScanner
-            onSwitchToCapture={handleSwitchToCapture}
-            onCloseScannner={handleCloseScanner}
-            onSuccessScan={handleSuccessToGetISBN}
-          />
-        </div>
+        <ISBNScanner
+          onSwitchToCapture={handleSwitchToCapture}
+          onCloseScannner={handleCloseScanner}
+          onSuccessScan={handleSuccessToGetISBN}
+        />
       )}
     </div>
   );
