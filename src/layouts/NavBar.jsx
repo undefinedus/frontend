@@ -31,7 +31,9 @@ const NavBar = () => {
           <PiHouseLight
             color="7D5C4D"
             size="32"
-            onClick={() => navigate({ pathname: "/home" }, { replace: true })}
+            onClick={() => {
+              navigate({ pathname: "/home" }, { replace: true });
+            }}
           />
         )}
 
@@ -39,7 +41,10 @@ const NavBar = () => {
           <PiUsersThreeFill
             color="7D5C4D"
             size="32"
-            onClick={() => navigate({ pathname: "/social" }, { replace: true })}
+            onClick={() => {
+              sessionStorage.removeItem("mySocialSearch");
+              navigate({ pathname: "/social" }, { replace: true });
+            }}
           />
         ) : (
           <PiUsersThreeLight

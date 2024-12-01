@@ -1,5 +1,6 @@
 import React from "react";
 import { PiStarFill, PiArrowSquareOut } from "react-icons/pi";
+import he from "he";
 
 // 책 정보(저자, 출판사, 평점, 책 소개, 더 알아보기) 컴포넌트
 const BookInformation = ({ book, hasDescription = true }) => {
@@ -48,12 +49,15 @@ const BookInformation = ({ book, hasDescription = true }) => {
           </p>
           {/* /* 내용이 길어질 경우 줄 바꿈 및 overflow 처리 */}
           <p className="text-und14 text-left text-undtextgray">
-            {(fullDescription || "").split(/<br\s*\/?>/i).map((line, index) => (
-              <React.Fragment key={index}>
-                {line}
-                <br />
-              </React.Fragment>
-            ))}
+            {he
+              .decode(fullDescription || "")
+              .split(/<br\s*\/?>/i)
+              .map((line, index) => (
+                <React.Fragment key={index}>
+                  {line}
+                  <br />
+                </React.Fragment>
+              ))}
           </p>
         </div>
       )}

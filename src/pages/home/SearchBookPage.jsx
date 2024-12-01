@@ -217,10 +217,7 @@ const SearchBookPage = () => {
         </div>
         {/* 검색 결과가 없을 때 공지 표시 */}
         {searchKeyword && totalResults === 0 && (
-          <div
-            className="w-full h-full px-6 flex justify-center items-center"
-            style={{ backgroundColor: "red", color: "white" }}
-          >
+          <div className="w-full h-full px-6 flex justify-center items-center">
             <ListNotice type="noResult" />
           </div>
         )}
