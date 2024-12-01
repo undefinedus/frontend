@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import BasicLayout from "../../layouts/BasicLayout";
 import { OnlyTitle } from "../../layouts/TopLayout";
-import { getBookList } from "../../api/bookApi";
+import { getBookList } from "../../api/book/bookApi";
 import ScrollActionButtons from "../../components/commons/ScrollActionButtons";
 import { useLocation, useNavigate } from "react-router-dom";
 import SearchBar from "../../components/commons/SearchBar";
@@ -13,33 +13,40 @@ import ListNotice from "../../components/commons/ListNotice";
 import BookList from "../../components/book/BookList";
 import TabCondition from "../../components/commons/TabCondition";
 import useBookStatus from "../../hooks/useBookStatus";
-
-const statusTranslator = {
-  "읽고 있는 책": "READING",
-  "읽고 싶은 책": "WISH",
-  "다 읽은 책": "COMPLETED",
-  "중단한 책": "STOPPED",
-};
+import BookMarkList from "../../components/bookmark/BookMarkList";
+import { getBookmarkList } from "../../api/book/bookMarkApi";
+import BookMarkModal from "../../components/modal/bookmarks/BookMarkModal";
 
 const MyBookListPage = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const { prevActiveTab, prevSearch, prevSort, prevScrollLeft } =
     location.state || {};
-  const [openAddModal, setOpenAddModal] = useState(false);
-  const [data, setData] = useState({});
-  const [books, setBooks] = useState([]);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [activeTab, setActiveTab] = useState(prevActiveTab || "읽고 있는 책");
+  const navigate = useNavigate();
+  const { getStatusInEnglish } = useBookStatus();
+
   const [search, setSearch] = useState(prevSearch || "");
   const [sort, setSort] = useState(prevSort || "최신순");
-  const { getStatusInEnglish } = useBookStatus();
+  const [activeTab, setActiveTab] = useState(prevActiveTab || "읽고 있는 책");
+  const [lastId, setLastId] = useState(null);
+  const [hasNext, setHasNext] = useState(false);
+  const [totalElements, setTotalElements] = useState(0);
+  const [books, setBooks] = useState([]);
+  const [bookmarks, setBookmarks] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const tabRef = useRef(null);
   const [tabScrollLeft, setTabScrollLeft] = useState(prevScrollLeft || 0);
+  const [isBookmarkOpen, setIsBookmarkOpen] = useState(false);
+  const [activeBookmark, setActiveBookmark] = useState({});
+  const [refresh, setRefresh] = useState(false);
+
+  const observer = useRef(null);
+  const sentinelRef = useRef(null);
 
   useEffect(() => {
-    fetchBookList();
-  }, [activeTab, sort, search]);
+    if (activeTab !== "책갈피") fetchBookList();
+    else if (activeTab === "책갈피") fetchBookmarkList();
+  }, [activeTab, sort, search, refresh]);
 
   // 스크롤 관리
   useEffect(() => {
@@ -61,28 +68,96 @@ const MyBookListPage = () => {
     }
   }, [tabScrollLeft]);
 
-  const fetchBookList = async () => {
+  useEffect(() => {
+    if (sentinelRef.current) {
+      observer.current = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          if (entry.isIntersecting && !loading && hasNext) {
+            setLoading(true);
+            activeTab !== "책갈피" && fetchBookList(lastId);
+            activeTab === "책갈피" && fetchBookmarkList(lastId);
+          }
+        },
+        { threshold: 1.0 }
+      );
+      observer.current.observe(sentinelRef.current);
+    }
+
+    return () => {
+      if (observer.current) {
+        observer.current.disconnect();
+      }
+    };
+  }, [loading, hasNext]);
+
+  const fetchBookList = async (lastId = null) => {
     try {
+      setLoading(true);
       const status = getStatusInEnglish(activeTab);
       const sorts = sort === "최신순" ? "desc" : "asc";
-      const res = await getBookList(status, sorts, search);
-      console.log("res: ", res);
-      setData(res);
-      setBooks(res.content);
+      const res = await getBookList(status, sorts, search, lastId);
+      if (lastId) {
+        setBooks((prevBooks) => [...prevBooks, ...res.content]);
+      } else {
+        setBooks(res.content);
+      }
+      setLastId(res.lastId);
+      setHasNext(res.hasNext);
+      setTotalElements(res.totalElements);
+      setLoading(false);
     } catch (error) {
       console.error(error);
+      setLoading(false);
+    }
+  };
+
+  const fetchBookmarkList = async (lastId = null) => {
+    try {
+      setLoading(true);
+      const sorts = sort === "최신순" ? "desc" : "asc";
+      const res = await getBookmarkList(search, sorts, lastId);
+      console.log("책갈피 목록: ", res.content);
+      console.log("lastId: ", res.lastId);
+      console.log("hasNext: ", res.hasNext);
+      console.log("totalElements: ", res.totalElements);
+
+      if (lastId) {
+        setBookmarks((prevBookmarks) => [...prevBookmarks, ...res.content]);
+      } else {
+        setBookmarks(res.content);
+      }
+      setLastId(res.lastId);
+      setHasNext(res.hasNext);
+      setTotalElements(res.totalElements);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
     }
   };
 
   const handleTabChange = (tab) => {
+    if (activeTab === "책갈피" && tab !== "책갈피") {
+      setBookmarks([]);
+      setLastId(null);
+      setHasNext(false);
+      setTotalElements(0);
+      setSearch("");
+    } else if (activeTab !== "책갈피" && tab === "책갈피") {
+      setBooks([]);
+      setLastId(null);
+      setHasNext(false);
+      setTotalElements(0);
+      setSearch("");
+    }
+    setSort("최신순");
     setActiveTab(tab);
 
     // 현재 스크롤 위치 저장
     if (tabRef.current) {
       setTabScrollLeft(tabRef.current.scrollLeft);
     }
-
-    setSort("최신순");
   };
 
   const handleSort = (sort) => {
@@ -108,6 +183,16 @@ const MyBookListPage = () => {
         },
       }
     );
+  };
+
+  const handleOpenBookmarkDetail = (bookmark) => {
+    setIsBookmarkOpen(true);
+    setActiveBookmark(bookmark);
+  };
+
+  const handleCloseBookmarkDetail = () => {
+    setIsBookmarkOpen(false);
+    setActiveBookmark(null);
   };
 
   return (
@@ -144,7 +229,10 @@ const MyBookListPage = () => {
 
           {!isScrolled && (
             <div className="flex items-center justify-between px-6 py-2">
-              <ItemCount count={data?.totalElements || 0} unit={"권"} />
+              <ItemCount
+                count={totalElements || 0}
+                unit={activeTab === "책갈피" ? "개" : "권"}
+              />
               <SortDropdown
                 onChange={handleSort}
                 option1={"최신순"}
@@ -156,22 +244,61 @@ const MyBookListPage = () => {
         </div>
 
         {/* 검색 결과가 없을 때 공지 표시 */}
-        {data.totalElements === 0 && (
-          <div className="w-full h-full flex justify-center items-center">
-            <ListNotice type="noResult" />
+        {activeTab !== "책갈피" && totalElements === 0 && (
+          <div className="w-full h-screen flex justify-center items-center">
+            <ListNotice type={"emptyBook"} />
           </div>
         )}
+
         {/* 검색 목록 출력 */}
-        {data.totalElements > 0 && (
+        {activeTab !== "책갈피" && totalElements > 0 && (
           <div className="pt-52 pb-16 flex justify-center px-6">
             <BookList books={books} onCardClick={moveToDetail} />
           </div>
         )}
 
+        {activeTab === "책갈피" && totalElements === 0 && (
+          <div className="w-full h-full flex justify-center items-center">
+            <ListNotice type={"emptyBookMark"} />
+          </div>
+        )}
+
+        {/* 검색 목록 출력 */}
+        {activeTab === "책갈피" && totalElements > 0 && (
+          <div className="pt-52 pb-16 flex justify-center px-6">
+            <BookMarkList
+              bookmarks={bookmarks}
+              onCardClick={handleOpenBookmarkDetail}
+            />
+          </div>
+        )}
+
+        {/* Sentinel item - 마지막 아이템을 감지하는 요소 */}
+        {totalElements > 0 && !loading && (
+          <div ref={sentinelRef} className="h-1"></div>
+        )}
+
+        {isBookmarkOpen && (
+          <BookMarkModal
+            modes={"READ"}
+            bookmark={activeBookmark}
+            onClose={handleCloseBookmarkDetail}
+            setRefresh={() => setRefresh((prev) => !prev)}
+          />
+        )}
+
         <ScrollActionButtons
-          mainLabel={"책 담기"}
+          mainLabel={activeTab === "책갈피" ? "책갈피" : "책 담기"}
           mainAction={() =>
-            navigate({ pathname: "/home/searchbook" }, { replace: true })
+            activeTab === "책갈피"
+              ? navigate(
+                  { pathname: "../search" },
+                  {
+                    replace: true,
+                    state: { title: "책갈피 추가", prevActiveTab: activeTab },
+                  }
+                )
+              : navigate({ pathname: "/home/searchbook" }, { replace: true })
           }
         />
       </div>

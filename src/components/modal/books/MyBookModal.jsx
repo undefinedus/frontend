@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import SlrModalLayout from "../../../layouts/SlrModalLayout";
 import StateBox from "../../myBook/StateBox";
-import { addBook, modifyBook } from "../../../api/bookApi";
+import { addBook, modifyBook } from "../../../api/book/bookApi";
 import TwoButtonModal from "../commons/TwoButtonModal";
 import MyBookInputs from "../../myBook/MyBookInputs";
 
@@ -172,14 +172,14 @@ const MyBookModal = ({ mode, onClose, state = "READING", book = initData }) => {
           book={bookInfo}
         />
       </div>
-      <div className="fixed bottom-8 start-0 end-0 mt-4 flex justify-center items-center">
-        <div className="flex justify-center items-center">
+      <div className="fixed px-6 w-full bottom-8 start-0 end-0 mt-4 flex justify-center items-center">
+        <div className="flex w-full justify-center items-center">
           <button
-            className={`w-72 h-12 rounded-3xl text-und18 ${
+            className={`w-full h-12 rounded-full text-und18 ${
               isReady
                 ? "bg-undpoint text-white"
                 : "bg-unddisabled text-undtextgray"
-            }`}
+            } font-bold`}
             disabled={!isReady}
             onClick={handleConfirmModalOpen}
           >

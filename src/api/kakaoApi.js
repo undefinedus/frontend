@@ -11,7 +11,6 @@ const access_token_url = 'https://kauth.kakao.com/oauth/token';
 
 export const getKakaoLoginLink = () => {
   const kakaoURL = `${auth_code_path}?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
-  
   return kakaoURL;
 };
 
@@ -51,4 +50,3 @@ export const getMemberWithAccessToken = async (accessToken) => {
   }
 
 }
-

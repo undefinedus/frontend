@@ -239,7 +239,7 @@ function SignupStepOne({ onEmailVerified }) {
                 type="email"
                 name="email"
                 value={email}
-                placeholder="이메일을 입력해 주세요."
+                placeholder="이메일을 입력해 주세요"
                 onChange={handleChange}
                 disabled={inputHandler || isVerified}
               />
@@ -265,7 +265,7 @@ function SignupStepOne({ onEmailVerified }) {
             <div className="w-full">
               <div className="w-full">
                 <p className="mt-14 mb-3 text-sm font-semibold">
-                  이메일로 전송된 인증번호를 입력해 주세요.
+                  이메일로 전송된 인증번호를 입력해 주세요
                 </p>
                 <CountdownTimer onTimeEnd={handleTimeEnd} restart={timerKey} />
                 <div className="w-full flex justify-between gap-5">
