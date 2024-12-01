@@ -18,7 +18,7 @@ const SlrModalLayout = ({ size = "large", children, onClose }) => {
     >
       <div
         className={`w-full ${
-          size === "large" ? "h-5/6" : size === "profile" ? "h-80" : "h-2/3"
+          size === "large" ? "h-5/6" : size === "profile" ? "h-1/2" : "h-2/3"
         } fixed bottom-0 bg-white rounded-t-3xl px-6 py-4 ${
           isClosing ? "animate-slideDown" : "animate-slideUp"
         }`}

@@ -1,16 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import BasicLayout from "../../layouts/BasicLayout";
 import { OnlyTitle } from "../../layouts/TopLayout";
 import MenuBox from "../../components/settings/MenuBox";
 import ProfileBox from "../../components/settings/ProfileBox";
+import ProfileModifyingModal from "../../components/modal/settings/ProfileModifyingModal";
+import useCustomLogin from "../../hooks/useCustomLogin";
 
 const SettingsPage = () => {
+  const { isLogin, loginState } = useCustomLogin();
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+
+  const handleProfileModal = (boolean) => {
+    setIsProfileModalOpen(boolean);
+  };
+
   return (
     <BasicLayout>
       <OnlyTitle title="설정" showLine={true} />
       <div className="w-full flex flex-col px-7 py-8 gap-4">
         <div className="w-full">
-          <ProfileBox />
+          <ProfileBox openModal={handleProfileModal} />
         </div>
         <div className="w-full">
           <MenuBox
@@ -44,6 +53,12 @@ const SettingsPage = () => {
           />
         </div>
       </div>
+      {isProfileModalOpen && (
+        <ProfileModifyingModal
+          onClose={handleProfileModal}
+          profile={loginState}
+        />
+      )}
     </BasicLayout>
   );
 };
