@@ -51,7 +51,7 @@ const TabCondition = forwardRef(function TabCondition(
   return (
     <div
       ref={ref}
-      className={`flex overflow-x-auto w-full scrollbar-hide justify-center ${
+      className={`px-6 flex overflow-x-auto w-full scrollbar-hide ${
         showLine && "border-unddisabled border-b"
       }`}
     >

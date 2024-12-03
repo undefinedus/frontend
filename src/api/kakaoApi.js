@@ -3,7 +3,11 @@ import { API_SERVER_HOST } from "./commonApi";
 import jwtAxios from "../util/jwtUtil";
 
 const rest_api_key = '433f010a1fa5963afe5402f4fa79bbb4';
-const redirect_uri = 'http://localhost:5173/member/kakao';
+
+const redirect_uri = import.meta.env.MODE === "development"
+  ? 'http://localhost:5173/member/kakao'
+  : 'https://gongchaek.site/member/kakao';
+
 // 카카오 개발자 콘솔에서 Client Secret 값을 가져와야 합니다
 const client_secret = 'TZRwcwKgGbDJh9NrqfQPHP9obzZULtNE';
 

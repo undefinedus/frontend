@@ -21,7 +21,8 @@ const SocialMainPage = () => {
     content: [],
     hasNext: true,
   }); // 모든 유저 검색 목록 상태
-  const [search, setSearch] = useState(""); // 전체 검색 닉네임 검색어 상태
+  const mySocialSearch = sessionStorage.getItem("mySocialSearch");
+  const [search, setSearch] = useState(mySocialSearch ? mySocialSearch : ""); // 전체 검색 닉네임 검색어 상태
 
   // 내 소셜 프로필 정보
   useEffect(() => {
@@ -43,6 +44,10 @@ const SocialMainPage = () => {
       }
     };
     fetchData();
+    return () => {
+      console.log(`unmount ${search}`);
+      sessionStorage.setItem("mySocialSearch", search);
+    };
   }, [search]);
 
   // 내 소셜 정보 API
@@ -98,7 +103,7 @@ const SocialMainPage = () => {
   // 프로필 팔로워/팔로잉 클릭 시 상세 페이지로 이동
   const handleSocialTabClick = (tabCondition) => {
     navigate(`../list`, {
-      replace: true,
+      // replace: true,
       state: {
         tabCondition, // "팔로워" 또는 "팔로잉"
         search: "", // 검색어 (기본값으로 null 전달)
@@ -160,13 +165,14 @@ const SocialMainPage = () => {
             <SearchBar
               placeholder={"닉네임으로 검색"}
               onChange={handleSearch}
+              searchHistory={search}
             />
           </div>
         </div>
       </div>
       <div className="flex flex-col w-full h-full px-6 pt-60 pb-20">
         {/* 유저 목록 */}
-        {search && (
+        {search ? (
           <SocialList
             socialList={searchUserList}
             onFollowClick={handleFollowClick}
@@ -174,8 +180,9 @@ const SocialMainPage = () => {
             onCardClick={handleCardClick}
             search={search}
           />
+        ) : (
+          <ListNotice type="socialSearch" />
         )}
-        {!search && <ListNotice type="socialSearch" />}
       </div>
     </BasicLayout>
   );

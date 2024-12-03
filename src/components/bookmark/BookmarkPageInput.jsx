@@ -1,6 +1,6 @@
 import React from "react";
 
-const BookmarkPageInput = ({ page, setPage, totalPage }) => {
+const BookmarkPageInput = ({ mode, page, setPage, totalPage }) => {
   const handleInputChange = (e) => {
     const value = e.target.value;
     if (value === "") {
@@ -18,14 +18,21 @@ const BookmarkPageInput = ({ page, setPage, totalPage }) => {
 
   return (
     <div className="flex gap-0.5 items-center">
-      <input
-        type="number"
-        placeholder="-"
-        value={page === 0 ? "-" : page}
-        onChange={handleInputChange}
-        onFocus={(e) => e.target.select()}
-        className="w-16 h-6 text-center text-und14 text-undtextgray rounded-s-full rounded-e-full bg-undbgsub"
-      />
+      {mode === "READ" ? (
+        <p className="w-16 h-6 text-center text-und14 flex justify-center items-center text-undtextgray rounded-s-full rounded-e-full bg-undbgsub">
+          {page === 0 ? "-" : page}
+        </p>
+      ) : (
+        <input
+          type="number"
+          placeholder="-"
+          value={page === 0 ? "-" : page}
+          onChange={handleInputChange}
+          onFocus={(e) => e.target.select()}
+          className="w-16 h-6 text-center text-und14 text-undtextgray rounded-s-full rounded-e-full bg-undbgsub"
+        />
+      )}
+
       <p className="text-und14 text-undtextgray">쪽</p>
     </div>
   );
