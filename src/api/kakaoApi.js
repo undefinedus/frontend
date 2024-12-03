@@ -1,5 +1,6 @@
 import axios from "axios";
 import { API_SERVER_HOST } from "./commonApi";
+import jwtAxios from "../util/jwtUtil";
 
 const rest_api_key = '433f010a1fa5963afe5402f4fa79bbb4';
 
@@ -57,5 +58,19 @@ export const getMemberWithToken = async (accessToken, refreshToken) => {
     console.error('Member API Error Response:', error.response?.data);
     throw error;
   }
-
 }
+
+// 책갈피 수신 여부 업데이트
+export const updateKakaoMessagePermission = async () => {
+  try {
+    const res = await jwtAxios.post(`${API_SERVER_HOST}/api/member/kakao/message`);
+
+    console.log("Kakao Message Permission Updated:", res.data);
+    alert('카카오 메시지 권한이 업데이트되었습니다.');
+    return res.data;
+  } catch (error) {
+    console.error('Kakao Message Permission Update Error:', error.response?.data || error);
+    alert('카카오 메시지 권한 업데이트 중 오류가 발생했습니다.');
+    throw error;
+  }
+};
