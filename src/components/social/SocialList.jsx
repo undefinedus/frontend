@@ -83,7 +83,7 @@ const SocialList = ({
         </div>
       ) : (
         // `content`가 있을 때 `SocialCard` 출력
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 h-full">
           {socialList?.content?.map((profile, index) => (
             <SocialCard
               key={index}

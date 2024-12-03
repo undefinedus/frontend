@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import basicProfile from "../../../public/assets/img/basicProfile.png";
 
 // 소셜 프로필
@@ -9,22 +9,38 @@ const SocialProfile = ({
   onFollowClick, // 팔로우 버튼
   onUnfollowClick, // 언팔로우 버튼
 }) => {
-  const isFollowing = socialProfile.isFollowing;
+  const [isFollowing, setIsFollowing] = useState(socialProfile.isFollowing); // 상태로 관리
 
+  const handleFollowClick = async () => {
+    try {
+      await onFollowClick(socialProfile.id); // 부모로부터 API 호출
+      setIsFollowing(true); // 상태 업데이트
+    } catch (error) {
+      console.error("팔로우 처리 중 오류:", error);
+    }
+  };
+
+  const handleUnfollowClick = async () => {
+    try {
+      await onUnfollowClick(socialProfile.id); // 부모로부터 API 호출
+      setIsFollowing(false); // 상태 업데이트
+    } catch (error) {
+      console.error("언팔로우 처리 중 오류:", error);
+    }
+  };
   return (
     <div
-      className={`flex w-full items-center border rounded-2xl px-5 shadow-md bg-white gap-8 ${
-        isFollowing ? "h-32" : "h-24"
+      className={`flex w-full items-center border rounded-2xl px-5 shadow-md bg-white gap-8  ${
+        socialProfile.isFollowing === null ? "h-24" : "h-32"
       }`}
     >
       <div className="flex flex-col items-center">
         {/* 프로필 이미지 */}
         <div
           className={`${
-            isFollowing ? "w-14 h-14" : "w-16 h-16"
+            socialProfile.isFollowing === null ? "w-16 h-16" : "w-14 h-14"
           } flex-shrink-0 rounded-full overflow-hidden`}
         >
-          {" "}
           <img
             src={socialProfile.profileImage || basicProfile} // 기본 이미지 처리
             alt={`${socialProfile.nickname}의 프로필`}
@@ -32,18 +48,18 @@ const SocialProfile = ({
           />
         </div>
         {/* 팔로우/팔로잉 버튼 */}
-        {isFollowing === false && (
+        {socialProfile.isFollowing === false && (
           <button
             className="w-16 h-7 py-1 px-1 bg-undpoint text-white rounded-full font-bold text-und12 mt-2"
-            onClick={onFollowClick}
+            onClick={handleFollowClick}
           >
             팔로우
           </button>
         )}
-        {isFollowing === true && (
+        {socialProfile.isFollowing === true && (
           <button
             className="w-16 h-7 py-1 px-1 border border-undpoint text-undpoint rounded-full font-bold text-und12 mt-2"
-            onClick={onUnfollowClick}
+            onClick={handleUnfollowClick}
           >
             팔로잉
           </button>

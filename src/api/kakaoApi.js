@@ -14,7 +14,7 @@ export const getKakaoLoginLink = () => {
   return kakaoURL;
 };
 
-export const getAccessToken = async (authCode) => {
+export const getToken = async (authCode) => {
 
   const header = {headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"}}
 
@@ -28,21 +28,26 @@ export const getAccessToken = async (authCode) => {
 
   try {
     const res = await axios.post(access_token_url, params, header);
-    const accessToken = res.data.access_token;
-    return accessToken;
+
+    console.log("tokens: ", res);
+
+    return res.data; // 두 토큰 반환
   } catch (error) { 
     console.error('Token Error:', error.response?.data || error);
     throw error;
   }
 }
 
-export const getMemberWithAccessToken = async (accessToken) => {
+export const getMemberWithToken = async (accessToken, refreshToken) => {
   try {
-     const res = await axios.get(`${API_SERVER_HOST}/api/member/kakao`, {
+    const res = await axios.get(`${API_SERVER_HOST}/api/member/kakao`, {
       params: {
-        accessToken: accessToken  // 파라미터 이름을 정확히 일치시킴
+        accessToken: accessToken,  // 파라미터 이름을 정확히 일치시킴.
+        refreshToken: refreshToken
       }
+      
     });
+    console.log("------------------",res);
     return res.data
   } catch (error) {
     console.error('Member API Error Response:', error.response?.data);

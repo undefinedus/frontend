@@ -9,7 +9,7 @@ const SocialCard = ({
   onCardClick,
 }) => {
   const [isFollowing, setIsFollowing] = useState(profile.following);
-  console.log("소셜카드 프로필 ", profile);
+  // console.log("소셜카드 프로필 ", profile);
 
   const handleFollow = async () => {
     try {

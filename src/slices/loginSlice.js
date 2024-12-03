@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { loginPost } from '../api/loginApi';
 import { getCookie, removeCookie, setCookie } from '../util/cookieUtil';
-import { getAccessToken, getMemberWithAccessToken } from '../api/kakaoApi';
+import { getToken, getMemberWithToken } from '../api/kakaoApi';
 
 const initState = {
   email: '',
@@ -23,8 +23,13 @@ export const loginPostAsync = createAsyncThunk('loginPostAsync', (param) =>
 export const kakaoLoginAsync = createAsyncThunk(
   'kakaoLoginAsync',
   async (authCode) => {
-    const accessToken = await getAccessToken(authCode);
-    const result = await getMemberWithAccessToken(accessToken);
+    const res = await getToken(authCode);
+    console.log("res: ", res);
+    
+    const result = await getMemberWithToken(res.access_token, res.refresh_token);
+
+    console.log("result: ", result);
+    
 
     if (result.result === 'exists') {
       // 기존 회원인 경우 자동 로그인 처리

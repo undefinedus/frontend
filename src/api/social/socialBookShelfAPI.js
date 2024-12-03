@@ -8,7 +8,7 @@ const host = `${API_SERVER_HOST}/api/social`;
 export const getSocialInfo = async (targetMemberId) => {
   try {
     const res = await jwtAxios.get(`${host}/otherInfo/${targetMemberId}`);
-    console.log("******res", res);
+    console.log("타겟멤버아이디 : targetMemberId", targetMemberId);
     return res.data.data;
   } catch (error) {
     console.error(error, "유저 소셜 정보를 불러오는 데 실패하였습니다");
@@ -20,31 +20,44 @@ export const getSocialInfo = async (targetMemberId) => {
 
 // 유저 소셜 책장 - 팔로워/팔로잉 목록
 export const getSocialList = async (
+  targetMemberId,
   tabCondition,
   search = "",
-  targetMemberId
+  lastId = null
 ) => {
-  try {
-    const res = await jwtAxios.get(`${host}/follow/search/${targetMemberId}`, {
-      params: { tabCondition, search },
-    });
-    return res;
-  } catch (error) {
-    console.error(
-      error,
-      "유저 팔로워, 팔로잉 목록을 불러오는 데 실패하였습니다"
-    );
-    throw new Error(
-      "서버에서 유저 팔로워, 팔로잉 목록을 가져오는 중 오류가 발생했습니다."
-    );
+  let apiRoute = `${host}/follow/search/${targetMemberId}?tabCondition=${tabCondition}&search=${search}`;
+  if (lastId) {
+    apiRoute += `&lastId=${lastId}`;
   }
+  const res = await jwtAxios.get(apiRoute);
+  console.log("소셜팔로워팔로잉목록 res: ", res.data.data);
+  return res.data.data;
 };
+// export const getSocialList = async (
+//   targetMemberId,
+//   tabCondition,
+//   search = ""
+// ) => {
+//   try {
+//     const res = await jwtAxios.get(`${host}/follow/search/${targetMemberId}`, {
+//       params: { tabCondition, search },
+//     });
+//     return res;
+//   } catch (error) {
+//     console.error(
+//       error,
+//       "유저 팔로워, 팔로잉 목록을 불러오는 데 실패하였습니다"
+//     );
+//     throw new Error(
+//       "서버에서 유저 팔로워, 팔로잉 목록을 가져오는 중 오류가 발생했습니다."
+//     );
+//   }
+// };
 
 // 팔로우 상태 변경
 export const patchFollow = async (targetMemberId) => {
   try {
     const res = await jwtAxios.patch(`${host}/follow/${targetMemberId}`);
-    console.log("******res", res);
     return res;
   } catch (error) {
     console.error(error, "팔로우 상태를 변경하는 데 실패하였습니다");
@@ -53,16 +66,12 @@ export const patchFollow = async (targetMemberId) => {
 };
 
 // 유저 소셜 책장 - 책 목록
-export const getSocialBooks = async (
-  tabCondition,
-  search = "",
-  targetMemberId
-) => {
+export const getSocialBooks = async (status, sort, search, targetMemberId) => {
   try {
-    const res = await jwtAxios.get(`${host}/other/books/${targetMemberId}`, {
-      params: { tabCondition, search },
-    });
-    return res;
+    const res = await jwtAxios.get(
+      `${host}/other/books/${targetMemberId}?status=${status}&sort=${sort}&search=${search}`
+    );
+    return res.data.data;
   } catch (error) {
     console.error(error, "소셜 책장 책 목록을 불러오는 데 실패하였습니다");
     throw new Error(
