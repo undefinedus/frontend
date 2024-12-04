@@ -3,11 +3,7 @@ import { API_SERVER_HOST } from "./commonApi";
 import jwtAxios from "../util/jwtUtil";
 
 const rest_api_key = '433f010a1fa5963afe5402f4fa79bbb4';
-
-const redirect_uri = import.meta.env.MODE === "development"
-  ? 'http://localhost:5173/member/kakao'
-  : 'https://gongchaek.site/member/kakao';
-
+const redirect_uri = 'http://localhost:5173/member/kakao';
 // 카카오 개발자 콘솔에서 Client Secret 값을 가져와야 합니다
 const client_secret = 'TZRwcwKgGbDJh9NrqfQPHP9obzZULtNE';
 
@@ -60,10 +56,10 @@ export const getMemberWithToken = async (accessToken, refreshToken) => {
   }
 }
 
-// 책갈피 수신 여부 업데이트
+// 책갈피 수신 여부
 export const updateKakaoMessagePermission = async () => {
   try {
-    const res = await jwtAxios.post(`${API_SERVER_HOST}/api/member/kakao/message`);
+    const res = await jwtAxios.post(`${API_SERVER_HOST}/api/myPage/kakao/message`);
 
     console.log("Kakao Message Permission Updated:", res.data);
     alert('카카오 메시지 권한이 업데이트되었습니다.');
