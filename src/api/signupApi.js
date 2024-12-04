@@ -99,6 +99,8 @@ export const registMember = async (registerData) => {
 
 export const socialRegistMember = async (registerData) => {
   try {
+    console.log("data at api: ", registerData);
+    
     const res = await axios.post(`${host}/social-register`, registerData);
     if (res.data.result === "success") {
       return {

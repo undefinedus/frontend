@@ -24,7 +24,6 @@ export const kakaoLoginAsync = createAsyncThunk(
   'kakaoLoginAsync',
   async (authCode) => {
     const res = await getToken(authCode);
-    console.log("res: ", res);
     
     const result = await getMemberWithToken(res.access_token, res.refresh_token);
 
@@ -43,6 +42,8 @@ export const kakaoLoginAsync = createAsyncThunk(
       return {
         ...loginResponse,
         loginType: 'kakao',
+        kakaoAccessToken: result.member.kakaoAccessToken,
+        kakaoRefreshToken: result.member.kakaoRefreshToken
       };
     }
 
@@ -51,6 +52,8 @@ export const kakaoLoginAsync = createAsyncThunk(
       needsSignup: true,
       kakaoInfo: result.kakaoId,
       loginType: 'kakao',
+      kakaoAccessToken: result.kakaoAccessToken,
+      kakaoRefreshToken: result.kakaoRefreshToken
     };
   }
 );
@@ -74,6 +77,10 @@ const loginSlice = createSlice({
       removeCookie('member');
 
       return { ...initState };
+    },
+    updateKakaoTokens: (state, action) => {
+      state.kakaoAccessToken = action.payload.kakaoAccessToken;
+      state.kakaoRefreshToken = action.payload.kakaoRefreshToken;
     },
   },
   extraReducers: (builder) => {
@@ -116,6 +123,6 @@ const loginSlice = createSlice({
   },
 });
 
-export const { login, logout } = loginSlice.actions;
+export const { login, logout, updateKakaoTokens } = loginSlice.actions;
 
 export default loginSlice.reducer;

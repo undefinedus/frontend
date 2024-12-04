@@ -105,11 +105,7 @@ const SignupStepFour = ({ registerData, isSocial = false}) => {
   const handleRegister = async () => {
     try {
       const finalRegisterData = {
-        username: registerData.username,
-        password: registerData.password,
-        nickname: registerData.nickname,
-        birth: registerData.birth, // YYYY-MM-DD 형식인지 확인
-        gender: registerData.gender, // "MALE" 또는 "FEMALE"
+        ...registerData,
         preferences: selectedCategories.map(
           (category) => CATEGORY_MAPPING[category]
         ), // 선택된 카테고리 배열
