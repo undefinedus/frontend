@@ -102,13 +102,15 @@ const ProfileModifyingModal = ({ onClose }) => {
       <div className="flex flex-col items-center">
         {/* 프로필사진 */}
         <div className="relative rounded-full shadow-md flex justify-center items-center">
-          {profileImg === "defaultProfileImage.jpg" ? (
+          {profileImg === "defaultProfileImag.jpg" ? (
             <PortraitPlaceholder iconSize={72} circleSize={28} />
           ) : (
             <div className="w-28 h-28 rounded-full">
               <img
                 alt="myProfileImage"
-                src={profileImg}
+                src={
+                  "https://gongchaekbucket.s3.ap-northeast-2.amazonaws.com/%E1%84%8B%E1%85%AD%E1%86%BC%E1%84%80%E1%85%A9%E1%86%AF%E1%84%8C%E1%85%A1%E1%84%85%E1%85%B5.png"
+                }
                 className="w-full h-full rounded-full object-cover"
               />
             </div>
