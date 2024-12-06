@@ -3,10 +3,22 @@ import { API_SERVER_HOST } from "../commonApi";
 
 const host = `${API_SERVER_HOST}/api/myPage`;
 
+export const deleteProfileImage = async () => {
+  const res = await jwtAxios.post(`${host}/profile/drop`);
+
+  console.log("res at api: ", res);
+
+  return res;
+};
+
 export const modifyProfile = async (data) => {
   console.log("data at api: ", data);
 
-  const res = await jwtAxios.patch(`${host}/profile`);
+  const res = await jwtAxios.patch(`${host}/profile`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 
   console.log("res at api: ", res);
 

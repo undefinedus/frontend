@@ -1,23 +1,28 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SlrModalLayout from "../../../layouts/SlrModalLayout";
-import { getMySocialInfo } from "../../../api/social/mySocialAPI";
 import { nicknameDuplicateCheck } from "../../../api/signupApi";
 import { PiCameraFill, PiXCircleFill } from "react-icons/pi";
 import PortraitPlaceholder from "../../commons/PortraitPlaceholder";
+import {
+  deleteProfileImage,
+  modifyProfile,
+} from "../../../api/settings/myPageApi";
+import TwoButtonModal from "../commons/TwoButtonModal";
 
-const ProfileModifyingModal = ({ onClose }) => {
-  const [myInfo, setMyInfo] = useState({});
+const ProfileModifyingModal = ({ onClose, myInfo, setRefresh }) => {
   const fileInputRef = useRef(null);
   const [profileImg, setProfileImg] = useState("");
   const [nickname, setNickname] = useState("");
   const [isValidNickname, setIsValidNickname] = useState(false);
   const [wrongNickname, setWrongNickname] = useState(false);
   const [isReady, setIsReady] = useState(null);
+  const [optionModalOpen, setOptionModalOpen] = useState(false);
+  const [resetProfileImage, setResetProfileImage] = useState(false);
 
-  // 초기 정보 로드
   useEffect(() => {
-    fetchMyInfo();
-  }, []);
+    setProfileImg(myInfo.profileImage);
+    setNickname(myInfo.nickname);
+  }, [myInfo]);
 
   // 닉네임 유효성 검사
   useEffect(() => {
@@ -40,15 +45,33 @@ const ProfileModifyingModal = ({ onClose }) => {
     }
   }, [isValidNickname, nickname, profileImg]);
 
-  const fetchMyInfo = async () => {
+  const handleSubmit = async () => {
+    if (!isReady) return;
+
+    if (resetProfileImage) {
+      fetchDeleteProfileImage();
+    }
+
+    const formData = new FormData();
+
+    const file = fileInputRef.current.files[0];
+
+    if (file) {
+      formData.append("profileImage", file);
+    }
+
+    if (nickname && nickname !== "") {
+      formData.append("nickname", nickname);
+    }
+
     try {
-      const res = await getMySocialInfo();
-      console.log(res.data);
-      setMyInfo(res.data);
-      setProfileImg(res.data.profileImage);
-      setNickname(res.data.nickname);
+      const res = await modifyProfile(formData);
+      console.log("Profile updated successfully: ", res);
+      setRefresh((prev) => !prev);
+      handleCloseOptionModal();
+      onClose(false);
     } catch (error) {
-      console.error(error);
+      console.error("Failed to update profile: ", error);
     }
   };
 
@@ -57,10 +80,12 @@ const ProfileModifyingModal = ({ onClose }) => {
       setIsValidNickname(null);
       return;
     }
+
     if (!nicknameChecker(nickname)) {
       setWrongNickname(true);
       return;
     }
+
     try {
       const res = await nicknameDuplicateCheck(nickname);
       console.log("nickname check: ", res);
@@ -79,6 +104,7 @@ const ProfileModifyingModal = ({ onClose }) => {
         setProfileImg(e.target.result); // 선택한 파일의 데이터를 profileImg에 설정
       };
       reader.readAsDataURL(file); // 파일 데이터를 Base64로 읽음
+      setResetProfileImage(false);
     }
   };
 
@@ -89,6 +115,11 @@ const ProfileModifyingModal = ({ onClose }) => {
     }
   };
 
+  const handleResetProfileImage = (boolean) => {
+    setResetProfileImage(boolean);
+    handleCloseOptionModal();
+  };
+
   const nicknameChecker = (nickname) => {
     if (!nickname || nickname.trim() === "") {
       return false;
@@ -97,29 +128,45 @@ const ProfileModifyingModal = ({ onClose }) => {
     return regex.test(nickname);
   };
 
+  const handleOpenOptionModal = () => {
+    setOptionModalOpen(true);
+  };
+
+  const handleCloseOptionModal = () => {
+    setOptionModalOpen(false);
+  };
+
+  const fetchDeleteProfileImage = async () => {
+    try {
+      const res = await deleteProfileImage();
+      console.log("delete profileImage: ", res);
+      setRefresh((prev) => !prev);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <SlrModalLayout size={"profile"} onClose={() => onClose(false)}>
       <div className="flex flex-col items-center">
         {/* 프로필사진 */}
-        <div className="relative rounded-full shadow-md flex justify-center items-center">
-          {profileImg === "defaultProfileImag.jpg" ? (
+        <div
+          className="relative rounded-full shadow-md flex justify-center items-center"
+          onClick={handleOpenOptionModal}
+        >
+          {profileImg === "defaultProfileImage.jpg" || resetProfileImage ? (
             <PortraitPlaceholder iconSize={72} circleSize={28} />
           ) : (
             <div className="w-28 h-28 rounded-full">
               <img
                 alt="myProfileImage"
-                src={
-                  "https://gongchaekbucket.s3.ap-northeast-2.amazonaws.com/%E1%84%8B%E1%85%AD%E1%86%BC%E1%84%80%E1%85%A9%E1%86%AF%E1%84%8C%E1%85%A1%E1%84%85%E1%85%B5.png"
-                }
+                src={profileImg}
                 className="w-full h-full rounded-full object-cover"
               />
             </div>
           )}
 
-          <div
-            className="absolute w-10 h-10 shadow-md bottom-0 -end-4 bg-white rounded-full flex justify-center items-center"
-            onClick={() => fileInputRef.current.click()}
-          >
+          <div className="absolute w-10 h-10 shadow-md bottom-0 -end-4 bg-white rounded-full flex justify-center items-center">
             <PiCameraFill size={24} color={"#0c0a09"} />
             <input
               type="file"
@@ -178,11 +225,27 @@ const ProfileModifyingModal = ({ onClose }) => {
                 ? "bg-undpoint text-white"
                 : "bg-unddisabled text-undtextgray"
             }`}
+            onClick={handleSubmit}
           >
             수정하기
           </button>
         </div>
       </div>
+      {optionModalOpen && (
+        <TwoButtonModal
+          cancelText="기본 프로필"
+          onCancel={() => handleResetProfileImage(true)}
+          confirmText="프로필 변경"
+          onConfirm={() => {
+            fileInputRef.current.click();
+            handleCloseOptionModal();
+          }}
+          onClose={handleCloseOptionModal}
+        >
+          <p>{`                 ↑                  `}</p>
+          {`<--------------- 취소 --------------->`}
+        </TwoButtonModal>
+      )}
     </SlrModalLayout>
   );
 };

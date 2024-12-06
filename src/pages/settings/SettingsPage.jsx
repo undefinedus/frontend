@@ -6,11 +6,15 @@ import ProfileBox from "../../components/settings/ProfileBox";
 import { useNavigate } from "react-router-dom";
 import ProfileModifyingModal from "../../components/modal/settings/ProfileModifyingModal";
 import useCustomLogin from "../../hooks/useCustomLogin";
+import { getMySocialInfo } from "../../api/social/mySocialAPI";
 
 const SettingsPage = () => {
   const { loginState } = useCustomLogin();
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const navigate = useNavigate();
+
+  const [myInfo, setMyInfo] = useState({});
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     // roles에 ADMIN이 포함되어 있는지 확인하고 리다이렉션
@@ -19,15 +23,33 @@ const SettingsPage = () => {
     }
   }, [loginState.roles, navigate]);
 
+  // 초기 정보 로드
+  useEffect(() => {
+    fetchMyInfo();
+  }, [loginState, refresh]);
+
+  const fetchMyInfo = async () => {
+    try {
+      const res = await getMySocialInfo();
+      console.log(res.data);
+      setMyInfo(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleProfileModal = (boolean) => {
     setIsProfileModalOpen(boolean);
   };
 
   return (
     <BasicLayout>
-      <div className="w-full flex flex-col px-7 py-8 gap-4">
+      <div className="fixed top-0 left-0 right-0">
+        <OnlyTitle title={"설정"} />
+      </div>
+      <div className="w-full flex flex-col px-6 pt-20 gap-4">
         <div className="w-full">
-          <ProfileBox openModal={handleProfileModal} />
+          <ProfileBox myInfo={myInfo} openModal={handleProfileModal} />
         </div>
         <div className="w-full">
           <MenuBox
@@ -65,6 +87,8 @@ const SettingsPage = () => {
         <ProfileModifyingModal
           onClose={handleProfileModal}
           profile={loginState}
+          myInfo={myInfo}
+          setRefresh={setRefresh}
         />
       )}
     </BasicLayout>
