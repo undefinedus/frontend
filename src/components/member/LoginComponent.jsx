@@ -63,7 +63,12 @@ const LoginComponent = () => {
         console.log("로그인 에러");
         setLoginError("아이디 또는 비밀번호가 일치하지 않습니다");
       } else {
-        moveToPath("/myBook");
+        // ADMIN 역할이 포함되어 있는지 확인
+        if (data.roles?.includes("ADMIN")) {
+          moveToPath("/admin");
+        } else {
+          moveToPath("/myBook");
+        }
       }
     });
   };

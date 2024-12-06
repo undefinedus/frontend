@@ -1,0 +1,36 @@
+.fc-toolbar-chunk > button {
+  background-color: #7d5c4d !important;
+  border: #7d5c4d !important;
+  width: 2rem;
+  height: 2rem;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important; /* 기본 패딩 제거 */
+}
+
+.fc-toolbar-chunk > button span {
+  font-size: 1rem; /* 화살표 크기 조절 */
+}
+
+.fc.fc-media-screen.fc-direction-ltr.fc-theme-standard {
+  background-color: white !important;
+}
+
+.calendar-container .fc {
+  height: auto !important;
+  font-size: 1.1rem;
+}
+.fc .fc-daygrid-day-number {
+  font-size: 1.1rem;
+}
+.fc .fc-toolbar-title {
+  font-size: 1.3rem;
+}
+.fc-day-today {
+  background-color: #f0f9ff !important;
+}
+.fc-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

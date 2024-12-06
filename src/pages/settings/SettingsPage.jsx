@@ -1,22 +1,26 @@
+
 import React, { useState } from "react";
 import BasicLayout from "../../layouts/BasicLayout";
 import { OnlyTitle } from "../../layouts/TopLayout";
 import MenuBox from "../../components/settings/MenuBox";
 import ProfileBox from "../../components/settings/ProfileBox";
-import ProfileModifyingModal from "../../components/modal/settings/ProfileModifyingModal";
+import { useNavigate } from "react-router-dom";
 import useCustomLogin from "../../hooks/useCustomLogin";
 
 const SettingsPage = () => {
-  const { isLogin, loginState } = useCustomLogin();
-  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const { loginState } = useCustomLogin();
+  const navigate = useNavigate();
 
-  const handleProfileModal = (boolean) => {
-    setIsProfileModalOpen(boolean);
-  };
+  useEffect(() => {
+    // roles에 ADMIN이 포함되어 있는지 확인하고 리다이렉션
+    if (loginState.roles?.includes("ADMIN")) {
+      navigate("/admin", { replace: true });
+    }
+  }, [loginState.roles, navigate]);
+
 
   return (
     <BasicLayout>
-      <OnlyTitle title="설정" showLine={true} />
       <div className="w-full flex flex-col px-7 py-8 gap-4">
         <div className="w-full">
           <ProfileBox openModal={handleProfileModal} />
