@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-mobile-datepicker";
 
-const TimePickerSlider = ({ children, time, setTime, minTime, maxTime }) => {
+const TimePickerSlider = ({
+  children,
+  time,
+  setTime,
+  minTime,
+  maxTime,
+  disabled,
+}) => {
   const [isOpen, setIsOpen] = useState(false); // DatePicker 열기/닫기 상태
   const [selectedTime, setSelectedTime] = useState(() =>
     time && !isNaN(new Date(time)) ? new Date(time) : new Date()
@@ -27,12 +34,6 @@ const TimePickerSlider = ({ children, time, setTime, minTime, maxTime }) => {
     },
   };
 
-  useEffect(() => {
-    console.log("민타임:", minTime, "맥스타임:", maxTime);
-    console.log("파스민타임:", parsedMinTime, "파스맥스타임:", parsedMaxTime);
-    console.log("타임:", time);
-  }, [minTime, maxTime, time]);
-
   const handleSelect = (time) => {
     setSelectedTime(time);
 
@@ -46,21 +47,23 @@ const TimePickerSlider = ({ children, time, setTime, minTime, maxTime }) => {
   return (
     <div className="w-full">
       <span onClick={() => setIsOpen(true)}>{children}</span>
-      <DatePicker
-        isOpen={isOpen}
-        theme="default"
-        value={selectedTime}
-        dateConfig={{
-          ...dateConfig,
-        }}
-        min={parsedMinTime}
-        max={parsedMaxTime}
-        showHeader={false}
-        confirmText="확인"
-        cancelText="취소"
-        onSelect={handleSelect}
-        onCancel={() => setIsOpen(false)}
-      />
+      {!disabled && (
+        <DatePicker
+          isOpen={isOpen}
+          theme="default"
+          value={selectedTime}
+          dateConfig={{
+            ...dateConfig,
+          }}
+          min={parsedMinTime}
+          max={parsedMaxTime}
+          showHeader={false}
+          confirmText="확인"
+          cancelText="취소"
+          onSelect={handleSelect}
+          onCancel={() => setIsOpen(false)}
+        />
+      )}
     </div>
   );
 };

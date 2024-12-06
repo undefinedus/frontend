@@ -42,7 +42,12 @@ const SocialProfile = ({
           } flex-shrink-0 rounded-full overflow-hidden`}
         >
           <img
-            src={socialProfile.profileImage || basicProfile} // 기본 이미지 처리
+            src={
+              socialProfile.profileImage &&
+              socialProfile.profileImage !== "defaultProfileImage.jpg"
+                ? socialProfile.profileImage
+                : basicProfile
+            } // 기본 이미지 처리
             alt={`${socialProfile.nickname}의 프로필`}
             className="w-full h-full object-cover"
           />

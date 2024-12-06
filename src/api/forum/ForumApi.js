@@ -36,10 +36,14 @@ export const getForumDetail = async (discussionId) => {
 // };
 
 // 발의글 작성
-export const writePropose = async (data) => {
-  console.log("data at api: ", data);
-
-  const res = await jwtAxios.post(`${host}/register?isbn13=${isbn13}`, data, {
+export const writePropose = async (isbn13, title, content, startDate) => {
+  const data = {
+    isbn13,
+    title,
+    content,
+    startDate,
+  };
+  const res = await jwtAxios.post(`${host}/register`, data, {
     headers: { "Content-Type": "application/json" },
   });
   console.log("=========writePropose from api: ", res);
