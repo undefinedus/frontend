@@ -3,6 +3,7 @@ import {
   PiBookOpenDuotone,
   PiWarningCircleDuotone,
   PiEyesFill,
+  PiXCircleDuotone,
 } from "react-icons/pi";
 
 const ListNotice = ({ type }) => {
@@ -26,6 +27,34 @@ const ListNotice = ({ type }) => {
     socialSearch: {
       icon: <PiEyesFill size={32} color="#51392F" />,
       message: "새로운 소셜 친구를 찾아 보세요",
+    },
+    noProposed: {
+      icon: <PiXCircleDuotone size={32} color="#51392F" />,
+      message: (
+        <>
+          아직 발의된 주제가 없어요
+          <br />
+          흥미로운 토론 주제를 발의해 보세요
+        </>
+      ),
+    },
+    noScheduled: {
+      icon: <PiXCircleDuotone size={32} color="#51392F" />,
+      message: (
+        <>
+          아직 채택된 토론이 없어요
+          <br />
+          흥미로운 토론 주제에 투표해 보세요
+        </>
+      ),
+    },
+    noInProgress: {
+      icon: <PiXCircleDuotone size={32} color="#51392F" />,
+      message: "아직 진행 중인 토론이 없어요",
+    },
+    noCompleted: {
+      icon: <PiXCircleDuotone size={32} color="#51392F" />,
+      message: "아직 종료된 토론이 없어요",
     },
   };
 

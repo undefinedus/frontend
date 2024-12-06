@@ -57,7 +57,26 @@ const useDateDiff = () => {
     return differenceInDays;
   };
 
-  return { diffToday, diffEnd };
+  // 토론 - 예정, 진행 중
+  const diffFromNow = (targetTime) => {
+    const now = new Date();
+    const targetDate = new Date(targetTime);
+
+    const diffInMs = targetDate - now; // 시간 차이 (밀리초)
+    const diffInMinutes = Math.floor(diffInMs / (1000 * 60)); // 분 단위로 변환
+
+    if (diffInMinutes < 1) {
+      return ""; // 과거 시각
+    } else if (diffInMinutes < 60) {
+      return `${diffInMinutes}분`; // 1~59분
+    } else if (diffInMinutes < 1440) {
+      // 하루(24시간) 이내
+      const diffInHours = Math.floor(diffInMinutes / 60);
+      return `${diffInHours}시간`;
+    }
+  };
+
+  return { diffToday, diffEnd, diffFromNow };
 };
 
 export default useDateDiff;
