@@ -25,6 +25,8 @@ export const getSearchBookDetail = async (isbn13) => {
     const res = await jwtAxios.get(`${host}/detail`, {
       params: { isbn13 },
     });
+    console.log(res);
+
     return res.data.data[0];
   } catch (error) {
     console.error(error, "검색 결과를 불러오는 데 실패하였습니다");

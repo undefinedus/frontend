@@ -14,6 +14,8 @@ import {
   PiTrash,
   PiTrashSimple,
   PiPencilSimple,
+  PiSirenBold,
+  PiSiren,
 } from "react-icons/pi";
 
 // 제목만
@@ -170,9 +172,14 @@ export const PrevTitleAddBook = ({
 };
 
 // 이전 버튼 + 제목 + 수정 + 삭제
-export const PrevTitleModifyDelete = ({ onClick, title }) => {
+export const PrevTitleModifyDelete = ({ onClick, title, showLine = true }) => {
   return (
-    <div className="px-6 h-16 flex items-center justify-between relative border-unddisabled border-b">
+    // <div className="px-6 h-16 flex items-center justify-between relative border-unddisabled border-b">
+    <div
+      className={`h-16 flex items-center justify-between relative ${
+        showLine && "border-unddisabled border-b px-6"
+      }`}
+    >
       {/* 이전 버튼 */}
       <button className="absolute left-6" onClick={() => onClick("back")}>
         <PiCaretLeftBold size={28} color="#51392F" />
@@ -213,6 +220,7 @@ export const TitleSearch = ({ title, showLine = true }) => {
   );
 };
 
+// 이전 버튼 + 제목 + 툴팁
 export const PrevTitleInfo = ({ title, showLine, onClick, chlidren }) => {
   return (
     <div
@@ -234,6 +242,31 @@ export const PrevTitleInfo = ({ title, showLine, onClick, chlidren }) => {
         <PiInfo size={28} />
       </div>
       <div>{chlidren}</div>
+    </div>
+  );
+};
+
+// 이전 버튼 + 제목 + 신고버튼
+export const PrevTitleReport = ({ onClick, onReport, title, status }) => {
+  useEffect(() => {
+    console.log("*****book.status", status);
+  });
+  return (
+    <div className="h-16 flex items-center justify-between relative px-6">
+      {/* 이전 버튼 */}
+      <button onClick={onClick} className="flex">
+        <PiCaretLeftBold size={28} color="#51392F" />
+      </button>
+      {/* 제목 */}
+      <div className="font-bold text-undclickbrown text-xl mx-auto">
+        {title}
+      </div>
+      <button
+        onClick={onReport}
+        className="flex items-center justify-end right-0"
+      >
+        <PiSiren size={28} color="#51392F" />
+      </button>
     </div>
   );
 };

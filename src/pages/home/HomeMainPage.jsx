@@ -116,15 +116,15 @@ const HomePage = () => {
           <div className="fixed top-0 left-0 w-full z-50 bg-undbgmain">
             <TitleSearch title={"홈"} showLine={true} />
           </div>
-          {/* AI 추천 목록 */}
+          {/* 베스트 셀러 목록 */}
           <div className="pt-20 pl-6 pb-10">
             <div className="flex w-full h-full pb-2">
-              <PiTargetBold size={24} color="#D55636" />
+              <PiMedalFill size={24} color="#D55636" />
               <p className="ml-2 font-heavy text-undtextdark text-und18">
-                AI 추천 도서
+                주간 베스트 셀러
               </p>
             </div>
-            <HomeBooksList books={AIRecommend} onCardClick={handleCardClick} />
+            <HomeBooksList books={bestSeller} onCardClick={handleCardClick} />
           </div>
           {/* 취향 맞춤 추천 도서 목록 */}
           <div className="pb-10">
@@ -151,15 +151,15 @@ const HomePage = () => {
               </div>
             )}
           </div>
-          {/* 베스트 셀러 목록 */}
+          {/* AI 추천 목록 */}
           <div className="pb-20 pl-6">
             <div className="flex w-full h-full pb-2">
-              <PiMedalFill size={24} color="#D55636" />
+              <PiTargetBold size={24} color="#D55636" />
               <p className="ml-2 font-heavy text-undtextdark text-und18">
-                주간 베스트 셀러
+                AI 추천 도서
               </p>
             </div>
-            <HomeBooksList books={bestSeller} onCardClick={handleCardClick} />
+            <HomeBooksList books={AIRecommend} onCardClick={handleCardClick} />
           </div>
         </div>
       )}

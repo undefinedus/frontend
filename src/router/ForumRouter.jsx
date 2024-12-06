@@ -6,7 +6,7 @@ const ForumMain = lazy(() => import("../pages/forum/ForumMainPage")); //토론 �
 const WritePropose = lazy(() => import("../pages/forum/WriteProposePage")); // 발의 작성
 const ProposeDetail = lazy(() => import("../pages/forum/ProposeDetailPage")); // 발의 상세
 const ProposeSearchBook = lazy(() =>
-  import("../pages/forum/ProposeSearchBookPage")
+  import("../pages/mybook/MyBookSearchPage")
 ); // 발의할 책 검색 -> 책갈피 책 추가 검색 MYBOOK_0021과 동일
 const ModifyPropose = lazy(() => import("../pages/forum/ModifyProposePage")); // 발의 수정
 
@@ -50,14 +50,6 @@ const ForumRouter = () => {
         }
       />
       <Route
-        path="propose/:id"
-        element={
-          <Suspense fallback={<LoadingPage />}>
-            <ProposeDetail />
-          </Suspense>
-        }
-      />
-      <Route
         path="propose/searchBook"
         element={
           <Suspense fallback={<LoadingPage />}>
@@ -66,7 +58,15 @@ const ForumRouter = () => {
         }
       />
       <Route
-        path="propose/modify/:id"
+        path="propose/:discussionId"
+        element={
+          <Suspense fallback={<LoadingPage />}>
+            <ProposeDetail />
+          </Suspense>
+        }
+      />
+      <Route
+        path="propose/modify/:discussionId"
         element={
           <Suspense fallback={<LoadingPage />}>
             <ModifyPropose />
@@ -74,7 +74,7 @@ const ForumRouter = () => {
         }
       />
       <Route
-        path="scheduled/:id"
+        path="scheduled/:discussionId"
         element={
           <Suspense fallback={<LoadingPage />}>
             <ScheduledDetail />
@@ -82,7 +82,7 @@ const ForumRouter = () => {
         }
       />
       <Route
-        path="inprogress/:id"
+        path="inprogress/:discussionId"
         element={
           <Suspense fallback={<LoadingPage />}>
             <InprogressDetail />
@@ -90,7 +90,7 @@ const ForumRouter = () => {
         }
       />
       <Route
-        path="inprogress/opinions/:id"
+        path="inprogress/opinions/:discussionId"
         element={
           <Suspense fallback={<LoadingPage />}>
             <InprogressOpinions />
@@ -98,7 +98,7 @@ const ForumRouter = () => {
         }
       />
       <Route
-        path="completed/:id"
+        path="completed/:discussionId"
         element={
           <Suspense fallback={<LoadingPage />}>
             <CompletedDetail />
@@ -106,7 +106,7 @@ const ForumRouter = () => {
         }
       />
       <Route
-        path="completed/forumAnalysis/:id"
+        path="completed/forumAnalysis/:discussionId"
         element={
           <Suspense fallback={<LoadingPage />}>
             <ForumAnalysis />
@@ -114,7 +114,7 @@ const ForumRouter = () => {
         }
       />
       <Route
-        path="complete/opinions/:id"
+        path="complete/opinions/:discussionId"
         element={
           <Suspense fallback={<LoadingPage />}>
             <CompletedOpinions />
