@@ -1,14 +1,15 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BasicLayout from "../../layouts/BasicLayout";
 import { OnlyTitle } from "../../layouts/TopLayout";
 import MenuBox from "../../components/settings/MenuBox";
 import ProfileBox from "../../components/settings/ProfileBox";
 import { useNavigate } from "react-router-dom";
+import ProfileModifyingModal from "../../components/modal/settings/ProfileModifyingModal";
 import useCustomLogin from "../../hooks/useCustomLogin";
 
 const SettingsPage = () => {
   const { loginState } = useCustomLogin();
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,6 +19,9 @@ const SettingsPage = () => {
     }
   }, [loginState.roles, navigate]);
 
+  const handleProfileModal = (boolean) => {
+    setIsProfileModalOpen(boolean);
+  };
 
   return (
     <BasicLayout>

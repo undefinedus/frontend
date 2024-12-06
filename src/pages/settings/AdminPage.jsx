@@ -31,7 +31,6 @@ const AdminPage = () => {
 
   return (
     <BasicLayout>
-      <OnlyTitle title="설정" showLine={true} />
       <div className="w-full flex flex-col px-7 py-8 gap-4">
         <div className="w-full">
           <ProfileBox />
