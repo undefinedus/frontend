@@ -13,6 +13,7 @@ import useDateDiff from "../../hooks/useDateDiff";
 
 // 토론 카드형 목록
 const ForumCard = ({ forum, onClick }) => {
+  const { diffFromNow } = useDateDiff();
   return (
     <div
       className="w-full py-5 border-b border-unddisabled first:pt-0 last:border-none last:pb-0"
@@ -81,8 +82,8 @@ const ForumCard = ({ forum, onClick }) => {
                     <PiClockCountdown size={16} color="78716C" />
                   </div>
                   {forum.status === "IN_PROGRESS"
-                    ? `종료 10분 전`
-                    : `2시간 후 시작`}
+                    ? `종료 ${diffFromNow(forum.closedAt)} 전`
+                    : `${diffFromNow(forum.startDateTime)} 후 시작`}
                 </>
               )}
             </div>

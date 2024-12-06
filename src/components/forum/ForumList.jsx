@@ -4,7 +4,7 @@ import ForumCard from "./ForumCard";
 
 const ForumList = ({ forums, onCardClick }) => {
   return (
-    <div className="py-4 w-full">
+    <div className="pb-4 w-full">
       {forums.map((forum, index) => (
         <ForumCard
           key={index}

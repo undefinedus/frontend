@@ -3,7 +3,7 @@ import jwtAxios from "../../util/jwtUtil";
 
 // 홈 추천 도서 API - AladinAPIController
 const host = `${API_SERVER_HOST}/api/aladinApi`; // 베스트 셀러, 취향 맞춤
-const gptHost = `${API_SERVER_HOST}/api/chatGpt`; // AI 추천 도서
+const gptHost = `${API_SERVER_HOST}/api/ai`; // AI 추천 도서
 
 // 베스트셀러 목록 출력
 export const getBestSeller = async () => {
