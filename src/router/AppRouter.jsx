@@ -5,6 +5,7 @@ import SocialRouter from "./SocialRouter";
 import MyBookRouter from "./MyBookRouter";
 import ForumRouter from "./ForumRouter";
 import SettingsRouter from "./SettingsRouter";
+import AdminRouter from "./AdminRouter";
 import MainPage from "../pages/MainPage";
 
 const AppRouter = () => {
@@ -18,6 +19,7 @@ const AppRouter = () => {
         <Route path="/myBook/*" element={<MyBookRouter />} />
         <Route path="/forum/*" element={<ForumRouter />} />
         <Route path="/settings/*" element={<SettingsRouter />} />
+        <Route path="/admin/*" element={<AdminRouter />} />
       </Routes>
     </BrowserRouter>
   );

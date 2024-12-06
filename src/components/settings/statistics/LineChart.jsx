@@ -71,7 +71,7 @@ const LineChart = ({ data }) => {
           precision: 0.01,
           velocity: 1,
         }}
-        transitionMode="pushIn"
+        transitionMode="pushOut"
         enableGridY={false}
       />
     </div>

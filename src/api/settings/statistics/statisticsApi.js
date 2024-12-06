@@ -1,5 +1,5 @@
-import jwtAxios from "../../util/jwtUtil";
-import { API_SERVER_HOST } from "../commonApi";
+import jwtAxios from "../../../util/jwtUtil";
+import { API_SERVER_HOST } from "../../commonApi";
 const host = `${API_SERVER_HOST}/api/statistics`;
 
 export const getCategoryStatistics = async () => {

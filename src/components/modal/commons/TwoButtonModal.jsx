@@ -2,7 +2,10 @@ import React from "react";
 
 const TwoButtonModal = ({ children, onCancel, onConfirm }) => {
   return (
-    <div className="w-full fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+    <div
+      className="w-full fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50"
+      onClick={onCancel}
+    >
       <div className="bg-white rounded-lg px-4 py-6">
         <div className="w-72">{children}</div>
         <div className="w-72 pt-4 flex gap-4 justify-center items-center">

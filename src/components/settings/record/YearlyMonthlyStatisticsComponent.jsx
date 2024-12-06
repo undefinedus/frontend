@@ -10,7 +10,9 @@ import {
   getMonthlyCompletedMyBookData,
   getMemberYears,
   getTotalStatisticsYearsBookInfo,
-} from "../../../api/statistics/statisticsApi";
+
+} from "../../../api/settings/statistics/statisticsApi";
+
 import YearDropdown from "../../settings/record/YearDropdown";
 
 function YearlyMonthlyStatisticsComponent() {

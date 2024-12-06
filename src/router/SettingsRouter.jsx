@@ -6,6 +6,9 @@ const Main = lazy(() => import("../pages/settings/SettingsPage"));
 const MyPage = lazy(() => import("../pages/settings/MyPage"));
 const Record = lazy(() => import("../pages/settings/RecordPage"));
 const Notifications = lazy(() => import("../pages/settings/NotificationsPage"));
+const ChangePassword = lazy(() =>
+  import("../pages/settings/ChangePasswordPage")
+);
 
 const SettingsRouter = () => {
   return (
@@ -39,6 +42,14 @@ const SettingsRouter = () => {
         element={
           <Suspense fallback={<LoadingPage />}>
             <Notifications />
+          </Suspense>
+        }
+      />
+      <Route
+        path="changePassword"
+        element={
+          <Suspense fallback={<LoadingPage />}>
+            <ChangePassword />
           </Suspense>
         }
       />

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { PiMedalFill } from "react-icons/pi";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import PieChart from "../statistics/PieChart";
-import { getCategoryStatistics } from "../../../api/statistics/statisticsApi";
+import { getCategoryStatistics } from "../../../api/settings/statistics/statisticsApi";
 
 const CategoryComponent = () => {
   const [statisticsData, setStatisticsData] = useState([]);
