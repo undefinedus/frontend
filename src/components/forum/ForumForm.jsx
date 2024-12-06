@@ -115,6 +115,12 @@ const ForumForm = ({ onSubmit, children }) => {
     });
   };
 
+  const handleOnSubmit = () => {
+    const startDate = date + "T" + time;
+
+    onSubmit(book.isbn13, subjectText, contentText, startDate);
+  };
+
   return (
     <div>
       <div className="flex flex-col w-full h-full px-6 pt-20 pb-20 gap-4">
@@ -137,6 +143,7 @@ const ForumForm = ({ onSubmit, children }) => {
           onChange={(e) => setSubjectText(e.target.value)}
           maxLength={100}
           rows={1} // 기본 행 수
+          disabled={!book?.title} // book?.title 값이 없으면 비활성화
         />
         {/* 발의 내용 */}
         <ResizableTextarea
@@ -145,6 +152,7 @@ const ForumForm = ({ onSubmit, children }) => {
           onChange={(e) => setContentText(e.target.value)}
           maxLength={1500}
           rows={20} // 기본 행 수
+          disabled={!subjectText}
         />
         {/* 토론 예정 시간 */}
         <div className="flex flex-col text-left justify-start gap-1">
@@ -166,6 +174,7 @@ const ForumForm = ({ onSubmit, children }) => {
               }}
               minDate={minDate}
               maxDate={maxDate}
+              disabled={!contentText}
             >
               <div
                 className={`flex w-full h-12 p-2 justify-center text-und14 border border-unddisabled rounded-[10px] items-center bg-white ${
@@ -212,9 +221,10 @@ const ForumForm = ({ onSubmit, children }) => {
         </div>
         {/* 제출 버튼 */}
         <Button
-          className="text-white py-2.5 rounded-full font-bold text-und18 w-full"
-          color="undpoint"
-          onClick={onSubmit}
+          className="py-2.5 rounded-full font-bold text-und18 w-full"
+          color={time === "시간 선택" ? "unddisabled" : "undpoint"}
+          onClick={time !== "시간 선택" ? handleOnSubmit : undefined}
+          buttonDisabled={time === "시간 선택"}
         >
           {children}
         </Button>

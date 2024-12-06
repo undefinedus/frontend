@@ -37,7 +37,12 @@ const SocialCard = ({
       {/* 프로필 이미지 */}
       <div className="w-14 h-14 items-center flex-shrink-0 rounded-full overflow-hidden">
         <img
-          src={profile.profileImage || basicProfile} // 기본 이미지 처리
+          src={
+            profile.profileImage &&
+            profile.profileImage !== "defaultProfileImage.jpg"
+              ? profile.profileImage
+              : basicProfile
+          } // 기본 이미지 처리
           alt={`${profile.nickname}의 프로필`}
           className="w-full h-full object-cover"
         />

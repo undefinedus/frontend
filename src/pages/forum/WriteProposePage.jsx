@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import BasicLayout from "../../layouts/BasicLayout";
 import { PrevTitle } from "../../layouts/TopLayout";
 import ForumForm from "../../components/forum/ForumForm";
+import { writePropose } from "../../api/forum/ForumApi";
 
 const WriteProposePage = () => {
   const navigate = useNavigate();
@@ -16,6 +17,30 @@ const WriteProposePage = () => {
     navigate("/forum/list");
   };
 
+  // 작성하기 버튼 클릭 핸들러
+  const handleSubmit = (isbn13, subjectText, contentText, startDate) => {
+    fetchWritePropose(isbn13, subjectText, contentText, startDate);
+  };
+
+  const fetchWritePropose = async (
+    isbn13,
+    subjectText,
+    contentText,
+    startDate
+  ) => {
+    try {
+      const res = await writePropose(
+        isbn13,
+        subjectText,
+        contentText,
+        startDate
+      );
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <BasicLayout>
       <div>
@@ -27,11 +52,7 @@ const WriteProposePage = () => {
           />
         </div>
         <div className="flex flex-col w-full h-full">
-          <ForumForm
-          // onSubmit={}
-          >
-            작성하기
-          </ForumForm>
+          <ForumForm onSubmit={handleSubmit}>작성하기</ForumForm>
         </div>
       </div>
     </BasicLayout>

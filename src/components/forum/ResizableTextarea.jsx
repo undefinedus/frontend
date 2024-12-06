@@ -7,6 +7,7 @@ const ResizableTextarea = ({
   maxLength, // 최대 문자 수
   placeholder, // placeholder 텍스트
   rows = 1, // 기본 행 수 (디폴트값: 1)
+  disabled,
 }) => {
   const textareaRef = useRef(null);
 
@@ -43,6 +44,7 @@ const ResizableTextarea = ({
         placeholder={placeholder}
         rows={rows} // props로 받은 초기 행 수 설정
         style={{ overflow: "hidden" }}
+        disabled={disabled}
       />
     </div>
   );
