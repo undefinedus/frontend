@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
+import { getStamps } from "../../api/settings/statistics/stampApi";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import koLocale from "@fullcalendar/core/locales/ko";
 import "./StatisticsFullCalendar.css";
 
 const StatisticsFullCalendar = () => {
@@ -8,6 +10,7 @@ const StatisticsFullCalendar = () => {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth() + 1; // JavaScript의 월은 0부터 시작
+  const [events, setEvents] = useState([]);
 
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [selectedMonth, setSelectedMonth] = useState(currentMonth);
@@ -18,6 +21,62 @@ const StatisticsFullCalendar = () => {
     { length: 11 },
     (_, i) => currentYear - 10 + i
   ).filter((year) => year <= currentYear);
+
+  // API 데이터를 가져오는 함수
+  const fetchStamps = async (year, month) => {
+    try {
+      const response = await getStamps(year, month);
+      const stamps = response.data.data;
+
+      // 이벤트 데이터 생성
+      const newEvents = Object.entries(stamps).map(([date, books]) => ({
+        date,
+        books: books,
+      }));
+      setEvents(newEvents);
+    } catch (error) {
+      console.error("Failed to fetch stamps:", error);
+    }
+  };
+
+  // 년도나 월이 변경될 때 데이터 가져오기
+  useEffect(() => {
+    fetchStamps(selectedYear, selectedMonth);
+  }, [selectedYear, selectedMonth]);
+
+  const handleDayCellContent = (arg) => {
+    const dayNumber = arg.dayNumberText.replace("일", "");
+    const currentDate = arg.date.toISOString().split("T")[0];
+    const dayEvents = events.find((event) => event.date === currentDate);
+
+    return (
+      <div className="day-cell-content">
+        <div className="day-number">{dayNumber}</div>
+        <div
+          className={`book-covers ${
+            dayEvents?.books?.length > 1 ? "grid-layout" : "single-layout"
+          }`}
+        >
+          {dayEvents &&
+            dayEvents.books &&
+            dayEvents.books.slice(0, 4).map((book, index) => (
+              <div
+                key={book.myBookId}
+                className={`book-cover-container ${
+                  dayEvents.books.length === 1 ? "single-image" : ""
+                }`}
+              >
+                <img
+                  src={book.bookCover}
+                  alt={book.bookTitle}
+                  className="book-cover"
+                />
+              </div>
+            ))}
+        </div>
+      </div>
+    );
+  };
 
   // 월 배열 생성
   const months = Array.from({ length: 12 }, (_, i) => i + 1);
@@ -102,11 +161,14 @@ const StatisticsFullCalendar = () => {
         ref={calendarRef}
         plugins={[dayGridPlugin]}
         initialView="dayGridMonth"
+        locale={koLocale}
         headerToolbar={{
           left: "prev",
           center: "",
           right: "next",
         }}
+        dayHeaderFormat={{ weekday: "short" }}
+        dayCellContent={handleDayCellContent}
         datesSet={handleDateSet}
         className="mt-16"
         nextDayThreshold="00:00:00"
