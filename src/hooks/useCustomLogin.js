@@ -18,6 +18,10 @@ const useCustomLogin = () => {
     dispatch(logout());
   };
 
+  const isAdmin = () => {
+    return loginState.roles?.includes("ADMIN");
+  };
+
   const moveToPath = (path) => {
     navigate({ pathname: path }, { replace: true });
   };
@@ -29,6 +33,7 @@ const useCustomLogin = () => {
   return {
     loginState,
     isLogin,
+    isAdmin,
     doLogin,
     doLogout,
     moveToPath,

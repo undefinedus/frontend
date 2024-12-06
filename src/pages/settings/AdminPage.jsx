@@ -3,50 +3,48 @@ import BasicLayout from "../../layouts/BasicLayout";
 import { OnlyTitle } from "../../layouts/TopLayout";
 import MenuBox from "../../components/settings/MenuBox";
 import ProfileBox from "../../components/settings/ProfileBox";
-import { useNavigate } from "react-router-dom";
 import useCustomLogin from "../../hooks/useCustomLogin";
+import { useNavigate } from "react-router-dom";
 
-const SettingsPage = () => {
-  const { loginState } = useCustomLogin();
+const AdminPage = () => {
+  const { doLogout, moveToPath, isAdmin, loginState } = useCustomLogin();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // roles에 ADMIN이 포함되어 있는지 확인하고 리다이렉션
-    if (loginState.roles?.includes("ADMIN")) {
-      navigate("/admin", { replace: true });
+    if (!isAdmin()) {
+      alert("잘못된 접근 입니다.");
+      navigate(-1);
     }
-  }, [loginState.roles, navigate]);
+  }),
+    [isAdmin, navigate];
+
+  const handleClickLogout = () => {
+    doLogout();
+    alert("로그아웃되었습니다.");
+    moveToPath("/");
+  };
+
+  // 관리자가 아닌 경우 null 반환 (렌더링하지 않음)
+  if (!isAdmin()) {
+    return null;
+  }
 
   return (
     <BasicLayout>
+      <OnlyTitle title="설정" showLine={true} />
       <div className="w-full flex flex-col px-7 py-8 gap-4">
         <div className="w-full">
           <ProfileBox />
         </div>
         <div className="w-full">
           <MenuBox
-            text={"마이페이지"}
+            text={"신고 내역"}
             hasChild={false}
             childList={[]}
-            link={"myPage"}
+            link={"report"}
           />
         </div>
-        <div className="w-full">
-          <MenuBox
-            text={"독서 기록"}
-            hasChild={true}
-            childList={["통계"]}
-            link={["record"]}
-          />
-        </div>
-        <div className="w-full">
-          <MenuBox
-            text={"알림 설정"}
-            hasChild={false}
-            childList={[]}
-            link={"notifications"}
-          />
-        </div>
+
         <div className="w-full">
           <MenuBox
             text={"고객 지원"}
@@ -54,9 +52,19 @@ const SettingsPage = () => {
             childList={["FAQ", "1:1 문의", "공지사항", "개인정보처리방침"]}
           />
         </div>
+
+        <div className="w-full">
+          <MenuBox
+            text={"계정"}
+            hasChild={true}
+            childList={["비밀번호 변경", "로그아웃"]}
+            link={["changePassword", ""]}
+            onChildClick={handleClickLogout}
+          />
+        </div>
       </div>
     </BasicLayout>
   );
 };
 
-export default SettingsPage;
+export default AdminPage;
