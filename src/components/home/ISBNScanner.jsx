@@ -89,13 +89,13 @@ const ISBNScanner = ({ onSwitchToCapture, onCloseScannner, onSuccessScan }) => {
           </p>
         </div>
 
-        {/* 버튼들 */}
+        {/* 버튼 */}
         <Button
           onClick={onSwitchToCapture}
           color="undpoint"
           className="h-12 rounded-3xl fixed bottom-8 left-6 right-6 text-und18 font-bold"
         >
-          직접 촬영
+          직접 촬영하기
         </Button>
       </div>
     </SlrModalLayout>

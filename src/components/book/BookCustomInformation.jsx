@@ -121,7 +121,7 @@ const BookCustomInformation = ({ book }) => {
         <div className="w-full flex items-center justify-between">
           <div className="text-und16 text-undtextdark font-bold">별점</div>
 
-          <div className="flex w-36 justify-between">
+          <div className="flex w-32 justify-between">
             <DrawMyRating myRating={myRating} />
           </div>
         </div>
@@ -137,14 +137,14 @@ const BookCustomInformation = ({ book }) => {
               oneLineReview?.length || 0
             }/${100}자)`}</div>
           </div>
-          <div className="w-full h-24">
-            <textarea
-              className={`w-full h-full bg-undbgsub rounded-xl text-center snap-center scrollbar-hide content-center p-3 text-undtextgray ${
+          <div className="w-full">
+            <div
+              className={`w-full bg-undbgsub rounded-xl whitespace-pre-wrap text-center snap-center content-center p-3 text-undtextgray ${
                 oneLineReview && "text-start"
               }`}
-              value={oneLineReview === "" ? "한 줄 평이 없어요" : oneLineReview}
-              readOnly
-            />
+            >
+              {oneLineReview === "" ? "한 줄 평이 없어요" : oneLineReview}
+            </div>
           </div>
         </div>
       )}

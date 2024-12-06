@@ -9,7 +9,9 @@ const SocialSignupPage = () => {
   const location = useLocation();
   const { kakaoInfo } = location.state;
 
-  console.log(kakaoInfo);
+  console.log("state: ",kakaoInfo);
+
+
 
   const [currentStep, setCurrentStep] = useState(3);
   const [registerData, setRegisterData] = useState({
@@ -18,6 +20,8 @@ const SocialSignupPage = () => {
     nickname: "",
     birth: "",
     gender: "",
+    kakaoAccessToken: kakaoInfo?.kakaoAccessToken || "",
+    kakaoRefreshToken : kakaoInfo?.kakaoRefreshToken || "",
     preferences: [],
   });
 
@@ -37,7 +41,7 @@ const SocialSignupPage = () => {
   },[registerData]);
 
   useEffect(() => {
-    handleRegisterDataUpdate({username: "kakao_" + kakaoInfo, password: "kakao_" + kakaoInfo})
+    handleRegisterDataUpdate({username: "kakao_" + kakaoInfo.kakaoInfo, password: "kakao_" + kakaoInfo.kakaoInfo})
   }, [kakaoInfo])
   return (
     <>

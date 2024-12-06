@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { loginPost } from '../api/loginApi';
 import { getCookie, removeCookie, setCookie } from '../util/cookieUtil';
-import { getAccessToken, getMemberWithAccessToken } from '../api/kakaoApi';
+import { getToken, getMemberWithToken } from '../api/kakaoApi';
 
 const initState = {
   email: '',
@@ -23,8 +23,12 @@ export const loginPostAsync = createAsyncThunk('loginPostAsync', (param) =>
 export const kakaoLoginAsync = createAsyncThunk(
   'kakaoLoginAsync',
   async (authCode) => {
-    const accessToken = await getAccessToken(authCode);
-    const result = await getMemberWithAccessToken(accessToken);
+    const res = await getToken(authCode);
+    
+    const result = await getMemberWithToken(res.access_token, res.refresh_token);
+
+    console.log("result: ", result);
+    
 
     if (result.result === 'exists') {
       // 기존 회원인 경우 자동 로그인 처리
@@ -38,6 +42,8 @@ export const kakaoLoginAsync = createAsyncThunk(
       return {
         ...loginResponse,
         loginType: 'kakao',
+        kakaoAccessToken: result.member.kakaoAccessToken,
+        kakaoRefreshToken: result.member.kakaoRefreshToken
       };
     }
 
@@ -46,6 +52,8 @@ export const kakaoLoginAsync = createAsyncThunk(
       needsSignup: true,
       kakaoInfo: result.kakaoId,
       loginType: 'kakao',
+      kakaoAccessToken: result.kakaoAccessToken,
+      kakaoRefreshToken: result.kakaoRefreshToken
     };
   }
 );
@@ -69,6 +77,10 @@ const loginSlice = createSlice({
       removeCookie('member');
 
       return { ...initState };
+    },
+    updateKakaoTokens: (state, action) => {
+      state.kakaoAccessToken = action.payload.kakaoAccessToken;
+      state.kakaoRefreshToken = action.payload.kakaoRefreshToken;
     },
   },
   extraReducers: (builder) => {
@@ -111,6 +123,6 @@ const loginSlice = createSlice({
   },
 });
 
-export const { login, logout } = loginSlice.actions;
+export const { login, logout, updateKakaoTokens } = loginSlice.actions;
 
 export default loginSlice.reducer;

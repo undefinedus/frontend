@@ -20,10 +20,15 @@ function KakaoRedirectPage(props) {
         const resultAction = await dispatch(kakaoLoginAsync(authCode));
         const payload = resultAction.payload;
 
+        console.log("payload: ", payload);
+        console.log("resultAction: ", resultAction);
+        
+
+
         if (payload.needsSignup) {
           // 신규 회원인 경우 회원가입 페이지로 이동
           navigate('/member/socialSignup', { 
-            state: { kakaoInfo: payload.kakaoInfo }
+            state: { kakaoInfo: payload }
           });
         } else if (!payload.error) {
           // 로그인 성공 시 메인 페이지로 이동

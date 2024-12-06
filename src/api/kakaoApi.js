@@ -1,5 +1,6 @@
 import axios from "axios";
 import { API_SERVER_HOST } from "./commonApi";
+import jwtAxios from "../util/jwtUtil";
 
 const rest_api_key = "433f010a1fa5963afe5402f4fa79bbb4";
 const redirect_uri = "http://localhost:5173/member/kakao";
@@ -14,12 +15,10 @@ export const getKakaoLoginLink = () => {
   return kakaoURL;
 };
 
-export const getAccessToken = async (authCode) => {
-  const header = {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-    },
-  };
+
+export const getToken = async (authCode) => {
+
+  const header = {headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"}}
 
   // URLSearchParams를 사용하여 파라미터를 form-data 형식으로 변환
   const params = new URLSearchParams();
@@ -31,24 +30,47 @@ export const getAccessToken = async (authCode) => {
 
   try {
     const res = await axios.post(access_token_url, params, header);
-    const accessToken = res.data.access_token;
-    return accessToken;
-  } catch (error) {
-    console.error("Token Error:", error.response?.data || error);
+    console.log("tokens: ", res);
+
+    return res.data; // 두 토큰 반환
+  } catch (error) { 
+    console.error('Token Error:', error.response?.data || error);
+
     throw error;
   }
 };
 
-export const getMemberWithAccessToken = async (accessToken) => {
+export const getMemberWithToken = async (accessToken, refreshToken) => {
   try {
     const res = await axios.get(`${API_SERVER_HOST}/api/member/kakao`, {
       params: {
-        accessToken: accessToken, // 파라미터 이름을 정확히 일치시킴
-      },
+
+        accessToken: accessToken,  // 파라미터 이름을 정확히 일치시킴.
+        refreshToken: refreshToken
+      }
+      
     });
-    return res.data;
+    console.log("------------------",res);
+    return res.data
+
   } catch (error) {
     console.error("Member API Error Response:", error.response?.data);
+    throw error;
+  }
+
+}
+
+// 책갈피 수신 여부
+export const updateKakaoMessagePermission = async () => {
+  try {
+    const res = await jwtAxios.post(`${API_SERVER_HOST}/api/myPage/kakao/message`);
+
+    console.log("Kakao Message Permission Updated:", res.data);
+    alert('카카오 메시지 권한이 업데이트되었습니다.');
+    return res.data;
+  } catch (error) {
+    console.error('Kakao Message Permission Update Error:', error.response?.data || error);
+    alert('카카오 메시지 권한 업데이트 중 오류가 발생했습니다.');
     throw error;
   }
 };

@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+
+import React, { useState } from "react";
 import BasicLayout from "../../layouts/BasicLayout";
 import { OnlyTitle } from "../../layouts/TopLayout";
 import MenuBox from "../../components/settings/MenuBox";
@@ -17,11 +18,12 @@ const SettingsPage = () => {
     }
   }, [loginState.roles, navigate]);
 
+
   return (
     <BasicLayout>
       <div className="w-full flex flex-col px-7 py-8 gap-4">
         <div className="w-full">
-          <ProfileBox />
+          <ProfileBox openModal={handleProfileModal} />
         </div>
         <div className="w-full">
           <MenuBox
@@ -55,6 +57,12 @@ const SettingsPage = () => {
           />
         </div>
       </div>
+      {isProfileModalOpen && (
+        <ProfileModifyingModal
+          onClose={handleProfileModal}
+          profile={loginState}
+        />
+      )}
     </BasicLayout>
   );
 };

@@ -6,6 +6,7 @@ const MyBookListPage = lazy(() => import("../pages/myBook/MyBookListPage"));
 const MyBookDetailPage = lazy(() => import("../pages/myBook/MyBookDetailPage"));
 const MyBookMarkPage = lazy(() => import("../pages/myBook/MyBookMarkPage"));
 const MyBookShelfPage = lazy(() => import("../pages/myBook/MyBookShelfPage"));
+const MyBookSearchPage = lazy(() => import("../pages/myBook/MyBookSearchPage"));
 
 const MyBookRouter = () => {
   return (
@@ -40,6 +41,14 @@ const MyBookRouter = () => {
         element={
           <Suspense fallback={<LoadingPage />}>
             <MyBookShelfPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="search"
+        element={
+          <Suspense fallback={<LoadingPage />}>
+            <MyBookSearchPage />
           </Suspense>
         }
       />

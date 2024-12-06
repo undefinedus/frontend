@@ -3,9 +3,6 @@ import HomeBookCard from "./HomeBookCard";
 
 // AI추천 도서 10개 목록
 const HomeBooksList = ({ books, onCardClick }) => {
-  console.log("HomeBooksList books:", books); // 디버깅
-  console.log("HomeBooksList onCardClick:", onCardClick); // 디버깅
-
   return (
     <div>
       <div className="flex flex-low overflow-x-auto scrollbar-hide w-full items-baseline gap-4 pr-6">
