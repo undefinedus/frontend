@@ -16,6 +16,7 @@ function ReportDetailPage() {
   const [isApprovalModalOpen, setIsApprovalModalOpen] = useState(false);
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
   const [status, setStatus] = useState("");
+  const [reasonStatus, setReasonStatus] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,6 +60,7 @@ function ReportDetailPage() {
   };
 
   const reportFields = [
+    { label: "ID", value: reportDetail?.id },
     { label: "신고 종류", value: reportDetail?.reportReason },
     { label: "신고자", value: reportDetail?.reporterNickname },
     { label: "피신고자", value: reportDetail?.reportedNickname },
@@ -135,7 +137,7 @@ function ReportDetailPage() {
           {reportDetail.targetType === "DISCUSSION" && (
             <div className="flex flex-col items-start justify-between w-full gap-1">
               <div className={commonStyles.label}>발의글 제목</div>
-              <div className="border border-undtextdark text-undtextgray bg-white rounded-lg w-full h-auto flex flex-col items-center text-start justify-center py-3 px-4">
+              <div className="border border-undtextdark text-undtextgray bg-white rounded-lg w-full h-auto flex flex-col items-start justify-start text-start py-3 px-4">
                 {reportDetail.discussionTitle}
               </div>
             </div>
@@ -156,7 +158,8 @@ function ReportDetailPage() {
           </div>
         </div>
 
-        {reportDetail.status === "PENDING" && (
+        {(reportDetail.status === "TEMPORARY_ACCEPTED" ||
+          reportDetail.status === "PENDING") && (
           <div className="flex w-full h-12 gap-3.5">
             <Button
               className="w-full rounded-lg cursor-pointer"
