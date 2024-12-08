@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import BasicLayout from "../../layouts/BasicLayout";
 import { OnlyTitle } from "../../layouts/TopLayout";
 import MenuBox from "../../components/settings/MenuBox";
@@ -6,13 +6,13 @@ import ProfileBox from "../../components/settings/ProfileBox";
 import { useNavigate } from "react-router-dom";
 import ProfileModifyingModal from "../../components/modal/settings/ProfileModifyingModal";
 import useCustomLogin from "../../hooks/useCustomLogin";
-import { getMySocialInfo } from "../../api/social/mySocialAPI";
+import { getMyInformation } from "../../api/settings/myPageApi";
 
 const SettingsPage = () => {
   const { loginState } = useCustomLogin();
-  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const navigate = useNavigate();
 
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [myInfo, setMyInfo] = useState({});
   const [refresh, setRefresh] = useState(false);
 
@@ -30,9 +30,9 @@ const SettingsPage = () => {
 
   const fetchMyInfo = async () => {
     try {
-      const res = await getMySocialInfo();
-      console.log(res.data);
-      setMyInfo(res.data);
+      const res = await getMyInformation();
+      console.log("res at page: ", res);
+      setMyInfo(res);
     } catch (error) {
       console.error(error);
     }
