@@ -3,6 +3,14 @@ import { API_SERVER_HOST } from "../commonApi";
 
 const host = `${API_SERVER_HOST}/api/myPage`;
 
+export const getMyInformation = async () => {
+  const res = await jwtAxios.get(`${host}`);
+
+  console.log("res at api: ", res);
+
+  return res.data.data;
+};
+
 export const deleteProfileImage = async () => {
   const res = await jwtAxios.post(`${host}/profile/drop`);
 

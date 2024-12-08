@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Calendar from "../../commons/Calendar";
 import CheckBox from "../../commons/CheckBox";
 import Button from "../../commons/Button";
@@ -11,6 +11,11 @@ const UserInfo = () => {
   const [validCheckBirth, setValidCheckBirth] = useState(false);
   const [gender, setGender] = useState(null);
   const [buttonDisableCondition, setButtonDisableCondition] = useState(true);
+
+  useEffect(() => {
+    console.log("gender: ", gender);
+    console.log("birth: ", birth);
+  }, [birth, gender]);
 
   // 디바운스된 생년월일 체크
   const debouncedBirthCheck = useRef(
@@ -66,6 +71,7 @@ const UserInfo = () => {
         const day = inputBirth.substring(6, 8);
         const formattedBirth = `${year}-${month}-${day}`;
         setBirth(formattedBirth);
+        setButtonDisableCondition(false);
       }
     } else {
       setBirth("");
@@ -147,7 +153,7 @@ const UserInfo = () => {
         </div>
       </div>
 
-      <div className="flex items-center mb-5">
+      <div className="fixed bottom-7 left-0 right-0 px-6">
         <Button
           className="py-2.5 rounded-full w-full"
           color={buttonDisableCondition ? "unddisabled" : "undpoint"}
