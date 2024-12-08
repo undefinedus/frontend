@@ -16,7 +16,7 @@ const MyPage = () => {
             text={"내 정보 수정"}
             hasChild={false}
             childList={[]}
-            link={"myPage"}
+            link={"userInfo"}
           />
         </div>
         <div className="w-full">

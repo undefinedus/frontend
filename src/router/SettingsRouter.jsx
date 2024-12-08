@@ -9,6 +9,7 @@ const Notifications = lazy(() => import("../pages/settings/NotificationsPage"));
 const ChangePassword = lazy(() =>
   import("../pages/settings/ChangePasswordPage")
 );
+const UserInfo = lazy(() => import("../pages/settings/myPage/UserInfoPage"));
 
 const SettingsRouter = () => {
   return (
@@ -50,6 +51,14 @@ const SettingsRouter = () => {
         element={
           <Suspense fallback={<LoadingPage />}>
             <ChangePassword />
+          </Suspense>
+        }
+      />
+      <Route
+        path="myPage/userInfo"
+        element={
+          <Suspense fallback={<LoadingPage />}>
+            <UserInfo />
           </Suspense>
         }
       />
