@@ -47,3 +47,14 @@ export const getMemberYears = async () => {
     throw error;
   }
 };
+
+export const getCategoryAndBookCountByYearList = async () => {
+  try {
+    const res = await jwtAxios.get(`${host}/yearly`);
+
+    return res;
+  } catch (error) {
+    console.log("월간 데이터 통계 조회 실패", error);
+    throw error;
+  }
+};
