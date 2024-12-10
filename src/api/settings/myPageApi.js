@@ -42,7 +42,7 @@ export const modifyUserInfo = async (birth, gender) => {
 
   console.log("res at api: ", res);
 
-  return res;
+  return res.data.result;
 };
 
 export const modifyPreferences = async (data) => {
@@ -65,6 +65,14 @@ export const checkKakaoMessagePermission = async () => {
 
 export const modifyKakaoMessage = async () => {
   const res = await jwtAxios.post(`${host}/kakao/update`);
+
+  console.log("res at api: ", res);
+
+  return res;
+};
+
+export const unregister = async () => {
+  const res = await jwtAxios.delete(`${host}`);
 
   console.log("res at api: ", res);
 

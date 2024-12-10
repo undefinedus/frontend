@@ -2,137 +2,81 @@ import React, { useEffect, useRef, useState } from "react";
 import Calendar from "../../commons/Calendar";
 import CheckBox from "../../commons/CheckBox";
 import Button from "../../commons/Button";
+import DatePickerSlider from "../../commons/DatePickerSlider";
 import { debounce } from "lodash";
+import { modifyUserInfo } from "../../../api/settings/myPageApi";
+import { useNavigate } from "react-router-dom";
 
-const UserInfo = () => {
-  const [birth, setBirth] = useState("");
-  const [isValidBirth, setIsValidBirth] = useState(null);
-  const [validBirthText, setValidBirthText] = useState("");
-  const [validCheckBirth, setValidCheckBirth] = useState(false);
-  const [gender, setGender] = useState(null);
+const UserInfo = ({ data, setRefresh }) => {
+  const navigate = useNavigate();
+  const [birth, setBirth] = useState();
+  const [gender, setGender] = useState();
   const [buttonDisableCondition, setButtonDisableCondition] = useState(true);
+  const [maxDate, setMaxDate] = useState();
 
   useEffect(() => {
-    console.log("gender: ", gender);
-    console.log("birth: ", birth);
-  }, [birth, gender]);
+    setBirth(data?.birth);
+    setGender(data?.gender);
+    setMaxDate(generateMaxDate());
+  }, [data]);
 
-  // 디바운스된 생년월일 체크
-  const debouncedBirthCheck = useRef(
-    debounce(async (birth) => {
-      if (!birth) {
-        setIsValidBirth(null);
-        setValidBirthText("");
-        return;
-      }
+  const generateMaxDate = () => {
+    const today = new Date();
+    today.setFullYear(today.getFullYear() - 14);
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0"); // 월은 0부터 시작하므로 +1
+    const day = String(today.getDate()).padStart(2, "0");
 
-      if (!validateBirthLength(birth)) {
-        setIsValidBirth(false);
-        setValidBirthText("생년월일은 8자리로 입력해 주세요.");
-        setValidCheckBirth(false);
-        return;
-      }
-
-      const isValidAge = validateBirth(birth);
-      if (!isValidAge) {
-        setIsValidBirth(false);
-        setValidBirthText("만 14세 이상만 가입할 수 있습니다.");
-        setValidCheckBirth(false);
-      } else {
-        setIsValidBirth(true);
-        setValidBirthText("사용 가능한 생년월일 입니다!");
-        setValidCheckBirth(true);
-      }
-    }, 300)
-  ).current;
-
-  // 생년월일 길이 검사
-  const validateBirthLength = (birth) => {
-    return birth.length === 8;
+    return `${year}-${month}-${day}`; // "yyyy-mm-dd" 형식으로 반환
   };
 
-  // 생년월일 나이 검사
-  const validateBirth = (birth) => {
-    const currentYear = new Date().getFullYear();
-    const year = parseInt(birth.slice(0, 4), 10);
-    return year <= currentYear - 14;
-  };
-
-  const handleChangeBirth = (e) => {
-    const inputBirth = e.target.value;
-    if (inputBirth) {
-      // YYYYMMDD 형식으로 검증
-      debouncedBirthCheck(inputBirth);
-
-      // YYYY-MM-DD 형식으로 상태 저장
-      if (inputBirth.length === 8) {
-        const year = inputBirth.substring(0, 4);
-        const month = inputBirth.substring(4, 6);
-        const day = inputBirth.substring(6, 8);
-        const formattedBirth = `${year}-${month}-${day}`;
-        setBirth(formattedBirth);
-        setButtonDisableCondition(false);
-      }
-    } else {
-      setBirth("");
-      setIsValidBirth(null);
-      setValidBirthText("");
-    }
+  const handleChangeBirth = (date) => {
+    setBirth(date);
+    setButtonDisableCondition(false);
   };
 
   const handleGenderCheck = (selectedGender) => {
     setGender(selectedGender);
+    setButtonDisableCondition(false);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const res = await modifyUserInfo(birth, gender);
+      console.log("res: ", res);
+      if (res === "success") {
+        setRefresh();
+        navigate({ pathname: "/settings/myPage" }, { replace: true });
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <div className="flex flex-col justify-between h-full">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-5">
         <div>
-          <Calendar
-            className={`w-full border ${
-              isValidBirth === null
-                ? "border-undtextdark"
-                : isValidBirth
-                ? "border-undpoint"
-                : "border-red-500"
-            }`}
-            name="birth"
-            labeltext="생년월일"
-            onChange={handleChangeBirth}
-            value={birth}
-            onDateSelect={(date) => {
-              if (date) {
-                const year = date.getFullYear();
-                const month = String(date.getMonth() + 1).padStart(2, "0");
-                const day = String(date.getDate()).padStart(2, "0");
-                const yyyymmdd = `${year}${month}${day}`;
-                const formattedDate = `${year}-${month}-${day}`; // YYYY-MM-DD
-
-                handleChangeBirth({
-                  target: {
-                    value: yyyymmdd, // 검증용 YYYYMMDD
-                  },
-                });
-                setBirth(formattedDate); // 상태에는 YYYY-MM-DD로 저장
-              }
-            }}
-          />
-          <p
-            className={`text-xs text-start mt-1 ${
-              isValidBirth === null
-                ? "text-gray-500"
-                : isValidBirth
-                ? "text-undpoint"
-                : "text-red-500"
-            }`}
+          <span className="flex justify-start mt-2 text-undtextdark text-und16">
+            생년월일
+          </span>
+          <DatePickerSlider
+            date={birth}
+            setDate={handleChangeBirth}
+            minDate={"1900-01-01"}
+            maxDate={maxDate}
           >
-            {validBirthText}
-          </p>
+            <div className="w-full ps-5 py-3.5 border text-start border-undtextgray rounded-full bg-white text-und16 text-undtextdark">
+              {birth?.replaceAll("-", "")}
+            </div>
+          </DatePickerSlider>
         </div>
 
         <div>
           <div className="flex flex-col text-base">
-            <span className="flex justify-start mt-2">성별</span>
+            <span className="flex justify-start text-undtextdark text-und16 mt-2">
+              성별
+            </span>
             <div className="w-full flex">
               <div className="w-1/2">
                 <CheckBox
@@ -158,6 +102,7 @@ const UserInfo = () => {
           className="py-2.5 rounded-full w-full"
           color={buttonDisableCondition ? "unddisabled" : "undpoint"}
           buttonDisabled={buttonDisableCondition}
+          onClick={handleSubmit}
         >
           수정하기
         </Button>
