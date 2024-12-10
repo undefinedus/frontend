@@ -22,17 +22,86 @@ const StatisticsFullCalendar = () => {
     (_, i) => currentYear - 10 + i
   ).filter((year) => year <= currentYear);
 
+  const processBooks = (books) => {
+    const bookMap = new Map();
+
+    books.forEach((book) => {
+      const { status, myBookId, startDate, endDate, recordedAt, currentPage } =
+        book;
+
+      // COMPLETED 상태인 경우 endDate에 표시
+      if (status === "COMPLETED") {
+        if (endDate) {
+          if (!bookMap.has(endDate)) {
+            bookMap.set(endDate, new Map());
+          }
+          bookMap.get(endDate).set(myBookId, book);
+        }
+      }
+      // READING 상태인 경우
+      else if (status === "READING") {
+        // startDate에 표시
+        if (startDate) {
+          if (!bookMap.has(startDate)) {
+            bookMap.set(startDate, new Map());
+          }
+          const existingBook = bookMap.get(startDate).get(myBookId);
+
+          // 같은 책이 있는 경우 currentPage가 더 큰 것을 선택
+          if (!existingBook || existingBook.currentPage < currentPage) {
+            bookMap.get(startDate).set(myBookId, book);
+          }
+        }
+
+        // recordedAt이 있는 경우에도 표시
+        if (recordedAt && recordedAt !== startDate) {
+          if (!bookMap.has(recordedAt)) {
+            bookMap.set(recordedAt, new Map());
+          }
+          const existingBook = bookMap.get(recordedAt).get(myBookId);
+
+          // 같은 책이 있는 경우 currentPage가 더 큰 것을 선택
+          if (!existingBook || existingBook.currentPage < currentPage) {
+            bookMap.get(recordedAt).set(myBookId, book);
+          }
+        }
+      }
+    });
+
+    // Map을 원하는 형식의 객체로 변환
+    const result = {};
+    bookMap.forEach((value, date) => {
+      result[date] = Array.from(value.values());
+    });
+
+    return result;
+  };
+
   // API 데이터를 가져오는 함수
   const fetchStamps = async (year, month) => {
     try {
       const response = await getStamps(year, month);
       const stamps = response.data.data;
 
+      // 데이터 처리
+      const processedStamps = {};
+      Object.entries(stamps).forEach(([date, books]) => {
+        const processedBooks = processBooks(books);
+        Object.entries(processedBooks).forEach(([bookDate, bookList]) => {
+          if (!processedStamps[bookDate]) {
+            processedStamps[bookDate] = [];
+          }
+          processedStamps[bookDate].push(...bookList);
+        });
+      });
+
       // 이벤트 데이터 생성
-      const newEvents = Object.entries(stamps).map(([date, books]) => ({
-        date,
-        books: books,
-      }));
+      const newEvents = Object.entries(processedStamps).map(
+        ([date, books]) => ({
+          date,
+          books: books,
+        })
+      );
       setEvents(newEvents);
     } catch (error) {
       console.error("Failed to fetch stamps:", error);
@@ -61,7 +130,7 @@ const StatisticsFullCalendar = () => {
             dayEvents.books &&
             dayEvents.books.slice(0, 4).map((book, index) => (
               <div
-                key={book.myBookId}
+                key={`${book.myBookId}-${book.recordedAt}`}
                 className={`book-cover-container ${
                   dayEvents.books.length === 1 ? "single-image" : ""
                 }`}
