@@ -17,8 +17,8 @@ const MenuBox = ({
 
   const handleClick = (child, index) => {
     // onChildClick이 있고 child가 "로그아웃"이면 onChildClick 실행
-    if (onChildClick && child === "로그아웃") {
-      onChildClick(child);
+    if (onChildClick && (!hasChild || notToMove.includes(child))) {
+      onChildClick();
     }
     // link가 배열이고 해당 인덱스에 link가 있으면 네비게이션
     else if (Array.isArray(link) && link[index]) {
@@ -29,14 +29,14 @@ const MenuBox = ({
     }
     // 단일 link인 경우 (하위 메뉴가 없는 경우)
     else if (typeof link === "string") {
-      navigate({ pathname: `./${link}` }, { replace: true });
+      navigate({ pathname: `./${link}` }, { replace: true, state: { data } });
     }
   };
 
   return (
     <div className="w-full bg-undbgsub border border-unddisabled rounded-md p-5">
       <div
-        onClick={() => handleClick()}
+        onClick={() => !hasChild && handleClick()}
         className={`w-full flex ${
           hasChild ? "justify-start" : "justify-between"
         }`}

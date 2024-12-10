@@ -3,7 +3,7 @@ const useDateDiff = () => {
     let differenceInDays = null;
 
     const today = new Date();
-    const startDateObject = new Date(date);
+    const startDateObject = date instanceof Date ? date : new Date(date);
 
     // 날짜만 비교 (시간 정보 제거)
     const todayDateOnly = new Date(

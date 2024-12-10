@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import ProfileModifyingModal from "../../components/modal/settings/ProfileModifyingModal";
 import useCustomLogin from "../../hooks/useCustomLogin";
 import { getMyInformation } from "../../api/settings/myPageApi";
+import { useSelector } from "react-redux";
 
 const SettingsPage = () => {
   const { loginState } = useCustomLogin();
@@ -14,7 +15,7 @@ const SettingsPage = () => {
 
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [myInfo, setMyInfo] = useState({});
-  const [refresh, setRefresh] = useState(false);
+  const refresh = useSelector((state) => state.refresh.refresh);
 
   useEffect(() => {
     // roles에 ADMIN이 포함되어 있는지 확인하고 리다이렉션
@@ -88,7 +89,6 @@ const SettingsPage = () => {
           onClose={handleProfileModal}
           profile={loginState}
           myInfo={myInfo}
-          setRefresh={setRefresh}
         />
       )}
     </BasicLayout>
