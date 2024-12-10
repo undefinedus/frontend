@@ -16,7 +16,6 @@ function ReportDetailPage() {
   const [isApprovalModalOpen, setIsApprovalModalOpen] = useState(false);
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
   const [status, setStatus] = useState("");
-  const [reasonStatus, setReasonStatus] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
