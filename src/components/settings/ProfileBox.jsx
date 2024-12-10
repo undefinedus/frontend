@@ -8,8 +8,8 @@ const ProfileBox = ({ openModal, myInfo }) => {
   }, [myInfo]);
 
   return (
-    <div className="w-full flex items-center bg-white border border-unddisabled rounded-2xl px-6 shadow-md h-24">
-      <div className="w-full flex items-center">
+    <div className="w-full flex items-center bg-white border border-unddisabled rounded-2xl px-3 shadow-md h-24">
+      <div className="w-full flex items-center gap-3">
         <div className=" h-16 flex justify-center items-center">
           {myInfo.profileImage === "defaultProfileImage.jpg" ? (
             <PortraitPlaceholder iconSize={36} circleSize={16} />

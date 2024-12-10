@@ -6,11 +6,11 @@
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  padding: 0 !important; /* 기본 패딩 제거 */
+  padding: 0 !important;
 }
 
 .fc-toolbar-chunk > button span {
-  font-size: 1rem; /* 화살표 크기 조절 */
+  font-size: 1rem;
 }
 
 .fc.fc-media-screen.fc-direction-ltr.fc-theme-standard {
@@ -19,72 +19,46 @@
 
 .calendar-container .fc {
   height: auto !important;
+  min-height: 500px;
   font-size: 1.1rem;
 }
+
 .fc .fc-daygrid-day-number {
-  font-size: 1.1rem;
-}
-.fc .fc-toolbar-title {
-  font-size: 1.3rem;
-}
-.fc-day-today {
-  background-color: #f0f9ff !important;
-}
-.fc-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+  font-size: 0.7rem;
+  margin: 0;
+  text-align: center;
+  width: 100%;
+  display: block;
+  padding-top: 2px !important;
 }
 
-.calendar-container .fc {
-  height: auto !important;
-  min-height: 600px; /* 전체 달력이 보일 수 있는 적절한 높이 설정 */
-  font-size: 1.1rem;
-}
-
-/* 필요한 경우 전체 컨테이너의 높이도 조정 */
-.calendar-container {
-  height: auto !important;
-  min-height: 600px;
-}
-
-/* 날짜 숫자의 크기와 위치를 조정 */
-.fc .fc-daygrid-day-number {
-  font-size: 0.7rem; /* 글자 크기를 줄임 */
-  margin: 0; /* 마진 제거 */
-  text-align: center; /* 가운데 정렬 */
-  width: 100%; /* 너비를 100%로 설정하여 가운데 정렬이 적용되게 함 */
-  display: block; /* block으로 설정하여 width가 적용되게 함 */
-}
-
-/* 날짜 셀의 내부 컨테이너 정렬 조정 */
 .fc .fc-daygrid-day-top {
   display: flex;
-  flex-direction: column; /* 세로 방향으로 정렬 */
-  align-items: center; /* 가로축 중앙 정렬 */
-  justify-content: flex-start; /* 상단 정렬 */
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }
 
-/* 요일 헤더의 글자 크기 조절 */
 .fc .fc-col-header-cell-cushion {
-  font-size: 0.8rem; /* 원하는 크기로 조절 가능 */
+  font-size: 0.8rem;
 }
 
 .day-cell-content {
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 2px;
+  padding: 0px;
 }
+
 .day-number {
-  font-size: 0.9rem;
-  margin-bottom: 2px;
-  text-align: center;
+  font-size: 0.8rem;
+  margin-bottom: 1px;
 }
 
 .book-covers {
   flex: 1;
   width: 100%;
-  height: calc(100% - 20px); /* 날짜 높이를 제외한 나머지 공간 */
+  height: calc(100% - 20px);
 }
 
 .book-cover {
@@ -101,13 +75,11 @@
   align-items: center;
 }
 
-/* 단일 이미지일 때의 크기 */
 .single-image .book-cover {
-  width: 90%;
-  height: 90%;
+  width: 85%;
+  height: 85%;
 }
 
-/* 2개 이상의 이미지가 있을 때의 그리드 레이아웃 */
 .grid-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -115,28 +87,37 @@
   gap: 2px;
 }
 
-/* 단일 이미지일 때의 레이아웃 */
 .single-layout {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* 날짜 셀의 높이 설정 */
 .fc .fc-daygrid-day {
-  height: 120px !important;
+  height: 82px !important;
 }
 
 .fc .fc-daygrid-day-frame {
   height: 100%;
 }
 
-/* 이미지 컨테이너 스크롤 설정 */
 .fc .fc-daygrid-day-events {
   margin: 0 !important;
   padding: 0 !important;
+  min-height: 0 !important; /* 추가 */
+  height: 0 !important; /* 추가 */
+  visibility: hidden; /* 추가 */
 }
 
 .fc-daygrid-day-events::-webkit-scrollbar {
   display: none;
+}
+
+.fc-day-today {
+  background-color: #f0f9ff !important;
+}
+
+.fc-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

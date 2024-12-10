@@ -54,7 +54,7 @@ export const getCategoryAndBookCountByYearList = async () => {
 
     return res;
   } catch (error) {
-    console.log("월간 데이터 통계 조회 실패", error);
+    console.log("연간 데이터 통계 조회 실패", error);
     throw error;
   }
 };

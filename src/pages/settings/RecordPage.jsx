@@ -5,6 +5,7 @@ import CategoryComponent from "../../components/settings/record/CategoryComponen
 import DailyStatisticsComponent from "../../components/settings/record/DailyStatisticsComponent";
 import YearlyMonthlyStatisticsComponent from "../../components/settings/record/YearlyMonthlyStatisticsComponent";
 import TabCondition from "../../components/commons/TabCondition";
+import BasicLayout from "../../layouts/BasicLayout";
 
 const RecordPage = () => {
   const tabList = ["카테고리별", "일자별", "연/월별"];
@@ -86,7 +87,9 @@ const RecordPage = () => {
         </div>
       </div>
 
-      <NavBar />
+      <div className="z-50 fixed">
+        <NavBar />
+      </div>
     </div>
   );
 };
