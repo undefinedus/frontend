@@ -6,18 +6,21 @@ import DailyStatisticsComponent from "../../components/settings/record/DailyStat
 import YearlyMonthlyStatisticsComponent from "../../components/settings/record/YearlyMonthlyStatisticsComponent";
 import TabCondition from "../../components/commons/TabCondition";
 import BasicLayout from "../../layouts/BasicLayout";
+import { useNavigate } from "react-router-dom";
 
 const RecordPage = () => {
   const tabList = ["카테고리별", "일자별", "연/월별"];
   const [activeTab, setActiveTab] = useState(tabList[0]);
   const [infoTooltip, setInfoTooltip] = useState(false);
+  const navigete = useNavigate();
 
   return (
     <div className="bg-undbgmain">
       <PrevTitleInfo
         title={"통계"}
         showLine={false}
-        onClick={() => setInfoTooltip((prev) => !prev)}
+        onClickInfo={() => setInfoTooltip((prev) => !prev)}
+        onClick={() => navigete("/settings")}
       />
 
       <div
