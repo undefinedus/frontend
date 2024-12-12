@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import basicProfile from "../../../public/assets/img/basicProfile.png";
+import PortraitPlaceholder from "../commons/PortraitPlaceholder";
 
 // 소셜 팔로워/팔로잉 카드
 const SocialCard = ({
@@ -36,16 +37,16 @@ const SocialCard = ({
     >
       {/* 프로필 이미지 */}
       <div className="w-14 h-14 items-center flex-shrink-0 rounded-full overflow-hidden">
-        <img
-          src={
-            profile.profileImage &&
-            profile.profileImage !== "defaultProfileImage.jpg"
-              ? profile.profileImage
-              : basicProfile
-          } // 기본 이미지 처리
-          alt={`${profile.nickname}의 프로필`}
-          className="w-full h-full object-cover"
-        />
+        {profile.profileImage &&
+        profile.profileImage !== "defaultProfileImage.jpg" ? (
+          <img
+            src={profile.profileImage}
+            alt={`${profile.nickname}의 프로필`}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <PortraitPlaceholder iconSize={32} circleSize={14} />
+        )}
       </div>
       {/* 사용자 정보 */}
       <div className="flex w-full flex-col gap-2 overflow-x-hidden">

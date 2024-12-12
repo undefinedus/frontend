@@ -18,7 +18,6 @@ import ListNotice from "../../components/commons/ListNotice";
 const ForumMainPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  console.dir(location);
   const { prevActiveTab, prevSearch, prevSort, prevScrollLeft } =
     location.state || {}; // state 상태
   const { getStatusInEnglish } = useForumStatus();
@@ -62,8 +61,10 @@ const ForumMainPage = () => {
 
   // API 호출
   useEffect(() => {
+    console.log("이석현");
+
     fetchForums(); // 초기 데이터 로드
-  }, [activeTab, sort, search]);
+  }, [activeTab, sort, search, location]);
 
   // 마지막 게시물 체크, 스크롤
   useEffect(() => {
@@ -89,8 +90,8 @@ const ForumMainPage = () => {
   }, [loading, hasNext]);
 
   useEffect(() => {
-    console.log("****location.state", location.state);
-    console.log("****state", state);
+    // console.log("****location.state", location.state);
+    // console.log("****state", state);
   }, [location]);
 
   // 토론 목록 API 호출
@@ -225,7 +226,7 @@ const ForumMainPage = () => {
         <ScrollActionButtons onlyTop={true} />
       )}
       {forums && forums.length > 0 ? (
-        <div className="px-6 pt-52 flex justify-center">
+        <div className="px-6 pt-52 py-20 flex justify-center">
           <ForumList forums={forums} onCardClick={handleCardClick} />
         </div>
       ) : (

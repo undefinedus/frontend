@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 
 const ResizableTextarea = ({
   label, // 텍스트레이블 (예: "발의 내용")
@@ -19,6 +19,11 @@ const ResizableTextarea = ({
       textarea.style.height = `${textarea.scrollHeight}px`; // 내용에 맞게 높이 설정
     }
   };
+
+  // value 초기값 설정 시 높이 조정
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [value]);
 
   // 변경 핸들러
   const handleChange = (event) => {

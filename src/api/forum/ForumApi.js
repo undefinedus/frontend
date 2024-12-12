@@ -29,11 +29,22 @@ export const getForumDetail = async (discussionId) => {
 };
 
 // 찬성 참석
-// export const getForumDetail = async (discussionId) => {
-//   const res = await jwtAxios.get(`${host}//joinAgree`);
-//   console.log("=========getForumDetail from api: ", res.data.data);
-//   return res.data.data;
-// };
+export const postJoinAgree = async (discussionId) => {
+  const res = await jwtAxios.get(
+    `${host}/joinAgree?discussionId=${discussionId}`
+  );
+  console.log("=========postJoinAgree from api: ", res.data.data);
+  return res;
+};
+
+// 반대 참석
+export const postJoinDisagree = async (discussionId) => {
+  const res = await jwtAxios.get(
+    `${host}/joinDisagree?discussionId=${discussionId}`
+  );
+  console.log("=========postJoinDisagree from api: ", res.data.data);
+  return res;
+};
 
 // 발의글 작성
 export const writePropose = async (isbn13, title, content, startDate) => {
@@ -47,5 +58,32 @@ export const writePropose = async (isbn13, title, content, startDate) => {
     headers: { "Content-Type": "application/json" },
   });
   console.log("=========writePropose from api: ", res);
+  return res;
+};
+
+// 발의글 수정
+export const modifyPropose = async (
+  discussionId,
+  title,
+  content,
+  modifyStartTime
+) => {
+  const data = {
+    discussionId,
+    title,
+    content,
+    modifyStartTime,
+  };
+  const res = await jwtAxios.patch(`${host}/update`, data, {
+    headers: { "Content-Type": "application/json" },
+  });
+  console.log("=========modifyPropose from api: ", res);
+  return res;
+};
+
+// 토론 삭제(발의 상태일 때만)
+export const deleteForum = async (discussionId) => {
+  const res = await jwtAxios.delete(`${host}/${discussionId}`);
+  console.log("=========deleteForum 삭제 완료", res);
   return res;
 };
