@@ -5,24 +5,114 @@ import DatePickerSlider from "../../components/commons/DatePickerSlider";
 import TimePickerSlider from "../../components/commons/TimePickerSlider";
 import ResizableTextarea from "../../components/forum/ResizableTextarea";
 
-const ForumForm = ({ onSubmit, children }) => {
+const ForumForm = ({ forum, onSubmit, children }) => {
   const navigate = useNavigate();
   const location = useLocation();
-
-  const [bookTitle, setBookTitle] = useState(""); // 책 제목 길이
-  const [subjectText, setSubjectText] = useState(""); // 제목 길이
-  const [contentText, setContentText] = useState(""); // 내용 길이
-
-  const [date, setDate] = useState("일자 선택"); // 선택된 날짜
-  const [time, setTime] = useState("시간 선택"); // 선택된 시간
-  const [minDate, setMinDate] = useState(); // 최소 일시
-  const [maxDate, setMaxDate] = useState(); // 최대 일시
-
   const now = new Date();
 
   const bookTitleRef = useRef(null); // 책제목 textarea
   const { book } = location.state || {}; // 검색한 책
-  // 현재 시간을 기준으로 24시간 후와 7일 후 계산(최소일, 최대일)
+
+  const [bookTitle, setBookTitle] = useState(
+    forum?.bookTitle || book?.title || ""
+  ); // 책 제목 길이
+  const [subject, setSubject] = useState(forum?.title || ""); // 제목 길이
+  const [content, setContent] = useState(forum?.content || ""); // 내용 길이
+
+  // const [date, setDate] = useState("일자 선택"); // 선택된 날짜
+  // const [time, setTime] = useState("시간 선택"); // 선택된 시간
+  const [date, setDate] = useState(
+    forum?.startDate?.split("T")[0] || "일자 선택"
+  ); // 선택된 날짜
+  const [time, setTime] = useState(
+    forum?.startDate?.split("T")[1]?.slice(0, 5) || "시간 선택"
+  ); // 선택된 시간
+  const [minDate, setMinDate] = useState(); // 최소 일시
+  const [maxDate, setMaxDate] = useState(); // 최대 일시
+
+  const [isModified, setIsModified] = useState(false); // 수정 여부 상태
+
+  // 초기값 저장
+  const initialSubject = useRef(forum?.title || "");
+  const initialContent = useRef(forum?.content || "");
+  const initialDate = useRef(forum?.startDate?.split("T")[0] || "일자 선택");
+  const initialTime = useRef(
+    forum?.startDate?.split("T")[1]?.slice(0, 5) || "시간 선택"
+  );
+
+  // (글 수정)기존값 변경 여부 확인 후 버튼 활성화
+  useEffect(() => {
+    const hasChanged =
+      subject !== initialSubject.current ||
+      content !== initialContent.current ||
+      date !== initialDate.current ||
+      time !== initialTime.current;
+
+    setIsModified(hasChanged); // 변경 여부 업데이트
+  }, [subject, content, date, time]);
+
+  const handleOnSubmit = () => {
+    const startDate = date + "T" + time;
+    if (!forum) {
+      onSubmit(book.isbn13, subject, content, startDate);
+    } else onSubmit(forum.id, subject, content, startDate);
+  };
+
+  // (글 수정)토론 예정 일시 기존 값 설정
+  useEffect(() => {
+    if (forum?.startDate) {
+      console.log(time);
+      console.log(forum.startDate.split("T")[1].slice(0, 5));
+
+      setDate(forum.startDate.split("T")[0]); // 날짜 부분만 설정
+      setTime(forum.startDate.split("T")[1].slice(0, 5)); // 시간 부분만 설정
+    }
+  }, [forum]);
+
+  // (글 작성) 최초 렌더링시 현재시간 기준으로 minDate, maxDate 의 날짜정보 setting
+  useEffect(() => {
+    if (!forum) {
+      const now = new Date();
+
+      // 현재 시간 기준 24시간 후
+      const min = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+
+      // 현재 시간 기준 168시간(7일) 후
+      const max = new Date(now.getTime() + 168 * 60 * 60 * 1000);
+      setMinDate(min);
+      setMaxDate(max);
+      setTime("시간 선택");
+    }
+  }, [date]);
+
+  // (글 작성)
+  // useEffect(() => {
+  //   if (date === "일자 선택") {
+  //     return; // 일자가 선택되지 않았다면 설정하지 않음
+  //   }
+
+  //   if (minDate && maxDate) {
+  //     const isMinDate = new Date(date).getDate() === minDate.getDate();
+  //     const isMaxDate = new Date(date).getDate() === maxDate.getDate();
+
+  //     if (!isMinDate) {
+  //       setMinDate((date) => {
+  //         const updatedDate = new Date(date);
+  //         updatedDate.setHours(0, 0, 0, 0); // 시간 부분을 00:00:00으로 변경
+  //         return updatedDate;
+  //       });
+  //     }
+  //     if (!isMaxDate) {
+  //       setMaxDate((date) => {
+  //         const updatedDate = new Date(date);
+  //         updatedDate.setHours(23, 59, 59, 99); // 시간 부분을 23:59:59:99으로 변경
+  //         return updatedDate;
+  //       });
+  //     }
+  //   }
+  // }, [date, minDate, maxDate]);
+
+  // 일자 - 현재 시간을 기준으로 24시간 후와 7일 후 계산(최소일, 최대일)
   const getFormattedDate = (hoursToAdd) => {
     const futureDate = new Date();
     futureDate.setHours(futureDate.getHours() + hoursToAdd);
@@ -32,50 +122,7 @@ const ForumForm = ({ onSubmit, children }) => {
     return `${year}-${month}-${day}`;
   };
 
-  // 최초 렌더링시 현재시간 기준으로 minDate, maxDate 의 날짜정보 setting
-  useEffect(() => {
-    const now = new Date();
-
-    // 현재 시간 기준 24시간 후
-    const min = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-
-    // 현재 시간 기준 168시간(7일) 후
-    const max = new Date(now.getTime() + 168 * 60 * 60 * 1000);
-    setMinDate(min);
-    setMaxDate(max);
-    setTime("시간 선택");
-  }, [date]);
-
-  useEffect(() => {
-    if (date === "일자 선택") {
-      return; // 일자가 선택되지 않았다면 설정하지 않음
-    }
-
-    // // const selectedDate = new Date(date.replace(/\./g, "-"));
-    // const minDateObj = new Date(minDate.replace(/\./g, "-"));
-    // const maxDateObj = new Date(maxDate.replace(/\./g, "-"));
-
-    const isMinDate = new Date(date).getDate() === minDate.getDate();
-    const isMaxDate = new Date(date).getDate() === maxDate.getDate();
-    // console.log("민데이트, 맥스데이트", isMinDate, isMaxDate);
-
-    if (!isMinDate) {
-      setMinDate((date) => {
-        const updatedDate = new Date(date);
-        updatedDate.setHours(0, 0, 0, 0); // 시간 부분을 00:00:00으로 변경
-        return updatedDate;
-      });
-    }
-    if (!isMaxDate) {
-      setMaxDate((date) => {
-        const updatedDate = new Date(date);
-        updatedDate.setHours(23, 59, 59, 99); // 시간 부분을 23:59:59:99으로 변경
-        return updatedDate;
-      });
-    }
-  }, [date]);
-
-  // 현재 시간을 기준으로 24시간 후와 7일 후 계산
+  // 시간 - 현재 시간을 기준으로 24시간 후와 7일 후 계산
   const getFormattedTime = (hoursToAdd) => {
     const futureDate = new Date();
     futureDate.setHours(futureDate.getHours() + hoursToAdd);
@@ -109,16 +156,11 @@ const ForumForm = ({ onSubmit, children }) => {
     navigate("/forum/propose/searchBook", {
       state: {
         title: "발의할 책 추가",
-        prevActiveTab: "",
+        prevActiveTab: "주제 발의",
         pathname: "/forum/propose/write",
+        book: "",
       },
     });
-  };
-
-  const handleOnSubmit = () => {
-    const startDate = date + "T" + time;
-
-    onSubmit(book.isbn13, subjectText, contentText, startDate);
   };
 
   return (
@@ -129,30 +171,37 @@ const ForumForm = ({ onSubmit, children }) => {
           <p className="text-und16 font-bold text-undtextdark">책 제목</p>
           <div
             ref={bookTitleRef}
-            className="w-full border border-unddisabled rounded-[10px] p-4 text-und14 text-left cursor-pointer bg-white text-undtextdark"
+            // className="w-full border border-unddisabled rounded-[10px] p-4 text-und14 text-left cursor-pointer bg-white text-undtextdark"
+            className={`w-full border rounded-[10px] p-4 text-und14 text-left bg-white ${
+              forum?.bookTitle === bookTitle
+                ? "cursor-not-allowed text-undtextgray bg-[#F9F8F7]" // 비활성화 스타일
+                : "cursor-pointer text-undtextdark" // 활성화 스타일
+            }`}
             style={{ overflow: "hidden", minHeight: "54.6px" }}
-            onClick={handleBookTitleClick}
+            onClick={
+              forum?.bookTitle !== bookTitle ? handleBookTitleClick : null
+            }
           >
-            {book?.title}
+            {bookTitle}
           </div>
         </div>
         {/* 발의 주제 */}
         <ResizableTextarea
           label="발의 주제"
-          value={subjectText}
-          onChange={(e) => setSubjectText(e.target.value)}
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
           maxLength={100}
           rows={1} // 기본 행 수
-          disabled={!book?.title} // book?.title 값이 없으면 비활성화
+          disabled={!bookTitle}
         />
         {/* 발의 내용 */}
         <ResizableTextarea
           label="발의 내용"
-          value={contentText}
-          onChange={(e) => setContentText(e.target.value)}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
           maxLength={1500}
           rows={20} // 기본 행 수
-          disabled={!subjectText}
+          disabled={!subject}
         />
         {/* 토론 예정 시간 */}
         <div className="flex flex-col text-left justify-start gap-1">
@@ -160,11 +209,9 @@ const ForumForm = ({ onSubmit, children }) => {
             토론 예정 시간
           </p>
           <p className="text-und12 font-bold text-undtextgray whitespace-pre-line">
-            토론 예정일은 작성일 24시간 이후~7일 이내,{"\n"}토론 예정 시간은
-            30분 간격으로 선택 가능합니다
+            작성일 기준으로 다음 날부터 7일 이내까지 선택 가능합니다
           </p>
           <div className="flex justify-between items-center gap-4">
-            {/* DatePickerSlider */}
             <DatePickerSlider
               date={date}
               setDate={(selectedDate) => {
@@ -174,57 +221,55 @@ const ForumForm = ({ onSubmit, children }) => {
               }}
               minDate={minDate}
               maxDate={maxDate}
-              disabled={!contentText}
+              disabled={!content}
             >
               <div
                 className={`flex w-full h-12 p-2 justify-center text-und14 border border-unddisabled rounded-[10px] items-center bg-white ${
-                  date === "일자 선택" ? "text-undtextgray" : "text-undtextdark"
+                  date === "일자 선택" && !content
+                    ? "text-undtextgray bg-[#F9F8F7]"
+                    : "text-undtextdark"
                 }`}
               >
-                {date === "일자 선택" ? "일자 선택" : date}
+                {forum?.startDate
+                  ? forum.startDate.split("T")[0] // "T" 이전의 날짜 부분 추출
+                  : date === "일자 선택"
+                  ? "일자 선택"
+                  : date}
               </div>
             </DatePickerSlider>
-            {/* TimePickerSlider */}
-            <div
-              className={`flex w-full h-12 p-2 justify-center text-und14 border border-unddisabled rounded-[10px] items-center bg-white ${
-                date === "일자 선택"
-                  ? "cursor-not-allowed pointer-events-none"
-                  : ""
-              }`}
-              onClick={(e) => {
-                if (date === "일자 선택") {
-                  e.preventDefault(); // 클릭 이벤트 차단
-                }
+            <TimePickerSlider
+              time={date}
+              setTime={(selectedTime) => {
+                setTime(formatTime(selectedTime)); // 시간 업데이트
               }}
+              minTime={minDate}
+              maxTime={maxDate}
+              disabled={date === "일자 선택"} // 추가적인 보호
             >
-              <TimePickerSlider
-                time={date}
-                setTime={(selectedTime) => {
-                  setTime(formatTime(selectedTime)); // 시간 업데이트
-                }}
-                minTime={minDate}
-                maxTime={maxDate}
-                disabled={date === "일자 선택"} // 추가적인 보호
+              <div
+                className={`flex w-full h-12 p-2 justify-center text-und14 border border-unddisabled rounded-[10px] items-center bg-white ${
+                  time === "시간 선택" && !subject
+                    ? "text-undtextgray bg-[#F9F8F7]"
+                    : "text-undtextdark bg-white"
+                }`}
               >
-                <div
-                  className={`flex w-full h-12 p-2 justify-center items-center ${
-                    time === "시간 선택"
-                      ? "text-undtextgray"
-                      : "text-undtextdark"
-                  }`}
-                >
-                  {time}
-                </div>
-              </TimePickerSlider>
-            </div>
+                {forum?.startDate
+                  ? forum.startDate.split("T")[1].slice(0, 5)
+                  : time}
+              </div>
+            </TimePickerSlider>
           </div>
         </div>
-        {/* 제출 버튼 */}
+        {/* 버튼 */}
         <Button
           className="py-2.5 rounded-full font-bold text-und18 w-full"
-          color={time === "시간 선택" ? "unddisabled" : "undpoint"}
-          onClick={time !== "시간 선택" ? handleOnSubmit : undefined}
-          buttonDisabled={time === "시간 선택"}
+          color={
+            time === "시간 선택" || !isModified ? "unddisabled" : "undpoint"
+          }
+          onClick={
+            time === "시간 선택" || !isModified ? undefined : handleOnSubmit
+          }
+          buttonDisabled={time === "시간 선택" || !isModified}
         >
           {children}
         </Button>

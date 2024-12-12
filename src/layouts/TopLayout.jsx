@@ -254,17 +254,15 @@ export const PrevTitleReport = ({ onClick, onReport, title, status }) => {
   return (
     <div className="h-16 flex items-center justify-between relative px-6">
       {/* 이전 버튼 */}
-      <button onClick={onClick} className="flex">
+      <button className="absolute left-6" onClick={() => onClick("back")}>
         <PiCaretLeftBold size={28} color="#51392F" />
       </button>
       {/* 제목 */}
       <div className="font-bold text-undclickbrown text-xl mx-auto">
         {title}
       </div>
-      <button
-        onClick={onReport}
-        className="flex items-center justify-end right-0"
-      >
+      {/* 신고 버튼 */}
+      <button className="absolute right-6" onClick={() => onClick("report")}>
         <PiSiren size={28} color="#51392F" />
       </button>
     </div>

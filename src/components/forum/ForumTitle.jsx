@@ -20,10 +20,19 @@ const ForumInfo = ({ forum }) => {
       <div className="flex w-full h-9 gap-3">
         {/* 프로필 사진 */}
         <div className="w-8 h-full">
-          <PortraitPlaceholder iconSize={20} circleSize={9} />
+          {forum.profileImage &&
+          forum.profileImage !== "defaultProfileImage.jpg" ? (
+            <img
+              src={forum.profileImage}
+              alt={`${forum.nickname}의 프로필`}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <PortraitPlaceholder iconSize={20} circleSize={9} />
+          )}
         </div>
-        <div className="text-undtextgray">
-          <div className="felx justify-between">
+        <div className="text-undtextgray flex-col w-full">
+          <div className="flex w-full justify-between">
             {/* 닉네임 */}
             <p className="font-bold text-und14 w-full h-5 text-left">
               {forum.memberName}
@@ -31,14 +40,14 @@ const ForumInfo = ({ forum }) => {
             {/* 진행 중, 종료 - 찬반 수 */}
             {(forum.status === "IN_PROGRESS" ||
               forum.status === "COMPLETED") && (
-              <div className="flex gap-3 text-undtextgray font-extrabold text-und12 w-56 h-4 text-left ">
+              <div className="flex gap-3 text-undtextgray text-und12 h-4 text-left">
                 <div className="flex gap-0.5 justify-center items-center">
                   <PiUserFill size={16} color="A0CDDF" />
-                  {forum.agree}
+                  {forum.agreeCount}
                 </div>
                 <div className="flex gap-0.5 justify-center items-center">
                   <PiUserFill size={16} color="DFA0B5" />
-                  {forum.disagree}
+                  {forum.disagreeCount}
                 </div>
               </div>
             )}
@@ -60,7 +69,7 @@ const ForumInfo = ({ forum }) => {
               forum.status === "COMPLETED") && (
               <div className="flex justify-start items-center gap-1">
                 <PiChatCenteredDots size={16} color="78716C" />
-                {forum.views}
+                {forum.commentCount}
               </div>
             )}
           </div>
