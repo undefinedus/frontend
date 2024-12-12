@@ -221,7 +221,7 @@ export const TitleSearch = ({ title, showLine = true }) => {
 };
 
 // 이전 버튼 + 제목 + 툴팁
-export const PrevTitleInfo = ({ title, showLine, onClick, chlidren }) => {
+export const PrevTitleInfo = ({ title, showLine, onClick, chlidren,onClickInfo }) => {
   return (
     <div
       className={`h-16 flex justify-between items-center w-full ${
@@ -238,7 +238,7 @@ export const PrevTitleInfo = ({ title, showLine, onClick, chlidren }) => {
       <div className="flex justify-center items-center font-bold text-undclickbrown text-xl mx-auto w-1/3">
         {title}
       </div>
-      <div className="w-1/3 flex justify-end pr-6" onClick={onClick}>
+      <div className="w-1/3 flex justify-end pr-6" onClick={onClickInfo}>
         <PiInfo size={28} />
       </div>
       <div>{chlidren}</div>
