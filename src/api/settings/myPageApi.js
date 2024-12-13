@@ -7,7 +7,10 @@ const rest_api_key =
   import.meta.env.MODE === "development" // 실행 환경이
     ? import.meta.env.VITE_KAKAO_REST_API_KEY_LOCAL
     : import.meta.env.VITE_KAKAO_REST_API_KEY;
-const redirect_uri = "http://localhost:5173/settings/redirect";
+const redirect_uri =
+  import.meta.env.MODE === "development" // 실행 환경이
+    ? "http://localhost:5173/settings/redirect"
+    : "https://gongchaek.site/settings/redirect";
 const client_secret =
   import.meta.env.MODE === "development"
     ? import.meta.env.VITE_KAKAO_CLIENT_SECRET_LOCAL
