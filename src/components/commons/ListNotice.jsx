@@ -4,6 +4,8 @@ import {
   PiWarningCircleDuotone,
   PiEyesFill,
   PiXCircleDuotone,
+  PiChatCenteredSlash,
+  PiChatCenteredSlashLight,
 } from "react-icons/pi";
 
 const ListNotice = ({ type }) => {
@@ -55,6 +57,10 @@ const ListNotice = ({ type }) => {
     noCompleted: {
       icon: <PiXCircleDuotone size={32} color="#51392F" />,
       message: "아직 종료된 토론이 없어요",
+    },
+    noBestComment: {
+      icon: <PiChatCenteredSlashLight size={20} color="#51392F" />,
+      message: "베스트 의견이 없어요",
     },
   };
 

@@ -19,7 +19,7 @@ const ForumInfo = ({ forum }) => {
       {/* 작성자 및 글 정보 */}
       <div className="flex w-full h-9 gap-3">
         {/* 프로필 사진 */}
-        <div className="w-8 h-full">
+        <div className="w-8 h-8">
           {forum.profileImage &&
           forum.profileImage !== "defaultProfileImage.jpg" ? (
             <img

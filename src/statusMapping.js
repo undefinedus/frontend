@@ -16,12 +16,12 @@ export const FORUM_STATUS_KOREAN_TO_ENGLISH = {
   "주제 발의": "PROPOSED",
   "토론 예정": "SCHEDULED",
   "진행 중": "IN_PROGRESS",
-  "토론 종료": "COMPLETED",
+  "종료된 토론": "COMPLETED",
 };
 
 export const FORUM_STATUS_ENGLISH_TO_KOREAN = {
   PROPOSED: "주제 발의",
   SCHEDULED: "토론 예정",
   IN_PROGRESS: "진행 중",
-  COMPLETED: "토론 종료",
+  COMPLETED: "종료된 토론",
 };

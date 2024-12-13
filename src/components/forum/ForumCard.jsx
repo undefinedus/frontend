@@ -63,6 +63,7 @@ const ForumCard = ({ forum, onClick }) => {
               <div className="w-9/12">
                 <PercentageBar leftValue={100 - forum.disagreePercent} />
               </div>
+              반대
             </div>
           )}
 

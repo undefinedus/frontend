@@ -51,6 +51,7 @@ const ForumForm = ({ forum, onSubmit, children }) => {
     setIsModified(hasChanged); // 변경 여부 업데이트
   }, [subject, content, date, time]);
 
+  // 작성 또는 수정 버튼 클릭
   const handleOnSubmit = () => {
     const startDate = date + "T" + time;
     if (!forum) {

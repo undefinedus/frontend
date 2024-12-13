@@ -4,7 +4,7 @@ import {
   getMySocialList,
   patchFollow,
   getMySocialInfo, // 최신 프로필 정보 가져오는 API 추가
-} from "../../api/social/mySocialAPI";
+} from "../../api/social/mySocialApi";
 import BasicLayout from "../../layouts/BasicLayout";
 import { PrevTitle } from "../../layouts/TopLayout";
 import FollowTabs from "../../components/social/FollowTabs";
