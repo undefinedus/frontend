@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import basicProfile from "../../../public/assets/img/basicProfile.png";
 import PortraitPlaceholder from "../commons/PortraitPlaceholder";
 
 // 소셜 팔로워/팔로잉 카드
