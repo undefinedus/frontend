@@ -9,10 +9,16 @@ import {
 } from "react-icons/pi";
 import PercentageBar from "../commons/PercentageBar";
 import useDateDiff from "../../hooks/useDateDiff";
-// import DrawMyRating from "./DrawMyRating";
 
 // 토론 카드형 목록
 const ForumCard = ({ forum, onClick }) => {
+  const { diffFromNow } = useDateDiff();
+
+  useEffect(() => {
+    // console.log(`forum, ${forum}`);
+    // console.log(`forum 시작 시간, ${forum.startDateTime}`);
+    // console.log(`forum 끝 시간, ${forum.closedAt}`);
+  }, [forum]);
   return (
     <div
       className="w-full py-5 border-b border-unddisabled first:pt-0 last:border-none last:pb-0"
@@ -57,7 +63,6 @@ const ForumCard = ({ forum, onClick }) => {
               <div className="w-9/12">
                 <PercentageBar leftValue={100 - forum.disagreePercent} />
               </div>
-              반대
             </div>
           )}
 
@@ -73,7 +78,7 @@ const ForumCard = ({ forum, onClick }) => {
                   {forum.createdDate.split("T")[0].replace(/-/g, ".")}
                 </>
               )}
-              {/* 진행 중 - 토론 남은 시간 */}
+              {/* 토론 예정, 진행 중 - 토론 남은 시간 */}
               {(forum.status === "IN_PROGRESS" ||
                 forum.status === "SCHEDULED") && (
                 <>
@@ -81,8 +86,8 @@ const ForumCard = ({ forum, onClick }) => {
                     <PiClockCountdown size={16} color="78716C" />
                   </div>
                   {forum.status === "IN_PROGRESS"
-                    ? `종료 10분 전`
-                    : `2시간 후 시작`}
+                    ? `종료 ${diffFromNow(forum.closedAt)} 전`
+                    : `${diffFromNow(forum.startDateTime)} 후 시작`}
                 </>
               )}
             </div>

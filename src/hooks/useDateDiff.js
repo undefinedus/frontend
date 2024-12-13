@@ -3,7 +3,7 @@ const useDateDiff = () => {
     let differenceInDays = null;
 
     const today = new Date();
-    const startDateObject = new Date(date);
+    const startDateObject = date instanceof Date ? date : new Date(date);
 
     // 날짜만 비교 (시간 정보 제거)
     const todayDateOnly = new Date(
@@ -57,7 +57,31 @@ const useDateDiff = () => {
     return differenceInDays;
   };
 
-  return { diffToday, diffEnd };
+  // 토론 - 예정, 진행 중
+  const diffFromNow = (targetTime) => {
+    const now = new Date();
+    const targetDate = new Date(targetTime.split(".")[0]);
+
+    const diffInMs = targetDate - now; // 시간 차이 (밀리초)
+    const diffInMinutes = Math.floor(diffInMs / (1000 * 60)); // 분 단위로 변환
+    console.log("시간", diffInMinutes);
+    console.log("타겟데이트", targetDate);
+
+    if (diffInMinutes < 1) {
+      return "방금 전"; // 과거 시각
+    } else if (diffInMinutes < 60) {
+      return `${diffInMinutes}분`; // 1~59분
+    } else if (diffInMinutes < 1440) {
+      // 하루(24시간) 이내
+      const diffInHours = Math.floor(diffInMinutes / 60);
+      return `${diffInHours}시간`;
+    } else {
+      const diffInDays = Math.floor(diffInMinutes / 1440); // 일 단위
+      return `${diffInDays}일`;
+    }
+  };
+
+  return { diffToday, diffEnd, diffFromNow };
 };
 
 export default useDateDiff;

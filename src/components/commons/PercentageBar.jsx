@@ -15,18 +15,18 @@ const PercentageBar = ({ hasInner = true, leftValue }) => {
         <div className="absolute inset-0 flex">
           {/* Left side */}
           <div
-            className={`h-full z-10 flex items-center justify-start ps-1 text-white text-und12 font-extrabold ${leftColor}`}
+            className={`h-full flex items-center justify-start text-white text-und12 font-extrabold ${leftColor}`}
             style={{ width: `${leftValue}%` }}
           >
-            {leftValue}%
+            <p className="ms-1 z-10 text-und12">{leftValue}%</p>
           </div>
 
           {/* Right side */}
           <div
-            className={`h-full flex items-center justify-end pe-1 text-white text-und12 font-extrabold ${rightColor}`}
+            className={`h-full flex items-center justify-end text-white text-und12 font-extrabold ${rightColor}`}
             style={{ width: `${rightValue}%` }}
           >
-            {rightValue}%
+            <p className="me-1 z-10 text-und12">{rightValue}%</p>
           </div>
         </div>
       </div>

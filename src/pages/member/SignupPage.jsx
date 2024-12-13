@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import SignupStepOne from "../../components/member/SignupStepOne";
 import SignupStepTwo from "../../components/member/SignupStepTwo";
 import MemberLayout from "../../layouts/MemberLayout";

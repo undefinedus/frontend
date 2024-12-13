@@ -63,7 +63,12 @@ const LoginComponent = () => {
         console.log("로그인 에러");
         setLoginError("아이디 또는 비밀번호가 일치하지 않습니다");
       } else {
-        moveToPath("/myBook");
+        // ADMIN 역할이 포함되어 있는지 확인
+        if (data.roles?.includes("ADMIN")) {
+          moveToPath("/admin");
+        } else {
+          moveToPath("/myBook");
+        }
       }
     });
   };
@@ -118,9 +123,9 @@ const LoginComponent = () => {
   };
 
   return (
-    <div className="flex flex-col p-6 h-full gap-14">
-      <div className="flex justify-center mt-10 w-full">
-        <img src="/public/assets/logos/gongchaekWithTextLogin.png" alt="" />
+    <div className="flex flex-col items-center p-6 h-full gap-4">
+      <div className="flex justify-center mt-6 w-52">
+        <img src="/assets/logos/Logo2.png" alt="logoWithText" />
       </div>
       <div className="flex flex-col w-full">
         <Input
@@ -146,9 +151,9 @@ const LoginComponent = () => {
         <p className="text-sm text-red-500">{loginError}</p>
       </div>
 
-      <div className="flex flex-col justify-center gap-4">
+      <div className="flex w-full flex-col justify-center mt-10 gap-4">
         <Button
-          className="text-white py-2.5 rounded-full font-semibold w-full"
+          className="text-white text-und18 py-2.5 rounded-full font-bold w-full"
           color="undpoint"
           onClick={handleClickLogin}
         >
@@ -157,7 +162,7 @@ const LoginComponent = () => {
         <KakaoLoginComponent />
       </div>
 
-      <div className="flex justify-center gap-4 ">
+      <div className="flex fixed bottom-11 justify-center gap-4 ">
         <div className=" text-undpoint">
           <Link to="/member/findPassword" className="underline">
             비밀번호 찾기

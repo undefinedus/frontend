@@ -41,7 +41,7 @@ function CheckBox({
             </span>
           </label>
         </div>
-        <div className="text-sm font-bold">{value}</div>
+        <div className="text-und16 text-undtextdark">{value}</div>
       </div>
       {showMessage && (
         <div className="flex items-center text-end">

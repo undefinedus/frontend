@@ -1,0 +1,123 @@
+.fc-toolbar-chunk > button {
+  background-color: #7d5c4d !important;
+  border: #7d5c4d !important;
+  width: 2rem;
+  height: 2rem;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+}
+
+.fc-toolbar-chunk > button span {
+  font-size: 1rem;
+}
+
+.fc.fc-media-screen.fc-direction-ltr.fc-theme-standard {
+  background-color: white !important;
+}
+
+.calendar-container .fc {
+  height: auto !important;
+  min-height: 500px;
+  font-size: 1.1rem;
+}
+
+.fc .fc-daygrid-day-number {
+  font-size: 0.7rem;
+  margin: 0;
+  text-align: center;
+  width: 100%;
+  display: block;
+  padding-top: 2px !important;
+}
+
+.fc .fc-daygrid-day-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.fc .fc-col-header-cell-cushion {
+  font-size: 0.8rem;
+}
+
+.day-cell-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0px;
+}
+
+.day-number {
+  font-size: 0.8rem;
+  margin-bottom: 1px;
+}
+
+.book-covers {
+  flex: 1;
+  width: 100%;
+  height: calc(100% - 20px);
+}
+
+.book-cover {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.book-cover-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.single-image .book-cover {
+  width: 85%;
+  height: 85%;
+}
+
+.grid-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 2px;
+}
+
+.single-layout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fc .fc-daygrid-day {
+  height: 82px !important;
+}
+
+.fc .fc-daygrid-day-frame {
+  height: 100%;
+}
+
+.fc .fc-daygrid-day-events {
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: 0 !important; /* 추가 */
+  height: 0 !important; /* 추가 */
+  visibility: hidden; /* 추가 */
+}
+
+.fc-daygrid-day-events::-webkit-scrollbar {
+  display: none;
+}
+
+.fc-day-today {
+  background-color: #f0f9ff !important;
+}
+
+.fc-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

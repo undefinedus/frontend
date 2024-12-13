@@ -1,73 +1,129 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SlrModalLayout from "../../../layouts/SlrModalLayout";
-import { getMySocialInfo } from "../../../api/social/mySocialAPI";
 import { nicknameDuplicateCheck } from "../../../api/signupApi";
 import { PiCameraFill, PiXCircleFill } from "react-icons/pi";
 import PortraitPlaceholder from "../../commons/PortraitPlaceholder";
+import {
+  deleteProfileImage,
+  modifyProfile,
+} from "../../../api/settings/myPageApi";
+import { debounce } from "lodash";
+import TwoButtonModal from "../commons/TwoButtonModal";
+import { useDispatch } from "react-redux";
+import { triggerRefresh } from "../../../slices/myPageRefreshSlice";
 
-const ProfileModifyingModal = ({ onClose }) => {
-  const [myInfo, setMyInfo] = useState({});
+const ProfileModifyingModal = ({ onClose, myInfo }) => {
   const fileInputRef = useRef(null);
   const [profileImg, setProfileImg] = useState("");
   const [nickname, setNickname] = useState("");
-  const [isValidNickname, setIsValidNickname] = useState(false);
-  const [wrongNickname, setWrongNickname] = useState(false);
+  const [isValidNickname, setIsValidNickname] = useState(null);
   const [isReady, setIsReady] = useState(null);
+  const [optionModalOpen, setOptionModalOpen] = useState(false);
+  const [resetProfileImage, setResetProfileImage] = useState(false);
+  const [validText, setValidText] = useState(
+    "한글, 영문, 숫자 선택 혼용 2~10자로 입력해 주세요"
+  );
+  const [isInitState, setIsInitState] = useState(false);
+  const dispatch = useDispatch();
 
-  // 초기 정보 로드
   useEffect(() => {
-    fetchMyInfo();
-  }, []);
+    setProfileImg(myInfo.profileImage);
+    setNickname(myInfo.nickname);
+    setIsInitState(true);
+  }, [myInfo]);
 
-  // 닉네임 유효성 검사
+  // 닉네임 유효성 검사 함수
+  const validateNickname = (nickname) => {
+    if (!nickname || nickname.trim() === "") {
+      return false;
+    }
+    const regex = /^[가-힣a-zA-Z0-9]{2,10}$/;
+    return regex.test(nickname);
+  };
+
+  // 디바운스된 닉네임 검사 함수
+  const debouncedNicknameCheck = useRef(
+    debounce(async (nickname) => {
+      if (!nickname || isInitState) {
+        setIsValidNickname(null);
+        setValidText("한글, 영문, 숫자 선택 혼용 2~10자로 입력해 주세요");
+        return;
+      }
+
+      if (!validateNickname(nickname)) {
+        setIsValidNickname(false);
+        setValidText("한글, 영문, 숫자 선택 혼용 2~10자로 입력해 주세요");
+        return;
+      }
+
+      try {
+        const { result } = await nicknameDuplicateCheck(nickname);
+        setIsValidNickname(result);
+        setValidText(
+          result ? "사용 가능한 닉네임입니다." : "이미 등록된 닉네임입니다."
+        );
+      } catch (error) {
+        setIsValidNickname(false);
+        setValidText(error.message || "닉네임 검증 중 오류가 발생했습니다.");
+      }
+    }, 500)
+  ).current;
+
+  // 닉네임 변경 감지
   useEffect(() => {
-    if (nickname.trim() === "") {
-      setIsValidNickname(null);
-      setIsReady(false); // 바로 isReady를 false로 설정
+    if (isInitState) {
+      setIsInitState(false);
       return;
     }
-    fetchValidNickname();
+    debouncedNicknameCheck(nickname.trim());
   }, [nickname]);
 
   useEffect(() => {
+    // 버튼 활성화 조건: 닉네임이 변경되었거나, 프로필 이미지가 변경되었거나, 초기화된 경우
     if (
-      (isValidNickname === true && nickname !== myInfo.nickname) ||
-      profileImg !== myInfo.profileImage
+      (isValidNickname && nickname !== myInfo.nickname) || // 닉네임이 변경되고 유효한 경우
+      resetProfileImage || // 프로필 이미지를 초기화한 경우
+      (fileInputRef.current && fileInputRef.current.files[0]) // 새로운 프로필 이미지를 업로드한 경우
     ) {
-      setIsReady(true);
+      setIsReady(true); // 버튼 활성화
     } else {
-      setIsReady(false);
+      setIsReady(false); // 버튼 비활성화
     }
-  }, [isValidNickname, nickname, profileImg]);
+  }, [
+    isValidNickname,
+    nickname,
+    myInfo.nickname,
+    resetProfileImage,
+    profileImg,
+  ]);
 
-  const fetchMyInfo = async () => {
-    try {
-      const res = await getMySocialInfo();
-      console.log(res.data);
-      setMyInfo(res.data);
-      setProfileImg(res.data.profileImage);
-      setNickname(res.data.nickname);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const handleSubmit = async () => {
+    if (!isReady) return;
 
-  const fetchValidNickname = async () => {
-    if (nickname.trim() === "") {
-      setIsValidNickname(null);
-      return;
+    if (resetProfileImage) {
+      fetchDeleteProfileImage();
     }
-    if (!nicknameChecker(nickname)) {
-      setWrongNickname(true);
-      return;
+
+    const formData = new FormData();
+
+    const file = fileInputRef.current.files[0];
+
+    if (file) {
+      formData.append("profileImage", file);
     }
+
+    if (nickname && nickname !== "") {
+      formData.append("nickname", nickname);
+    }
+
     try {
-      const res = await nicknameDuplicateCheck(nickname);
-      console.log("nickname check: ", res);
-      setIsValidNickname(res.result === true);
-      setWrongNickname(false);
+      const res = await modifyProfile(formData);
+      console.log("Profile updated successfully: ", res);
+      dispatch(triggerRefresh());
+      handleCloseOptionModal();
+      onClose(false);
     } catch (error) {
-      console.error(error);
+      console.error("Failed to update profile: ", error);
     }
   };
 
@@ -79,6 +135,7 @@ const ProfileModifyingModal = ({ onClose }) => {
         setProfileImg(e.target.result); // 선택한 파일의 데이터를 profileImg에 설정
       };
       reader.readAsDataURL(file); // 파일 데이터를 Base64로 읽음
+      setResetProfileImage(false); // 초기화 상태 해제
     }
   };
 
@@ -89,20 +146,38 @@ const ProfileModifyingModal = ({ onClose }) => {
     }
   };
 
-  const nicknameChecker = (nickname) => {
-    if (!nickname || nickname.trim() === "") {
-      return false;
+  const handleResetProfileImage = (boolean) => {
+    setResetProfileImage(boolean);
+    handleCloseOptionModal();
+  };
+
+  const handleOpenOptionModal = () => {
+    setOptionModalOpen(true);
+  };
+
+  const handleCloseOptionModal = () => {
+    setOptionModalOpen(false);
+  };
+
+  const fetchDeleteProfileImage = async () => {
+    try {
+      const res = await deleteProfileImage();
+      console.log("delete profileImage: ", res);
+      dispatch(triggerRefresh());
+    } catch (error) {
+      console.error(error);
     }
-    const regex = /^[가-힣a-zA-Z0-9]+$/;
-    return regex.test(nickname);
   };
 
   return (
     <SlrModalLayout size={"profile"} onClose={() => onClose(false)}>
       <div className="flex flex-col items-center">
         {/* 프로필사진 */}
-        <div className="relative rounded-full shadow-md flex justify-center items-center">
-          {profileImg === "defaultProfileImage.jpg" ? (
+        <div
+          className="relative rounded-full shadow-md flex justify-center items-center"
+          onClick={handleOpenOptionModal}
+        >
+          {profileImg === "defaultProfileImage.jpg" || resetProfileImage ? (
             <PortraitPlaceholder iconSize={72} circleSize={28} />
           ) : (
             <div className="w-28 h-28 rounded-full">
@@ -114,10 +189,7 @@ const ProfileModifyingModal = ({ onClose }) => {
             </div>
           )}
 
-          <div
-            className="absolute w-10 h-10 shadow-md bottom-0 -end-4 bg-white rounded-full flex justify-center items-center"
-            onClick={() => fileInputRef.current.click()}
-          >
+          <div className="absolute w-10 h-10 shadow-md bottom-0 -end-4 bg-white rounded-full flex justify-center items-center">
             <PiCameraFill size={24} color={"#0c0a09"} />
             <input
               type="file"
@@ -153,18 +225,10 @@ const ProfileModifyingModal = ({ onClose }) => {
         <div className="w-full mt-4">
           <p
             className={`text-und14 ${
-              isValidNickname === false || wrongNickname
-                ? "text-undred"
-                : "text-undtextgray"
+              isValidNickname === false ? "text-undred" : "text-undtextgray"
             }`}
           >
-            {isValidNickname === null
-              ? "한글, 영문, 숫자 선택 혼용 2~10자로 입력해 주세요"
-              : isValidNickname && !wrongNickname
-              ? "사용 가능한 닉네임입니다"
-              : wrongNickname
-              ? "한글, 영문, 숫자 선택 혼용 2~10자로 입력해 주세요"
-              : "이미 등록된 닉네임입니다"}
+            {validText}
           </p>
         </div>
 
@@ -176,11 +240,28 @@ const ProfileModifyingModal = ({ onClose }) => {
                 ? "bg-undpoint text-white"
                 : "bg-unddisabled text-undtextgray"
             }`}
+            onClick={handleSubmit}
           >
             수정하기
           </button>
         </div>
       </div>
+      {optionModalOpen && (
+        <TwoButtonModal
+          cancelText="기본 프로필"
+          onCancel={() => handleResetProfileImage(true)}
+          confirmText="사진 추가"
+          onConfirm={() => {
+            fileInputRef.current.click();
+            handleCloseOptionModal();
+          }}
+          onClose={handleCloseOptionModal}
+        >
+          <p className="text-und16 text-undclickbrown font-bold">
+            변경할 프로필 이미지를 선택하세요
+          </p>
+        </TwoButtonModal>
+      )}
     </SlrModalLayout>
   );
 };
