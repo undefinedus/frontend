@@ -165,7 +165,11 @@ const NotificationsPage = () => {
       console.log("카카오 추가 동의 요청 시작");
 
       if (!window.Kakao.isInitialized()) {
-        window.Kakao.init(import.meta.env.VITE_KAKAO_REST_API_KEY);
+        window.Kakao.init(
+          import.meta.env.MODE === "development" // 실행 환경이
+            ? import.meta.env.VITE_KAKAO_REST_API_KEY_LOCAL
+            : import.meta.env.VITE_KAKAO_REST_API_KEY
+        );
 
         window.Kakao.Auth.authorize({
           redirectUri: "http://localhost:5173/settings/redirect",
