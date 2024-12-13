@@ -14,6 +14,9 @@ const Preferences = lazy(() =>
   import("../pages/settings/myPage/PreferencesPage")
 );
 const Milestone = lazy(() => import("../pages/settings/myPage/MilestonePage"));
+const Redirect = lazy(() =>
+  import("../pages/settings/myPage/SocializeRedirectPage")
+);
 
 const SettingsRouter = () => {
   return (
@@ -79,6 +82,14 @@ const SettingsRouter = () => {
         element={
           <Suspense fallback={<LoadingPage />}>
             <Notifications />
+          </Suspense>
+        }
+      />
+      <Route
+        path="redirect"
+        element={
+          <Suspense fallback={<LoadingPage />}>
+            <Redirect />
           </Suspense>
         }
       />
