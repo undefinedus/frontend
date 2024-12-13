@@ -4,7 +4,7 @@ import {
   getMySocialInfo,
   getSearchUserList,
   patchFollow,
-} from "../../api/social/mySocialAPI";
+} from "../../api/social/mySocialApi";
 import { OnlyTitle } from "../../layouts/TopLayout";
 import BasicLayout from "../../layouts/BasicLayout";
 import SocialProfile from "../../components/social/SocialProfile";

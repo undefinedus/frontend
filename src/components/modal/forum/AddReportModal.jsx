@@ -3,7 +3,7 @@ import TwoButtonModal from "../commons/TwoButtonModal";
 import { PiCircle, PiRadioButtonFill } from "react-icons/pi";
 import { addReport } from "../../../api/forum/reportApi";
 
-const AddReportModal = ({ forum, onCancel, onConfirm }) => {
+const AddReportModal = ({ forum, comment, onCancel, onConfirm }) => {
   // 신고 사유 목록
   const reasons = [
     "욕설, 비방, 차별, 혐오",

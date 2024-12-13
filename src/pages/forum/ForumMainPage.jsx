@@ -195,14 +195,14 @@ const ForumMainPage = () => {
         <div className={isScrolled ? "pt-16" : "pt-4"}>
           <TabCondition
             ref={tabRef}
-            tabs={["주제 발의", "토론 예정", "진행 중", "토론 종료"]}
+            tabs={["주제 발의", "토론 예정", "진행 중", "종료된 토론"]}
             activeTab={activeTab}
             setActiveTab={handleTabChange}
             initialScrollLeft={tabScrollLeft}
           />
         </div>
         {!isScrolled && (
-          <div className=" flex justify-between px-6 py-4">
+          <div className="flex justify-between px-6 py-4">
             <ItemCount count={totalElements} unit={"개"} />
             <SortDropdown
               onChange={handleSort}
@@ -234,7 +234,7 @@ const ForumMainPage = () => {
           {activeTab === "주제 발의" && <ListNotice type="noProposed" />}
           {activeTab === "토론 예정" && <ListNotice type="noScheduled" />}
           {activeTab === "진행 중" && <ListNotice type="noInProgress" />}
-          {activeTab === "토론 종료" && <ListNotice type="noCompleted" />}
+          {activeTab === "종료된 토론" && <ListNotice type="noCompleted" />}
         </div>
       )}
     </BasicLayout>

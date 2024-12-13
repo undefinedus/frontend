@@ -3,13 +3,26 @@ import { useNavigate } from "react-router-dom";
 import BasicLayout from "../../layouts/BasicLayout";
 import { PrevTitle } from "../../layouts/TopLayout";
 import ForumForm from "../../components/forum/ForumForm";
-import { writePropose } from "../../api/forum/ForumApi";
+import { writePropose } from "../../api/forum/forumApi";
 import TwoButtonModal from "../../components/modal/commons/TwoButtonModal";
 
 const WriteProposePage = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   const [discussionId, setDiscussionId] = useState(null); // 새로 생성된 글 ID 저장
+
+  const fetchWritePropose = async (isbn13, subject, content, startDate) => {
+    try {
+      const res = await writePropose(isbn13, subject, content, startDate);
+      console.log("작성 결과 :", res);
+      if (res?.data?.discussionId) {
+        // setDiscussionId(res.data.discussionId); // 새 글 ID 저장
+        // setIsModalOpen(true); // 모달 오픈
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // 뒤로 가기 버튼 클릭
   const handleBackClick = () => {
@@ -25,20 +38,6 @@ const WriteProposePage = () => {
       },
     });
   };
-
-  const fetchWritePropose = async (isbn13, subject, content, startDate) => {
-    try {
-      const res = await writePropose(isbn13, subject, content, startDate);
-      console.log("작성 결과 :", res);
-      if (res?.data?.discussionId) {
-        // setDiscussionId(res.data.discussionId); // 새 글 ID 저장
-        // setIsModalOpen(true); // 모달 오픈
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   // 모달
   // const handleModalCancel = () => {
   //   setIsModalOpen(false); // 취소

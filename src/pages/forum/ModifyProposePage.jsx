@@ -3,7 +3,7 @@ import { useNavigate, useLocation, replace } from "react-router-dom";
 import BasicLayout from "../../layouts/BasicLayout";
 import { PrevTitle } from "../../layouts/TopLayout";
 import ForumForm from "../../components/forum/ForumForm";
-import { modifyPropose } from "../../api/forum/ForumApi";
+import { modifyPropose } from "../../api/forum/forumApi";
 
 // 발의글 수정
 const ModifyProposePage = () => {
@@ -31,6 +31,15 @@ const ModifyProposePage = () => {
   // 수정하기 버튼 클릭 핸들러
   const handleSubmit = (discussionId, subject, content, startDate) => {
     fetchModifyPropose(forum.discussionId, subject, content, startDate);
+    navigate(`/forum/propose/${forum.discussionId}`, {
+      replace: true,
+      state: {
+        prevActiveTab: "주제 발의",
+        prevSearch,
+        prevSort,
+        prevScrollLeft,
+      },
+    });
   };
 
   const fetchModifyPropose = async (

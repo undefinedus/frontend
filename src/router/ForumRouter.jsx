@@ -6,7 +6,7 @@ const ForumMain = lazy(() => import("../pages/forum/ForumMainPage")); //토론 �
 const WritePropose = lazy(() => import("../pages/forum/WriteProposePage")); // 발의 작성
 const ProposeDetail = lazy(() => import("../pages/forum/ProposeDetailPage")); // 발의 상세
 const ProposeSearchBook = lazy(() =>
-  import("../pages/mybook/MyBookSearchPage")
+  import("../pages/myBook/MyBookSearchPage")
 ); // 발의할 책 검색 -> 책갈피 책 추가 검색 MYBOOK_0021과 동일
 const ModifyPropose = lazy(() => import("../pages/forum/ModifyProposePage")); // 발의 수정
 
@@ -17,16 +17,15 @@ const ScheduledDetail = lazy(
 const InprogressDetail = lazy(() =>
   import("../pages/forum/InprogressDetailPage")
 ); // 진행 중 상세
-const InprogressOpinions = lazy(() =>
-  import("../pages/forum/InprogressOpinionsPage")
-); // 진행 중 토론 의견 목록
 
 const CompletedDetail = lazy(() =>
   import("../pages/forum/CompletedDetailPage")
 ); // 종료된 토론 상세
-const CompletedOpinions = lazy(() =>
-  import("../pages/forum/CompletedOpinionsPage")
-); // 종료된 토론 의견 목록
+
+const ForumOpinionsPage = lazy(() =>
+  import("../pages/forum/ForumOpinionsPage")
+); // 토론 의견 목록
+
 const ForumAnalysis = lazy(() => import("../pages/forum/ForumAnalysisPage")); // AI 분석
 
 const ForumRouter = () => {
@@ -90,14 +89,6 @@ const ForumRouter = () => {
         }
       />
       <Route
-        path="inprogress/opinions/:discussionId"
-        element={
-          <Suspense fallback={<LoadingPage />}>
-            <InprogressOpinions />
-          </Suspense>
-        }
-      />
-      <Route
         path="completed/:discussionId"
         element={
           <Suspense fallback={<LoadingPage />}>
@@ -114,10 +105,10 @@ const ForumRouter = () => {
         }
       />
       <Route
-        path="complete/opinions/:discussionId"
+        path="opinions/:discussionId"
         element={
           <Suspense fallback={<LoadingPage />}>
-            <CompletedOpinions />
+            <ForumOpinionsPage />
           </Suspense>
         }
       />
