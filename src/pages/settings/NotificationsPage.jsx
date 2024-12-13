@@ -172,7 +172,10 @@ const NotificationsPage = () => {
         );
 
         window.Kakao.Auth.authorize({
-          redirectUri: "http://localhost:5173/settings/redirect",
+          redirectUri:
+            import.meta.env.MODE === "development" // 실행 환경이
+              ? "http://localhost:5173/settings/redirect"
+              : "https://gongchaek.site/settings/redirect",
           scope: "talk_message",
           state: "agree",
         });
