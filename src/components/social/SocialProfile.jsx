@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import basicProfile from "../../../public/assets/img/basicProfile.png";
 import PortraitPlaceholder from "../commons/PortraitPlaceholder";
 
 // 소셜 프로필

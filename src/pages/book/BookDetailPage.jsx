@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import BasicLayout from "../../layouts/BasicLayout";
 import { PrevAddBook } from "../../layouts/TopLayout";
-import { getSearchBookDetail } from "../../api/home/searchBookAPI";
+import { getSearchBookDetail } from "../../api/home/searchBookApi";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import BookCoverTitle from "../../components/book/BookCoverTitle";
 import BookInformation from "../../components/book/BookInformation";
