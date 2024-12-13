@@ -3,6 +3,8 @@ import React, { useRef, useEffect } from "react";
 const ResizableTextarea = ({
   label, // 텍스트레이블 (예: "발의 내용")
   value, // textarea의 값
+  onBlur,
+  onFocus,
   onChange, // 값이 변경될 때 호출되는 핸들러
   maxLength, // 최대 문자 수
   placeholder, // placeholder 텍스트
@@ -38,13 +40,15 @@ const ResizableTextarea = ({
       <div className="flex justify-between items-center">
         <p className="text-und16 font-bold text-undtextdark">{label}</p>
         <p className="text-und12 font-bold text-undtextgray">
-          ({value.length}자/{maxLength}자)
+          ({value.length}/{maxLength}자)
         </p>
       </div>
       <textarea
         ref={textareaRef}
         className="w-full border border-unddisabled rounded-[10px] p-4 text-undtextdark text-und14 text-left"
         value={value}
+        onBlur={onBlur}
+        onFocus={onFocus}
         onChange={handleChange}
         placeholder={placeholder}
         rows={rows} // props로 받은 초기 행 수 설정

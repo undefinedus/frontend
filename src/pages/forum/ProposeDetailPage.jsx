@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  useNavigate,
-  useLocation,
-  useParams,
-  redirect,
-} from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import BasicLayout from "../../layouts/BasicLayout";
 import {
   PrevTitleModifyDelete,

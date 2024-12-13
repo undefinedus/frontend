@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { getSearchBookList } from "../../api/home/searchBookAPI";
+import { getSearchBookList } from "../../api/home/searchBookApi";
 import BasicLayout from "../../layouts/BasicLayout";
 import { PrevTitle } from "../../layouts/TopLayout";
 import ISBNBookSearch from "../../components/home/ISBNBookSearch";

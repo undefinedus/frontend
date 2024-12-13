@@ -2,14 +2,15 @@
 import React, { useEffect } from "react";
 import ComentCard from "./CommentCard";
 
-const CommentList = ({ comments }) => {
+const CommentList = ({ comments, forum }) => {
   useEffect(() => {
-    console.log("comments", comments);
-  });
+    console.log("*******comments", comments);
+    console.log("*******forum", forum);
+  }, [forum]);
   return (
-    <div className="pb-4 w-full">
-      {comments.map((comment, index) => (
-        <ComentCard key={index} comment={comment} />
+    <div className="flex flex-col w-full">
+      {comments?.map((comment, index) => (
+        <ComentCard key={index} comment={comment} forum={forum} />
       ))}
     </div>
   );

@@ -4,7 +4,7 @@ import {
   getSocialInfo,
   patchFollow,
   getSocialBooks,
-} from "../../api/social/socialBookShelfAPI";
+} from "../../api/social/socialBookShelfApi";
 import BasicLayout from "../../layouts/BasicLayout";
 import { PrevTitle } from "../../layouts/TopLayout";
 import SocialProfile from "../../components/social/SocialProfile";

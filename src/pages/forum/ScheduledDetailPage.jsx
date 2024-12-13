@@ -17,7 +17,7 @@ const ScheduledDetailPage = () => {
 
   const { discussionId } = useParams();
   const [forum, setForum] = useState({});
-  const [isAuthor, setIsAuthor] = useState(false);
+  const [isAuthor, setIsAuthor] = useState(false); // 작성자 일치
   const [isReportModalOpen, setIsReportModalOpen] = useState(false); // 신고 모달 상태
 
   const { prevActiveTab, prevSearch, prevSort, prevScrollLeft } =
@@ -49,7 +49,6 @@ const ScheduledDetailPage = () => {
   const handleActionClick = (action) => {
     console.log("Action Clicked:", action); // 추가
     if (action === "back") {
-      console.log("discussionId : ", discussionId);
       navigate("/forum/list", {
         replace: true,
         state: {

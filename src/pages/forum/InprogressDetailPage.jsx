@@ -3,14 +3,22 @@ import { useNavigate, useLocation, useParams } from "react-router-dom";
 import BasicLayout from "../../layouts/BasicLayout";
 import { PrevTitle, PrevTitleReport } from "../../layouts/TopLayout";
 import { getForumDetail } from "../../api/forum/forumApi.js";
-import { getBestComment } from "../../api/forum/forumCommentApi.js";
+import {
+  getBestComment,
+  writeComment,
+} from "../../api/forum/forumCommentApi.js";
 import ForumTitle from "../../components/forum/ForumTitle.jsx";
 import ForumContent from "../../components/forum/ForumContent.jsx";
 import useCustomLogin from "../../hooks/useCustomLogin.js";
 import AddReportModal from "../../components/modal/forum/AddReportModal.jsx";
-import CommentCard from "../../components/forum/CommentCard.jsx";
-import { PiChatCenteredDots } from "react-icons/pi";
+import {
+  PiCaretRight,
+  PiCaretRightBold,
+  PiChatCenteredDots,
+  PiMedalMilitaryFill,
+} from "react-icons/pi";
 import CommentList from "../../components/forum/CommentList.jsx";
+import WriteComment from "../../components/forum/WriteComment.jsx";
 
 // 진행중 토론 상세
 const InprogressDetailPage = () => {
@@ -20,7 +28,7 @@ const InprogressDetailPage = () => {
 
   const { discussionId } = useParams();
   const [forum, setForum] = useState({});
-  const [bestComments, setBestComments] = useState({});
+  const [bestComments, setBestComments] = useState([]);
   const [isAuthor, setIsAuthor] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false); // 신고 모달 상태
 
@@ -43,7 +51,7 @@ const InprogressDetailPage = () => {
     fetchBestComment(discussionId); // API 호출
   }, [discussionId]);
 
-  // 상세 API
+  // 토론 상세 API
   const fetchForum = async (discussionId) => {
     try {
       const res = await getForumDetail(discussionId);
@@ -65,9 +73,18 @@ const InprogressDetailPage = () => {
     }
   };
 
-  // 뒤로가기, 수정, 삭제, 신고 버튼
+  // 댓글 작성 API
+  const fetchWriteComment = async (discussionId, voteType, comment) => {
+    try {
+      const res = await writeComment(discussionId, voteType, comment);
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // 뒤로가기, 신고 버튼
   const handleActionClick = (action) => {
-    console.log("Action Clicked:", action); // 추가
     if (action === "back") {
       console.log("discussionId : ", discussionId);
       navigate("/forum/list", {
@@ -98,15 +115,37 @@ const InprogressDetailPage = () => {
 
   // 의견 더보기 클릭
   const handleMoreComment = () => {
-    navigate("/forum/inprogress/opinions/${discussionId}", {
+    navigate(`/forum/opinions/${discussionId}`, {
       replace: true,
       state: {
+        forum,
         prevActiveTab,
         prevSearch,
         prevSort,
         prevScrollLeft,
       },
     });
+  };
+
+  // 댓글 작성 핸들러
+  const handleCommentSubmit = async (voteType, comment) => {
+    try {
+      await fetchWriteComment(discussionId, voteType, comment);
+      navigate(`/forum/opinions/${discussionId}`, {
+        replace: true,
+        state: {
+          forum,
+          prevActiveTab,
+          prevSearch,
+          prevSort,
+          prevScrollLeft,
+        },
+      });
+      return true; // 성공 시 true 반환
+    } catch (error) {
+      console.error("댓글 작성 실패:", error);
+      return false; // 실패 시 false 반환
+    }
   };
 
   return (
@@ -129,15 +168,41 @@ const InprogressDetailPage = () => {
       <div className="flex flex-col pt-16 pb-20 px-6">
         <ForumTitle forum={forum} />
         <ForumContent forum={forum} />
-        <div className="flex flex-col border-t border-unddisabled text-und18 font-bold text-left py-4 gap-1">
-          베스트 의견
-          <CommentList comments={bestComments} />
-        </div>
-        <div
-          className="flex gap-1 text-undpoint text-und14 font-bold items-center justify-center bg-white border border-unddisabled rounded-md h-12 w-full"
-          onClick={handleMoreComment}
-        >
-          <PiChatCenteredDots size={24} color="#7D5C4D" />더 보기
+        <div className="flex flex-col border-t border-unddisabled text-und14 text-left pt-4">
+          <div className="flex w-full justify-between pb-4">
+            <div className="flex gap-0.5 font-extrabold items-center">
+              {bestComments.length !== 0 ? (
+                <div className="flex text-center items-center text-und16 font-extrabold text-undred justify-start gap-1">
+                  <div>
+                    <PiMedalMilitaryFill size={20} color="#D55636" />
+                  </div>
+                  <p className="flex w-full">BEST 의견</p>
+                </div>
+              ) : (
+                <p className="flex w-full font-extrabold text-und16">의견</p>
+              )}
+            </div>
+            <div
+              className="flex gap-1 items-center text-undtextgray"
+              onClick={handleMoreComment}
+            >
+              <div className="flex text-center items-center font-bold gap-0.5">
+                {" "}
+                <PiChatCenteredDots size={18} color="78716C" />
+                <div className="flex gap-1 text-und14">
+                  <p className="text-undtextgray">전체 보기</p>
+                  <p className="text-undtextdark font-extrabold">
+                    {forum.commentCount}
+                  </p>
+                </div>
+              </div>
+              <PiCaretRightBold />
+            </div>
+          </div>
+          {bestComments && (
+            <CommentList comments={bestComments} forum={forum} />
+          )}
+          <WriteComment onClick={handleCommentSubmit} />
         </div>
       </div>
       {/* 신고 모달 */}

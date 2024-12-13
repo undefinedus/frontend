@@ -36,24 +36,31 @@ const ForumContent = ({ forum, children }) => {
           </p>
         </div>
         {/* 토론 예정 시간 or 진행 시간 */}
-        {forum.status === "IN_PROGRESS" ? (
+        {forum.status === "IN_PROGRESS" || forum.status === "COMPLETED" ? (
           <div className="flex flex-col justify-start w-full">
             <div className="flex gap-1 w-full">
               <PiAlarmFill size={16} color="7D5C4D" />
               <p className="text-left text-undpoint">토론 진행 시간</p>
             </div>
-            <p className="text-left text-undtextgray w-full">
-              {forum.startDate &&
-                `${forum.startDate
-                  .split("T")[0]
-                  .replace(/-/g, ".")} ${forum.startDate
-                  .split("T")[1]
-                  .slice(0, 5)} ~ ${forum.closedAt
-                  .split("T")[0]
-                  .replace(/-/g, ".")} ${forum.closedAt
-                  .split("T")[1]
-                  .slice(0, 5)}`}
-            </p>
+            <div className=" flex justify-between text-left text-undtextgray w-full">
+              <p>
+                {forum.startDate &&
+                  `${forum.startDate
+                    .split("T")[0]
+                    .replace(/-/g, ".")} ${forum.startDate
+                    .split("T")[1]
+                    .slice(0, 5)}`}
+              </p>
+              ~
+              <p>
+                {forum.closedAt &&
+                  ` ${forum.closedAt
+                    .split("T")[0]
+                    .replace(/-/g, ".")} ${forum.closedAt
+                    .split("T")[1]
+                    .slice(0, 5)}`}
+              </p>
+            </div>
           </div>
         ) : (
           <div className="flex justify-between w-full">
