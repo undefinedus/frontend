@@ -1,15 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NotificationsComponent from "../../components/settings/NotificationsComponent";
 import { PrevTitle } from "../../layouts/TopLayout";
 import NavBar from "../../layouts/NavBar";
 import { useNavigate } from "react-router-dom";
+import {
+  getMyInformation,
+  modifyIsPublic,
+  modifyKakaoMessage,
+} from "../../api/settings/myPageApi";
+import TwoButtonModal from "../../components/modal/commons/TwoButtonModal";
 
 const NotificationsPage = () => {
+  const [myInfo, setMyInfo] = useState({});
+  const [refresh, setRefresh] = useState(false);
+  const [openSocializeModal, setOpenSocializeModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [bookshelfNotifications, setBookshelfNotifications] = useState([
     {
       id: "bookshelf-1", // id 추가
-      alertTitle: "독서 활동",
-      description: "토론 예정 시간 3시간 전 알림",
+      alertTitle: "독서 장려 알림",
+      description: "한 달 이상 독서 활동 없을 시 알림",
       isEnabled: false,
     },
     {
@@ -39,13 +49,13 @@ const NotificationsPage = () => {
     {
       id: "discussion-1", // id 추가
       alertTitle: "발의 채택/기각",
-      description: "누군가 나를 팔로우했을 시 알림",
+      description: "내가 발의한 주제 채택/기각 여부",
       isEnabled: false,
     },
     {
       id: "discussion-2", // id 추가
       alertTitle: "토론 개최 예정",
-      description: "소셜 검색에서 내 계정 노출 여부",
+      description: "토론 예정 시간 1시간 전 알림",
       isEnabled: false,
     },
     {
@@ -56,6 +66,40 @@ const NotificationsPage = () => {
     },
   ]);
 
+  useEffect(() => {
+    setBookshelfNotifications((prevNotifications) =>
+      prevNotifications.map((notification) =>
+        notification.id === "bookshelf-2"
+          ? { ...notification, isEnabled: myInfo.messageToKakao }
+          : notification
+      )
+    );
+    setSnsNotifications((prevNotifications) =>
+      prevNotifications.map((notification) =>
+        notification.id === "sns-2"
+          ? { ...notification, isEnabled: myInfo.public }
+          : notification
+      )
+    );
+  }, [myInfo]);
+
+  // 초기 정보 로드
+  useEffect(() => {
+    fetchMyInfo();
+  }, [refresh]);
+
+  const fetchMyInfo = async () => {
+    try {
+      setIsLoading(true);
+      const res = await getMyInformation();
+      console.log("res at page: ", res);
+      setMyInfo(res);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   // 핸들러 수정
   const handleBookshelfToggle = (id) => (checked) => {
     setBookshelfNotifications((prev) =>
@@ -63,6 +107,9 @@ const NotificationsPage = () => {
         item.id === id ? { ...item, isEnabled: checked } : item
       )
     );
+    if (id === "bookshelf-2") {
+      socialToggleController();
+    }
   };
 
   const handleDiscussionToggle = (id) => (checked) => {
@@ -79,6 +126,62 @@ const NotificationsPage = () => {
         item.id === id ? { ...item, isEnabled: checked } : item
       )
     );
+    if (id === "sns-2") {
+      toggleIsPublic();
+    }
+  };
+
+  const socialToggleController = () => {
+    if (!myInfo.social) {
+      setOpenSocializeModal(true);
+    } else if (!myInfo.kakaoMessageIsAgree) {
+      console.log("동의받기");
+      getKakaoAgreement();
+    } else {
+      toggleMessageToKakao();
+    }
+  };
+
+  const toggleMessageToKakao = async () => {
+    try {
+      const res = await modifyKakaoMessage();
+      console.log("res at page: ", res);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const socializeAccount = () => {
+    console.log("카카오 연동 api 수행중.//");
+  };
+
+  const getKakaoAgreement = async () => {
+    console.log("카카오 동의");
+    try {
+      console.log("카카오 추가 동의 요청 시작");
+
+      if (!window.Kakao.isInitialized()) {
+        window.Kakao.init("4c6fb649b02588a051f321213f1895b2");
+
+        window.Kakao.Auth.authorize({
+          redirectUri: "http://localhost:5173/settings/notifications",
+          scope: "talk_message",
+        });
+
+        console.log("카카오톡 메세지 권한 요청 완료");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const toggleIsPublic = async () => {
+    try {
+      const res = await modifyIsPublic();
+      console.log("res at page: ", res);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // 디버깅을 위한 콘솔 로그 추가
@@ -106,20 +209,35 @@ const NotificationsPage = () => {
         showLine={false}
         onClick={() => navigate("/settings")}
       />
-      <div className="px-7 flex flex-col gap-6">
-        <NotificationsComponent
-          subtitle={"책장"}
-          notificationItems={bookshelfItems}
-        />
-        <NotificationsComponent
-          subtitle={"소셜"}
-          notificationItems={snsItems}
-        />
-        <NotificationsComponent
-          subtitle={"토론"}
-          notificationItems={discussionItems}
-        />
-      </div>
+      {!isLoading && (
+        <div className="px-7 flex flex-col gap-6">
+          <NotificationsComponent
+            subtitle={"책장"}
+            notificationItems={bookshelfItems}
+          />
+          <NotificationsComponent
+            subtitle={"소셜"}
+            notificationItems={snsItems}
+          />
+          <NotificationsComponent
+            subtitle={"토론"}
+            notificationItems={discussionItems}
+          />
+        </div>
+      )}
+      {openSocializeModal && (
+        <TwoButtonModal
+          onConfirm={socializeAccount}
+          onCancel={() => setOpenSocializeModal(false)}
+        >
+          <p className="text-und16 text-undclickbrown font-bold">
+            카카오 연동이 필요한 기능입니다
+          </p>
+          <p className="text-und16 text-undclickbrown font-bold">
+            카카오 계정과 연동하시겠습니까?
+          </p>
+        </TwoButtonModal>
+      )}
       <NavBar />
     </div>
   );

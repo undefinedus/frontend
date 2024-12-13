@@ -1,13 +1,13 @@
 import BasicLayout from "../../../layouts/BasicLayout";
 import { PrevTitle } from "../../../layouts/TopLayout";
 import MenuBox from "../../../components/settings/MenuBox";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useCustomLogin from "../../../hooks/useCustomLogin";
 import { useEffect, useState } from "react";
 import TwoButtonModal from "../../../components/modal/commons/TwoButtonModal";
 import { getMyInformation, unregister } from "../../../api/settings/myPageApi";
 import useDateDiff from "../../../hooks/useDateDiff";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const MyPage = () => {
   const { doLogout } = useCustomLogin();
@@ -15,6 +15,17 @@ const MyPage = () => {
   const [myInfo, setMyInfo] = useState();
   const [openLogoutModal, setOpenLogoutModal] = useState(false);
   const [openUnregisterModal, setOpenUnregisterModal] = useState(false);
+  const [openSocializeModal, setOpenSocializeModal] = useState(false);
+  const [dynamicMyAccountRoutes, setDynamicMyAccountRoutes] = useState([
+    "카카오 연동하기",
+    "비밀번호 변경",
+    "로그아웃",
+  ]);
+  const [dynamicMyAccountLinks, setDynamicMyAccountLinks] = useState([
+    "socialize",
+    "changePassword",
+    "logout",
+  ]);
   const { diffToday } = useDateDiff();
   const refresh = useSelector((state) => state.refresh.refresh);
 
@@ -27,9 +38,21 @@ const MyPage = () => {
     try {
       const res = await getMyInformation();
       console.log("res at page: ", res);
+      if (res.social) {
+        setDynamicMyAccountRoutes(["로그아웃"]);
+        setDynamicMyAccountLinks(["logout"]);
+      }
       setMyInfo(res);
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const handleClickChild = (child) => {
+    if (child === "로그아웃") {
+      handleClickLogout();
+    } else {
+      handleClickSocialize();
     }
   };
 
@@ -41,6 +64,10 @@ const MyPage = () => {
     setOpenUnregisterModal(true);
   };
 
+  const handleClickSocialize = () => {
+    setOpenSocializeModal(true);
+  };
+
   const handleLogout = () => {
     doLogout();
     setOpenLogoutModal(false);
@@ -50,6 +77,10 @@ const MyPage = () => {
   const handleUnregister = () => {
     console.log("unregister");
     fetchUnregister();
+  };
+
+  const handleSocialize = () => {
+    console.log("socialize");
   };
 
   const fetchUnregister = async () => {
@@ -67,6 +98,7 @@ const MyPage = () => {
         <PrevTitle
           title={"마이페이지"}
           onClick={() => navigate({ pathname: "/settings" }, { replace: true })}
+          showLine={false}
         />
       </div>
       <div className="w-full flex flex-col py-20 px-6 gap-4">
@@ -84,7 +116,8 @@ const MyPage = () => {
             text={"내 취향 수정"}
             hasChild={false}
             childList={[]}
-            link={"myPage"}
+            link={"preferences"}
+            data={myInfo}
           />
         </div>
         <div className="w-full">
@@ -92,17 +125,18 @@ const MyPage = () => {
             text={"내 업적"}
             hasChild={true}
             childList={["업적 목록", "칭호 수정"]}
-            link={["achievements", "setTitle"]}
+            link={["milestone", "setTitle"]}
+            notToMove={["칭호 수정"]}
           />
         </div>
         <div className="w-full">
           <MenuBox
             text={"내 계정"}
             hasChild={true}
-            onChildClick={handleClickLogout}
-            childList={["카카오 연동하기", "비밀번호 변경", "로그아웃"]}
-            link={["socialize", "changePassword", "logout"]}
-            notToMove={["로그아웃"]}
+            onChildClick={handleClickChild}
+            childList={dynamicMyAccountRoutes}
+            link={dynamicMyAccountLinks}
+            notToMove={["카카오 연동하기", "로그아웃"]}
           />
         </div>
         <div className="w-full">
@@ -135,6 +169,16 @@ const MyPage = () => {
           </p>
           <p className="text-und16 text-undclickbrown font-bold">
             정말 탈퇴하시겠습니까?🥲
+          </p>
+        </TwoButtonModal>
+      )}
+      {openSocializeModal && (
+        <TwoButtonModal
+          onConfirm={handleSocialize}
+          onCancel={() => setOpenSocializeModal(false)}
+        >
+          <p className="text-und16 text-undclickbrown font-bold">
+            카카오 계정과 연동하시겠습니까?
           </p>
         </TwoButtonModal>
       )}

@@ -1,9 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
-import Calendar from "../../commons/Calendar";
+import { useEffect, useState } from "react";
 import CheckBox from "../../commons/CheckBox";
 import Button from "../../commons/Button";
 import DatePickerSlider from "../../commons/DatePickerSlider";
-import { debounce } from "lodash";
 import { modifyUserInfo } from "../../../api/settings/myPageApi";
 import { useNavigate } from "react-router-dom";
 

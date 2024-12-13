@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { PrevTitle } from "../../../layouts/TopLayout";
 import UserInfo from "../../../components/settings/myPage/UserInfo";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -25,6 +25,7 @@ const UserInfoPage = () => {
           onClick={() =>
             navigate({ pathname: "/settings/myPage" }, { replace: true, state })
           }
+          showLine={false}
         />
       </div>
 
