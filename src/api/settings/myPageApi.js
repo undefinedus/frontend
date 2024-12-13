@@ -30,7 +30,7 @@ export const modifyProfile = async (data) => {
 
   console.log("res at api: ", res);
 
-  return res;
+  return res.data.result;
 };
 
 export const modifyUserInfo = async (birth, gender) => {
@@ -48,11 +48,15 @@ export const modifyUserInfo = async (birth, gender) => {
 export const modifyPreferences = async (data) => {
   console.log("data at api: ", data);
 
-  const res = await jwtAxios.patch(`${host}/preferences`, data);
+  const res = await jwtAxios.patch(`${host}/preferences`, data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
   console.log("res at api: ", res);
 
-  return res;
+  return res.data.result;
 };
 
 export const checkKakaoMessagePermission = async () => {
@@ -71,10 +75,38 @@ export const modifyKakaoMessage = async () => {
   return res;
 };
 
+export const modifyIsPublic = async () => {
+  const res = await jwtAxios.post(`${host}/public`);
+
+  console.log("res at api: ", res);
+
+  return res;
+};
+
 export const unregister = async () => {
   const res = await jwtAxios.delete(`${host}`);
 
   console.log("res at api: ", res);
 
   return res;
+};
+
+export const checkPassword = async (data) => {
+  console.log("data at api: ", data);
+
+  const res = await jwtAxios.post(`${host}/checkPassword`, data);
+
+  console.log("res at api: ", res);
+
+  return res.data.data.password;
+};
+
+export const modifyPassword = async (data) => {
+  console.log("data at api: ", data);
+
+  const res = await jwtAxios.patch(`${host}/password`, data);
+
+  console.log("res at api: ", res);
+
+  return res.data.data.password;
 };

@@ -46,7 +46,7 @@ const SettingsPage = () => {
   return (
     <BasicLayout>
       <div className="fixed top-0 left-0 right-0">
-        <OnlyTitle title={"설정"} />
+        <OnlyTitle title={"설정"} showLine={false} />
       </div>
       <div className="w-full flex flex-col px-6 pt-20 gap-4">
         <div className="w-full">

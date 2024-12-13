@@ -86,7 +86,9 @@ const RecordPage = () => {
         </div>
       </div>
 
-      <NavBar />
+      <div className="fixed z-50">
+        <NavBar />
+      </div>
     </div>
   );
 };

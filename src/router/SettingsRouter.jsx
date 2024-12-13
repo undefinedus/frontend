@@ -7,9 +7,13 @@ const MyPage = lazy(() => import("../pages/settings/myPage/MyPage"));
 const Record = lazy(() => import("../pages/settings/RecordPage"));
 const Notifications = lazy(() => import("../pages/settings/NotificationsPage"));
 const ChangePassword = lazy(() =>
-  import("../pages/settings/ChangePasswordPage")
+  import("../pages/settings/myPage/ChangePasswordPage")
 );
 const UserInfo = lazy(() => import("../pages/settings/myPage/UserInfoPage"));
+const Preferences = lazy(() =>
+  import("../pages/settings/myPage/PreferencesPage")
+);
+const Milestone = lazy(() => import("../pages/settings/myPage/MilestonePage"));
 
 const SettingsRouter = () => {
   return (
@@ -31,6 +35,38 @@ const SettingsRouter = () => {
         }
       />
       <Route
+        path="myPage/userInfo"
+        element={
+          <Suspense fallback={<LoadingPage />}>
+            <UserInfo />
+          </Suspense>
+        }
+      />
+      <Route
+        path="myPage/changePassword"
+        element={
+          <Suspense fallback={<LoadingPage />}>
+            <ChangePassword />
+          </Suspense>
+        }
+      />
+      <Route
+        path="myPage/preferences"
+        element={
+          <Suspense>
+            <Preferences />
+          </Suspense>
+        }
+      />
+      <Route
+        path="myPage/milestone"
+        element={
+          <Suspense fallback={<LoadingPage />}>
+            <Milestone />
+          </Suspense>
+        }
+      />
+      <Route
         path="record"
         element={
           <Suspense fallback={<LoadingPage />}>
@@ -43,22 +79,6 @@ const SettingsRouter = () => {
         element={
           <Suspense fallback={<LoadingPage />}>
             <Notifications />
-          </Suspense>
-        }
-      />
-      <Route
-        path="changePassword"
-        element={
-          <Suspense fallback={<LoadingPage />}>
-            <ChangePassword />
-          </Suspense>
-        }
-      />
-      <Route
-        path="myPage/userInfo"
-        element={
-          <Suspense fallback={<LoadingPage />}>
-            <UserInfo />
           </Suspense>
         }
       />

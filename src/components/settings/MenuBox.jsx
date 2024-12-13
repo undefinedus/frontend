@@ -18,7 +18,7 @@ const MenuBox = ({
   const handleClick = (child, index) => {
     // onChildClick이 있고 child가 "로그아웃"이면 onChildClick 실행
     if (onChildClick && (!hasChild || notToMove.includes(child))) {
-      onChildClick();
+      onChildClick(child);
     }
     // link가 배열이고 해당 인덱스에 link가 있으면 네비게이션
     else if (Array.isArray(link) && link[index]) {

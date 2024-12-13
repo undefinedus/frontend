@@ -76,7 +76,7 @@ const CategoryButton = ({ label, isSelected, onClick, disabled }) => (
   </button>
 );
 
-const SignupStepFour = ({ registerData, isSocial = false}) => {
+const SignupStepFour = ({ registerData, isSocial = false }) => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [buttonDisableCondition, setButtonDisableCondition] = useState(true);
   const maxSelections = 3;
@@ -89,7 +89,10 @@ const SignupStepFour = ({ registerData, isSocial = false}) => {
   const closeModal = () => setIsModalOpen(false);
 
   useEffect(() => {
-    setButtonDisableCondition(selectedCategories.length !== maxSelections);
+    setButtonDisableCondition(
+      selectedCategories.length >= 1 &&
+        selectedCategories.length <= maxSelections
+    );
   }, [selectedCategories]);
 
   const toggleCategory = (category) => {
@@ -111,7 +114,9 @@ const SignupStepFour = ({ registerData, isSocial = false}) => {
         ), // 선택된 카테고리 배열
       };
 
-      const response = isSocial ? await socialRegistMember(finalRegisterData) : await registMember(finalRegisterData);
+      const response = isSocial
+        ? await socialRegistMember(finalRegisterData)
+        : await registMember(finalRegisterData);
       if (response.result) {
         openModal();
       } else {
@@ -134,7 +139,9 @@ const SignupStepFour = ({ registerData, isSocial = false}) => {
       // 회원가입 성공 후 자동 로그인 시도
       const loginResult = await doLogin({
         username: registerData.username,
-        password: isSocial ? "pw_" + registerData.password : registerData.password,
+        password: isSocial
+          ? "pw_" + registerData.password
+          : registerData.password,
       });
 
       if (!loginResult.error) {
