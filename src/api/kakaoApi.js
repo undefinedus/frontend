@@ -1,9 +1,15 @@
 import axios from "axios";
 import { API_SERVER_HOST } from "./commonApi";
 
-const rest_api_key = import.meta.env.VITE_KAKAO_REST_API_KEY;
+const rest_api_key =
+  import.meta.env.MODE === "development" // 실행 환경이
+    ? import.meta.env.VITE_KAKAO_REST_API_KEY_LOCAL
+    : import.meta.env.VITE_KAKAO_REST_API_KEY;
 const redirect_uri = "http://localhost:5173/member/kakao";
-const client_secret = import.meta.env.VITE_KAKAO_CLIENT_SECRET;
+const client_secret =
+  import.meta.env.MODE === "development"
+    ? import.meta.env.VITE_KAKAO_CLIENT_SECRET_LOCAL
+    : import.meta.env.VITE_KAKAO_CLIENT_SECRET;
 const auth_code_path = "https://kauth.kakao.com/oauth/authorize";
 const access_token_url = "https://kauth.kakao.com/oauth/token";
 
