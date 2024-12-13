@@ -1,11 +1,9 @@
 import axios from "axios";
 import { API_SERVER_HOST } from "./commonApi";
-import jwtAxios from "../util/jwtUtil";
 
-const rest_api_key = "433f010a1fa5963afe5402f4fa79bbb4";
+const rest_api_key = import.meta.env.VITE_KAKAO_REST_API_KEY;
 const redirect_uri = "http://localhost:5173/member/kakao";
-const client_secret = "TZRwcwKgGbDJh9NrqfQPHP9obzZULtNE";
-
+const client_secret = import.meta.env.VITE_KAKAO_CLIENT_SECRET;
 const auth_code_path = "https://kauth.kakao.com/oauth/authorize";
 const access_token_url = "https://kauth.kakao.com/oauth/token";
 

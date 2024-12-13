@@ -4,6 +4,7 @@ import { PrevTitle } from "../../layouts/TopLayout";
 import NavBar from "../../layouts/NavBar";
 import { useNavigate } from "react-router-dom";
 import {
+  getKakaoLoginLink,
   getMyInformation,
   modifyIsPublic,
   modifyKakaoMessage,
@@ -151,8 +152,11 @@ const NotificationsPage = () => {
     }
   };
 
-  const socializeAccount = () => {
-    console.log("카카오 연동 api 수행중.//");
+  const socializeAccount = async () => {
+    console.log("카카오 로그인 요청 시작");
+    setOpenSocializeModal(false);
+    const kakaoAuthUrl = getKakaoLoginLink();
+    window.location.href = kakaoAuthUrl;
   };
 
   const getKakaoAgreement = async () => {
@@ -161,14 +165,13 @@ const NotificationsPage = () => {
       console.log("카카오 추가 동의 요청 시작");
 
       if (!window.Kakao.isInitialized()) {
-        window.Kakao.init("4c6fb649b02588a051f321213f1895b2");
+        window.Kakao.init(import.meta.env.VITE_KAKAO_REST_API_KEY);
 
         window.Kakao.Auth.authorize({
-          redirectUri: "http://localhost:5173/settings/notifications",
+          redirectUri: "http://localhost:5173/settings/redirect",
           scope: "talk_message",
+          state: "agree",
         });
-
-        console.log("카카오톡 메세지 권한 요청 완료");
       }
     } catch (error) {
       console.error(error);
