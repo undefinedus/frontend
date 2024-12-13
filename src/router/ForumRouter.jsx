@@ -6,7 +6,7 @@ const ForumMain = lazy(() => import("../pages/forum/ForumMainPage")); //토론 �
 const WritePropose = lazy(() => import("../pages/forum/WriteProposePage")); // 발의 작성
 const ProposeDetail = lazy(() => import("../pages/forum/ProposeDetailPage")); // 발의 상세
 const ProposeSearchBook = lazy(() =>
-  import("../pages/mybook/MyBookSearchPage")
+  import("../pages/myBook/MyBookSearchPage")
 ); // 발의할 책 검색 -> 책갈피 책 추가 검색 MYBOOK_0021과 동일
 const ModifyPropose = lazy(() => import("../pages/forum/ModifyProposePage")); // 발의 수정
 
