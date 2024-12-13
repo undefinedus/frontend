@@ -10,7 +10,6 @@ import {
   getMonthlyCompletedMyBookData,
   getMemberYears,
   getTotalStatisticsYearsBookInfo,
-
 } from "../../../api/settings/statistics/statisticsApi";
 
 import YearDropdown from "../../settings/record/YearDropdown";

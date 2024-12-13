@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import basicProfile from "../../../public/assets/img/basicProfile.png";
+import PortraitPlaceholder from "../commons/PortraitPlaceholder";
 
 // 소셜 프로필
 const SocialProfile = ({
@@ -30,7 +31,7 @@ const SocialProfile = ({
   };
   return (
     <div
-      className={`flex w-full items-center border rounded-2xl px-5 shadow-md bg-white gap-8  ${
+      className={`flex w-full items-center border rounded-2xl px-6 shadow-md bg-white gap-6 ${
         socialProfile.isFollowing === null ? "h-24" : "h-32"
       }`}
     >
@@ -41,16 +42,21 @@ const SocialProfile = ({
             socialProfile.isFollowing === null ? "w-16 h-16" : "w-14 h-14"
           } flex-shrink-0 rounded-full overflow-hidden`}
         >
-          <img
-            src={
-              socialProfile.profileImage &&
-              socialProfile.profileImage !== "defaultProfileImage.jpg"
-                ? socialProfile.profileImage
-                : basicProfile
-            } // 기본 이미지 처리
-            alt={`${socialProfile.nickname}의 프로필`}
-            className="w-full h-full object-cover"
-          />
+          <div className="w-full h-full">
+            {socialProfile.profileImage &&
+            socialProfile.profileImage !== "defaultProfileImage.jpg" ? (
+              <img
+                src={socialProfile.profileImage}
+                alt={`${socialProfile.nickname}의 프로필`}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <PortraitPlaceholder
+                iconSize={socialProfile.isFollowing === null ? 36 : 32}
+                circleSize={socialProfile.isFollowing === null ? 16 : 14}
+              />
+            )}
+          </div>
         </div>
         {/* 팔로우/팔로잉 버튼 */}
         {socialProfile.isFollowing === false && (
