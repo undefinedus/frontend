@@ -8,6 +8,7 @@ import { registMember, nicknameDuplicateCheck } from "../../api/signupApi";
 import { debounce } from "lodash";
 import PropTypes from "prop-types";
 import Calendar from "../../components/commons/Calendar";
+import Filter from "badwords-ko";
 const SignupStepThree = ({
   registerData,
   onRegisterDataUpdate,
@@ -31,7 +32,12 @@ const SignupStepThree = ({
   // 닉네임 형식 검사
   const validateNickname = (nickname) => {
     const nicknameRegex = /^[a-zA-Z가-힣0-9]{2,10}$/;
-    return nicknameRegex.test(nickname);
+    const isValidFormat = nicknameRegex.test(nickname);
+
+    // 비속어 검사
+    const containsProfanity = badwordsFilter.isProfane(nickname);
+
+    return isValidFormat && !containsProfanity;
   };
 
   // 생년월일 길이 검사
@@ -46,6 +52,27 @@ const SignupStepThree = ({
     return year <= currentYear - 14;
   };
 
+  const badwordsFilter = new Filter();
+  badwordsFilter.addWords(
+    "라주엽",
+    "주엽",
+    "라주",
+    "관리자",
+    "admin",
+    "administration",
+    "administer",
+    "master",
+    "administrator",
+    "administrater",
+    "webmaster",
+    "manage",
+    "manager",
+    "탈퇴회원",
+    "탈퇴 회원",
+    "탈퇴한 회원",
+    "탈퇴한회원"
+  );
+
   // 디바운스된 닉네임 체크
   const debouncedNicknameCheck = useRef(
     debounce(async (nickname) => {
@@ -59,7 +86,11 @@ const SignupStepThree = ({
 
       if (!isValidFormat) {
         setIsValid(false);
-        setValidText("한글, 영문, 숫자 선택 혼용 2~10자로 입력해 주세요");
+        if (badwordsFilter.isProfane(nickname)) {
+          setValidText("사용불가능한 단어가 포함되어 있습니다");
+        } else {
+          setValidText("한글, 영문, 숫자 선택 혼용 2~10자로 입력해 주세요");
+        }
         setValidCheckNickname(false);
         return;
       }
@@ -68,11 +99,11 @@ const SignupStepThree = ({
         const { result } = await nicknameDuplicateCheck(nickname);
         if (result) {
           setIsValid(true);
-          setValidText("사용 가능한 닉네임입니다.");
+          setValidText("사용 가능한 닉네임입니다");
           setValidCheckNickname(true);
         } else {
           setIsValid(false);
-          setValidText("이미 등록된 닉네임입니다.");
+          setValidText("이미 등록된 닉네임입니다");
           setValidCheckNickname(false);
         }
       } catch (err) {
@@ -94,7 +125,7 @@ const SignupStepThree = ({
 
       if (!validateBirthLength(birth)) {
         setIsValidBirth(false);
-        setValidBirthText("생년월일은 8자리로 입력해 주세요.");
+        setValidBirthText("생년월일은 8자리로 입력해 주세요");
         setValidCheckBirth(false);
         return;
       }
@@ -102,7 +133,7 @@ const SignupStepThree = ({
       const isValidAge = validateBirth(birth);
       if (!isValidAge) {
         setIsValidBirth(false);
-        setValidBirthText("만 14세 이상만 가입할 수 있습니다.");
+        setValidBirthText("만 14세 이상만 가입할 수 있습니다");
         setValidCheckBirth(false);
       } else {
         setIsValidBirth(true);

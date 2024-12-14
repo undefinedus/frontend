@@ -19,6 +19,7 @@
     "@nivo/pie": "^0.88.0",
     "@reduxjs/toolkit": "^2.3.0",
     "axios": "^1.7.7",
+    "badwords-ko": "^1.0.4",
     "date-fns": "^4.1.0",
     "framer-motion": "^11.13.1",
     "he": "^1.2.0",
