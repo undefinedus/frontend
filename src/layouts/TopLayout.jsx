@@ -221,7 +221,13 @@ export const TitleSearch = ({ title, showLine = true }) => {
 };
 
 // 이전 버튼 + 제목 + 툴팁
-export const PrevTitleInfo = ({ title, showLine, onClick, chlidren,onClickInfo }) => {
+export const PrevTitleInfo = ({
+  title,
+  showLine,
+  onClick,
+  chlidren,
+  onClickInfo,
+}) => {
   return (
     <div
       className={`h-16 flex justify-between items-center w-full ${
