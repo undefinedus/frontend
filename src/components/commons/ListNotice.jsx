@@ -65,6 +65,10 @@ const ListNotice = ({ type }) => {
       icon: <PiXCircleDuotone size={32} color="#51392F" />,
       message: "아직 진행 중인 토론이 없어요",
     },
+    noCategoryChartData: {
+      icon: <PiXCircleDuotone size={32} color="#51392F" />,
+      message: "아직 다 읽은 책이 없어요",
+    },
     noCompleted: {
       icon: <PiXCircleDuotone size={32} color="#51392F" />,
       message: "아직 종료된 토론이 없어요",
