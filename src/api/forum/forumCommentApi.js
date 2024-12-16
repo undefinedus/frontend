@@ -33,3 +33,27 @@ export const writeComment = async (discussionId, voteType, content) => {
   console.log("=========writeComment from api: ", res);
   return res;
 };
+
+// 대댓글 작성
+export const writeReply = async (
+  discussionId,
+  discussionCommentId,
+  voteType,
+  content
+) => {
+  const data = {
+    discussionId,
+    discussionCommentId,
+    voteType,
+    content,
+  };
+  const res = await jwtAxios.post(
+    `${host}/writeComment/${discussionId}/${discussionCommentId}`,
+    data,
+    {
+      headers: { "Content-Type": "application/json" },
+    }
+  );
+  console.log("=========writeReply from api: ", res);
+  return res;
+};

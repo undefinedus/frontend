@@ -12,7 +12,6 @@ import ForumContent from "../../components/forum/ForumContent.jsx";
 import useCustomLogin from "../../hooks/useCustomLogin.js";
 import AddReportModal from "../../components/modal/forum/AddReportModal.jsx";
 import {
-  PiCaretRight,
   PiCaretRightBold,
   PiChatCenteredDots,
   PiMedalMilitaryFill,

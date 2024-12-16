@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import BasicLayout from "../../layouts/BasicLayout";
 import { PrevTitle, PrevTitleReport } from "../../layouts/TopLayout";
-import { getForumDetail } from "../../api/forum/forumApi.js";
+import { getForumDetail, getAIResult } from "../../api/forum/forumApi.js";
 import { getBestComment } from "../../api/forum/forumCommentApi.js";
 import ForumTitle from "../../components/forum/ForumTitle.jsx";
 import ForumContent from "../../components/forum/ForumContent.jsx";
@@ -15,6 +15,7 @@ import {
 } from "react-icons/pi";
 import CommentList from "../../components/forum/CommentList.jsx";
 import PercentageBar from "../../components/commons/PercentageBar.jsx";
+import AIResult from "../../components/modal/forum/AIResult.jsx";
 
 // 종료된 토론 상세
 const CompletedDetailPage = () => {
@@ -23,9 +24,10 @@ const CompletedDetailPage = () => {
   const { loginState } = useCustomLogin();
 
   const { discussionId } = useParams();
-  const [forum, setForum] = useState({});
-  const [bestComments, setBestComments] = useState([]);
-  const [isAuthor, setIsAuthor] = useState(false);
+  const [forum, setForum] = useState({}); // 토론글
+  const [forumResult, setForumResult] = useState({}); // AI 결과분석
+  const [bestComments, setBestComments] = useState([]); // 베스트 댓글
+  const [isAuthor, setIsAuthor] = useState(false); // 작성자 일치 여부
   const [isReportModalOpen, setIsReportModalOpen] = useState(false); // 신고 모달 상태
 
   const { prevActiveTab, prevSearch, prevSort, prevScrollLeft } =
@@ -38,15 +40,20 @@ const CompletedDetailPage = () => {
 
   // 토론 상세 API 호출
   useEffect(() => {
-    fetchForum(discussionId); // API 호출
+    fetchForum(discussionId);
   }, [discussionId]);
 
-  // 베스트댓글 상세 API 호출
+  // 토론 결과분석 API 호출
   useEffect(() => {
-    fetchBestComment(discussionId); // API 호출
+    fetchAIResult(discussionId);
   }, [discussionId]);
 
-  // 상세 API
+  // 베스트댓글 API 호출
+  useEffect(() => {
+    fetchBestComment(discussionId);
+  }, [discussionId]);
+
+  // 토론 상세 API
   const fetchForum = async (discussionId) => {
     try {
       const res = await getForumDetail(discussionId);
@@ -63,6 +70,17 @@ const CompletedDetailPage = () => {
       const res = await getBestComment(discussionId);
       setBestComments(res);
       console.log("베댓 데이터:", res);
+    } catch (err) {
+      console.error("API 호출 중 오류:", err);
+    }
+  };
+
+  // AI 결과분석 API
+  const fetchAIResult = async (discussionId) => {
+    try {
+      const res = await getAIResult(discussionId);
+      setForumResult(res);
+      console.log("AI 결과분석 데이터:", res);
     } catch (err) {
       console.error("API 호출 중 오류:", err);
     }
@@ -131,17 +149,10 @@ const CompletedDetailPage = () => {
       </div>
       <div className="flex flex-col pt-16 pb-20 px-6">
         <ForumTitle forum={forum} />
-        <ForumContent forum={forum} />
-        {/* 종료 - 찬반결과 퍼센트바 */}
-        {forum.status === "COMPLETED" && (
-          <div className="flex justify-between text-undpoint font-bold text-und14 items-center pb-4">
-            찬성
-            <div className="w-9/12">
-              <PercentageBar leftValue={100 - forum.disagreePercent} />
-            </div>
-            반대
-          </div>
-        )}
+        <ForumContent forum={forum}>
+          {/* AI 토론 결과 분석 */}
+          <AIResult AIResult={forumResult} forum={forum} />
+        </ForumContent>
         <div className="flex flex-col border-t border-unddisabled text-und14 text-left pt-4">
           <div className="flex w-full justify-between pb-4">
             <div className="flex gap-0.5 font-extrabold items-center">

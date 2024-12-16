@@ -180,8 +180,8 @@ const ForumMainPage = () => {
 
   return (
     <BasicLayout>
-      <div className="w-full fixed top-0 bg-undbgmain">
-        <OnlyTitle title={"토론"} showLine={isScrolled ? true : false} />
+      <div className="w-full fixed top-0 bg-undbgmain z-20">
+        <OnlyTitle title={"토론"} showLine={false} />
 
         {!isScrolled && (
           <div className="px-6">
@@ -192,7 +192,7 @@ const ForumMainPage = () => {
             />
           </div>
         )}
-        <div className={isScrolled ? "pt-16" : "pt-4"}>
+        <div className={`pt-${isScrolled ? "0" : "4"}`}>
           <TabCondition
             ref={tabRef}
             tabs={["주제 발의", "토론 예정", "진행 중", "종료된 토론"]}

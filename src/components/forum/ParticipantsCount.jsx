@@ -31,6 +31,11 @@ const ParticipantsCount = ({
           토론에 참가할 의향이 있다면 참가측을 선택해 주세요
         </div>
       )}
+      {!forumGuide && (
+        <div className="text-und12 text-undpoint">
+          곧 개최될 토론의 최소 참가 인원입니다
+        </div>
+      )}
     </div>
   );
 };
