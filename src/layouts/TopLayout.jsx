@@ -22,7 +22,7 @@ import {
 export const OnlyTitle = ({ title, showLine = true }) => {
   return (
     <div
-      className={`h-16 flex items-center relative px-6 ${
+      className={`h-16 flex items-center relative px-6 bg-undbgmain ${
         showLine && "border-unddisabled border-b"
       }`}
     >
