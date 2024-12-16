@@ -52,7 +52,7 @@ const MyBookListPage = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      setIsScrolled(scrollTop > 100); // 100px 이상 스크롤 시 버튼 전환
+      setIsScrolled(scrollTop > 120); // 100px 이상 스크롤 시 버튼 전환
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -117,10 +117,6 @@ const MyBookListPage = () => {
       setLoading(true);
       const sorts = sort === "최신순" ? "desc" : "asc";
       const res = await getBookmarkList(search, sorts, lastId);
-      console.log("책갈피 목록: ", res.content);
-      console.log("lastId: ", res.lastId);
-      console.log("hasNext: ", res.hasNext);
-      console.log("totalElements: ", res.totalElements);
 
       if (lastId) {
         setBookmarks((prevBookmarks) => [...prevBookmarks, ...res.content]);
@@ -258,7 +254,7 @@ const MyBookListPage = () => {
         )}
 
         {activeTab === "책갈피" && totalElements === 0 && (
-          <div className="w-full h-full flex justify-center items-center">
+          <div className="w-full h-screen flex justify-center items-center">
             <ListNotice type={"emptyBookMark"} />
           </div>
         )}

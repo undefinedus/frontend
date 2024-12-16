@@ -5,7 +5,11 @@ import { useNavigate } from "react-router-dom";
 import useCustomLogin from "../../../hooks/useCustomLogin";
 import { useEffect, useState } from "react";
 import TwoButtonModal from "../../../components/modal/commons/TwoButtonModal";
-import { getMyInformation, unregister } from "../../../api/settings/myPageApi";
+import {
+  getKakaoLoginLink,
+  getMyInformation,
+} from "../../../api/settings/myPageApi";
+import { unregister } from "../../../api/signupApi";
 import useDateDiff from "../../../hooks/useDateDiff";
 import { useSelector } from "react-redux";
 
@@ -74,13 +78,19 @@ const MyPage = () => {
     navigate({ pathname: "/" }, { replace: true });
   };
 
-  const handleUnregister = () => {
+  const handleUnregister = async () => {
     console.log("unregister");
-    fetchUnregister();
+    const res = await fetchUnregister();
+    if (res === "success") {
+      doLogout();
+      setOpenUnregisterModal(false);
+      navigate({ pathname: "/" }, { replace: true });
+    }
   };
 
-  const handleSocialize = () => {
+  const handleSocialize = async () => {
     console.log("socialize");
+    await socializeAccount();
   };
 
   const fetchUnregister = async () => {
@@ -90,6 +100,13 @@ const MyPage = () => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const socializeAccount = async () => {
+    console.log("카카오 로그인 요청 시작");
+    setOpenSocializeModal(false);
+    const kakaoAuthUrl = getKakaoLoginLink();
+    window.location.href = kakaoAuthUrl;
   };
 
   return (
