@@ -16,6 +16,7 @@ const BookMarkModal = ({
   book = null,
   bookmark = null,
   setRefresh = null,
+  socialAdd = null,
 }) => {
   const [isReady, setIsReady] = useState(false);
   const [page, setPage] = useState(bookmark?.pageNumber || 0);
@@ -104,7 +105,7 @@ const BookMarkModal = ({
           </p>
         </div>
 
-        {mode === "READ" && (
+        {(mode === "SOCIAL" || mode === "READ") && (
           <div className="w-full flex items-center justify-between mt-4">
             <h1 className="text-start text-und16 font-bold text-undtextdark">
               등록일
@@ -130,7 +131,7 @@ const BookMarkModal = ({
       </div>
 
       <div className="w-full flex flex-col mt-6">
-        {mode !== "READ" && (
+        {mode !== "SOCIAL" && mode !== "READ" && (
           <div
             className={`w-full flex ${
               mode === "ADD" ? "justify-between" : "justify-end"
@@ -158,9 +159,19 @@ const BookMarkModal = ({
                   : "bg-unddisabled text-undtextgray"
               } font-bold`}
               disabled={!isReady}
-              onClick={mode === "ADD" ? fetchAddBookmark : fetchModifyBookmark}
+              onClick={
+                mode === "ADD"
+                  ? fetchAddBookmark
+                  : mode !== "SOCIAL"
+                  ? fetchModifyBookmark
+                  : socialAdd
+              }
             >
-              {mode === "ADD" ? "책갈피 추가" : "수정하기"}
+              {mode === "ADD"
+                ? "책갈피 추가"
+                : mode !== "SOCIAL"
+                ? "수정하기"
+                : "책갈피 담기"}
             </button>
           </div>
         </div>

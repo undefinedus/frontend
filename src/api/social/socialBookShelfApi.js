@@ -33,26 +33,6 @@ export const getSocialList = async (
   console.log("소셜팔로워팔로잉목록 res: ", res.data.data);
   return res.data.data;
 };
-// export const getSocialList = async (
-//   targetMemberId,
-//   tabCondition,
-//   search = ""
-// ) => {
-//   try {
-//     const res = await jwtAxios.get(`${host}/follow/search/${targetMemberId}`, {
-//       params: { tabCondition, search },
-//     });
-//     return res;
-//   } catch (error) {
-//     console.error(
-//       error,
-//       "유저 팔로워, 팔로잉 목록을 불러오는 데 실패하였습니다"
-//     );
-//     throw new Error(
-//       "서버에서 유저 팔로워, 팔로잉 목록을 가져오는 중 오류가 발생했습니다."
-//     );
-//   }
-// };
 
 // 팔로우 상태 변경
 export const patchFollow = async (targetMemberId) => {
@@ -66,11 +46,20 @@ export const patchFollow = async (targetMemberId) => {
 };
 
 // 유저 소셜 책장 - 책 목록
-export const getSocialBooks = async (status, sort, search, targetMemberId) => {
+export const getSocialBookList = async (
+  targetMemberId,
+  status,
+  sort,
+  search,
+  lastId = null
+) => {
   try {
-    const res = await jwtAxios.get(
-      `${host}/other/books/${targetMemberId}?status=${status}&sort=${sort}&search=${search}`
-    );
+    let apiRoute = `${host}/other/books/${targetMemberId}?status=${status}&sort=${sort}&search=${search}`;
+    if (lastId) {
+      apiRoute += `&lastId=${lastId}`;
+    }
+    const res = await jwtAxios.get(apiRoute);
+    console.log("=========getSocialBookList from api: ", res);
     return res.data.data;
   } catch (error) {
     console.error(error, "소셜 책장 책 목록을 불러오는 데 실패하였습니다");
@@ -81,15 +70,13 @@ export const getSocialBooks = async (status, sort, search, targetMemberId) => {
 };
 
 // 유저 소셜 책장 - 책 상세
-export const getSocialBook = async (tabCondition, search = "", myBookId) => {
+export const getSocialBookDetail = async (targetMemberId, myBookId) => {
   try {
     const res = await jwtAxios.get(
-      `${host}/other/books/{targetMemberId}/${myBookId}`,
-      {
-        params: { tabCondition, search },
-      }
+      `${host}/other/books/${targetMemberId}/${myBookId}`
     );
-    return res;
+    console.log("res at api: ", res);
+    return res.data.data;
   } catch (error) {
     console.error(error, "소셜 책장 책 상세 정보를 불러오는 데 실패하였습니다");
     throw new Error(
@@ -99,17 +86,10 @@ export const getSocialBook = async (tabCondition, search = "", myBookId) => {
 };
 
 // 유저 소셜 책장 - 내 책장(읽고 싶은 책)에 책 담기
-export const postSocialBook = async (
-  tabCondition,
-  search = "",
-  targetMyBookId
-) => {
+export const addSocialBookToMyBook = async (targetMyBookId) => {
   try {
     const res = await jwtAxios.post(
-      `${host}/other/books/insert/${targetMyBookId}`,
-      {
-        params: { tabCondition, search },
-      }
+      `${host}/other/books/insert/${targetMyBookId}`
     );
     return res;
   } catch (error) {
@@ -121,19 +101,20 @@ export const postSocialBook = async (
 };
 
 // 유저 소셜 책장 - 책갈피 목록 및 상세
-export const getSocialBookmarks = async (
-  tabCondition,
-  search = "",
-  targetMemberId
+export const getSocialBookmarkList = async (
+  targetMemberId,
+  search,
+  sort,
+  lastId = null
 ) => {
   try {
-    const res = await jwtAxios.get(
-      `${host}/other/bookmarks/${targetMemberId}`,
-      {
-        params: { tabCondition, search },
-      }
-    );
-    return res;
+    let apiRoute = `${host}/other/bookmarks/${targetMemberId}?search=${search}&sort=${sort}`;
+    if (lastId) {
+      apiRoute += `&lastId=${lastId}`;
+    }
+    const res = await jwtAxios.get(apiRoute);
+    console.log("res at api: ", res);
+    return res.data.data;
   } catch (error) {
     console.error(error, "소셜 책장 책갈피 목록을 불러오는 데 실패하였습니다");
     throw new Error(
@@ -143,14 +124,12 @@ export const getSocialBookmarks = async (
 };
 
 // 유저 소셜 책장 - 내 책장(책갈피)에 담기
-export const postSocialBookmark = async (targetBookmarkId) => {
+export const addSocialBookmarkToMyBook = async (targetBookmarkId) => {
   try {
     const res = await jwtAxios.post(
-      `${host}/other/bookmarks/${targetBookmarkId}`,
-      {
-        params: { targetBookmarkId },
-      }
+      `${host}/other/bookmarks/${targetBookmarkId}`
     );
+    console.log("res at api: ", res);
     return res;
   } catch (error) {
     console.error(error, "소셜 책장 책갈피 담기를 불러오는 데 실패하였습니다");
