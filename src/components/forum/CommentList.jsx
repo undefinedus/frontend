@@ -40,27 +40,25 @@ const CommentList = ({
             isReplyActive={activeComment?.commentId === comment.commentId} // 활성화 상태 전달
           />
           {/* WriteComment를 동적으로 표시 */}
-          {activeComment &&
-            activeComment.groupId === comment.groupId &&
-            activeComment.groupOrder === comment.groupOrder && (
-              <div className="w-full flex">
-                <WriteComment
-                  isReplyActive={activeComment?.commentId === comment.commentId}
-                  onClick={async (voteType, comment) => {
-                    const success = await handleReplySubmit(
-                      activeComment.commentId,
-                      voteType,
-                      comment
-                    );
+          {activeComment?.commentId === comment.commentId && (
+            <div className="w-full flex">
+              <WriteComment
+                isReplyActive={activeComment?.commentId === comment.commentId}
+                onClick={async (voteType, comment) => {
+                  const success = await handleReplySubmit(
+                    activeComment.commentId,
+                    voteType,
+                    comment
+                  );
 
-                    // 작성 성공 시 활성화 상태 닫기
-                    if (success) {
-                      setActiveComment(null);
-                    }
-                  }}
-                />
-              </div>
-            )}
+                  // 작성 성공 시 활성화 상태 닫기
+                  if (success) {
+                    setActiveComment(null);
+                  }
+                }}
+              />
+            </div>
+          )}
         </React.Fragment>
       ))}
     </div>
