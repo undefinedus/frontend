@@ -7,7 +7,7 @@ import {
 } from "../../layouts/TopLayout";
 import {
   getForumDetail,
-  postJoinAgree,
+  addJoinAgree,
   deleteForum,
 } from "../../api/forum/forumApi.js";
 import ForumTitle from "../../components/forum/ForumTitle.jsx";
