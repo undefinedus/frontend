@@ -72,7 +72,7 @@ const CategoryComponent = () => {
   const medalColors = ["#FFD400", "#CDCDCD", "#8D6627"];
 
   return (
-    <div className="bg-undbgmain h-screen flex flex-col items-center justify-center">
+    <div className="bg-undbgmain flex flex-col items-center justify-center">
       {existData ? (
         <div className="">
           <Notice type={"noCategoryChartData"} />
