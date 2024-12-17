@@ -12,18 +12,18 @@ const BookDetail = () => {
   const { isbn13 } = useParams();
   const navigate = useNavigate();
   const location = useLocation(); // 전달받은 state를 가져옴
-  const { state } = location; // 기존 검색 상태
+  const { state } = location;
   const [book, setBook] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false); // 책 담기 모달 상태
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     fetchBookDetail(isbn13);
-  }, [isbn13]);
+  }, [isbn13, refresh]);
 
   const fetchBookDetail = async (isbn13) => {
     try {
       const book = await getSearchBookDetail(isbn13);
-      console.log("******책 정보", book);
       setBook(book);
     } catch (error) {
       console.error(error);
@@ -32,13 +32,10 @@ const BookDetail = () => {
 
   // 기존 검색 상태를 함께 navigate로 전달
   const handleBackClick = () => {
-    navigate(
-      `${state ? "../searchbook" : "/home"}`,
-      {
-        state: state,
-        replace: true,
-      } // 기존 검색 상태를 그대로 전달
-    );
+    navigate(`${!state.AIBook ? "../searchbook" : "/home"}`, {
+      state: state,
+      replace: true,
+    });
   };
 
   const handleOpenAddBookModal = () => {
@@ -47,6 +44,7 @@ const BookDetail = () => {
 
   const handleCloseAddBookModal = () => {
     setIsModalOpen(false); // 모달 닫기
+    setRefresh((prev) => !prev);
   };
 
   return (

@@ -63,11 +63,16 @@ const BookInformation = ({ book, hasDescription = true }) => {
       )}
 
       {/* 더 알아보기 */}
-      <div className="flex cursor-pointer" onClick={handleLinkClick}>
-        <p className="text-und14 text-left font-bold text-undpoint pr-1">
-          더 알아보기
-        </p>
-        <PiArrowSquareOut size={20} color="#7D5C4D" />
+      <div className="flex flex-col gap-2 cursor-pointer justify-between">
+        <div className="flex" onClick={handleLinkClick}>
+          <p className="text-und14 text-left font-bold text-undpoint pr-1">
+            더 알아보기
+          </p>
+          <PiArrowSquareOut size={20} color="#7D5C4D" />
+        </div>
+        {/* <p className="text-und12 text-right font-bold text-undtextgray">
+          도서 api 제공 : 알라딘
+        </p> */}
       </div>
     </div>
   );
