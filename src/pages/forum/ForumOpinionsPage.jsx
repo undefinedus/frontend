@@ -222,8 +222,8 @@ const ForumOpinionsPage = () => {
           forum={forum}
           handleReplySubmit={handleReplySubmit}
           onClickReport={(comment) => handleActionClick("report", comment)} // 신고
-          // onClickLike={handleAddLike} // 좋아요
-          // onClickDislike={handleAddDislike} // 좋아요
+          onClickLike={handleAddLike} // 좋아요
+          onClickDislike={handleAddDislike} // 좋아요
         />
         {forum?.status !== "COMPLETED" && (
           <WriteComment onClick={handleCommentSubmit} />
