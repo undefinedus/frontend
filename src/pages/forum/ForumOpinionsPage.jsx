@@ -65,24 +65,24 @@ const ForumOpinionsPage = () => {
   };
 
   // 댓글 싫어요 API
-  // const fetchAddDislike = async (commentId) => {
-  //   try {
-  //     const res = await addDislike(commentId);
-  //     return res;
-  //   } catch (err) {
-  //     console.error("API 호출 중 오류:", err);
-  //   }
-  // };
+  const fetchAddDislike = async (commentId) => {
+    try {
+      const res = await addDislike(commentId);
+      return res;
+    } catch (err) {
+      console.error("API 호출 중 오류:", err);
+    }
+  };
 
-  // // 댓글 작성 API
-  // const fetchWriteComment = async (discussionId, voteType, comment) => {
-  //   try {
-  //     const res = await writeComment(discussionId, voteType, comment);
-  //     return res;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  // 댓글 작성 API
+  const fetchWriteComment = async (discussionId, voteType, comment) => {
+    try {
+      const res = await writeComment(discussionId, voteType, comment);
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // 대댓글 작성 API
   const fetchWriteReply = async (
