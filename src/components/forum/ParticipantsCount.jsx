@@ -12,14 +12,22 @@ const ParticipantsCount = ({
     <div className="flex flex-col gap-2 pt-4">
       <div className="flex text-undtextgray font-bold text-und14 w-full h-12 text-center justify-between px-6 gap-4">
         <div
-          className="flex gap-2 justify-center items-center w-full bg-white border border-unddisabled rounded-md"
+          className={`flex gap-2 justify-center items-center w-full bg-white border ${
+            forum?.isAgree === "agree"
+              ? "border-undagree border-2"
+              : "border-unddisabled"
+          } rounded-md`}
           onClick={onClickAgree}
         >
           <PiUserFill size={16} color="A0CDDF" />
           찬성 {forum.agreeCount}
         </div>
         <div
-          className="flex gap-2 justify-center items-center w-full bg-white border border-unddisabled rounded-md"
+          className={`flex gap-2 justify-center items-center w-full bg-white border ${
+            forum?.isAgree === "disagree"
+              ? "border-unddisagree border-2"
+              : "border-unddisabled"
+          } rounded-md`}
           onClick={onClickDisagree}
         >
           <PiUserFill size={16} color="DFA0B5" />

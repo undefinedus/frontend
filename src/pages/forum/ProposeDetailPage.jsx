@@ -96,17 +96,18 @@ const ProposeDetailPage = () => {
     } else if (action === "delete") {
       setIsDeleteModalOpen(true); // 삭제 확인 모달 열기
     } else if (action === "report") {
-      setIsReportModalOpen(true); // 신고 모달 열기
+      if (!forum?.isReport) setIsReportModalOpen(true); // 신고 모달 열기
+      else alert("이미 신고한 발의글입니다");
     }
   };
 
   // 찬성 참석 핸들러
   const handleAgree = async () => {
-    const res = await fetchJoinAgree();
+    await fetchJoinAgree();
   };
 
   const handleDisagree = async () => {
-    const res = await fetchJoinDisagree();
+    await fetchJoinDisagree();
   };
 
   const fetchJoinAgree = async () => {
@@ -140,7 +141,6 @@ const ProposeDetailPage = () => {
   const handleReportConfirm = (selectedReason) => {
     console.log("신고 사유:", selectedReason);
     setIsReportModalOpen(false); // 신고 모달 닫기
-    // TODO: 신고 처리 로직 추가
   };
 
   // 삭제 모달 취소
@@ -209,6 +209,7 @@ const ProposeDetailPage = () => {
           forum={forum}
           cancelText="취소"
           confirmText="확인"
+          refresh={() => setRefresh((prev) => !prev)}
         >
           해당 발의글에 대한 내용이 모두 사라져요{"\n"}
           정말로 삭제하시겠습니까?
