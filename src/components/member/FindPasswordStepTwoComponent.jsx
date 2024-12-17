@@ -1,122 +1,101 @@
-import React, { useEffect, useState } from "react";
-import MemberLayout from "../../layouts/MemberLayout";
-import Input from "../../components/commons/Input";
-import Button from "../../components/commons/Button";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Button from "../commons/Button";
+import Input from "../commons/Input";
 import PropTypes from "prop-types";
-import { registMember } from "../../api/signupApi";
 
-const SignupStepTwo = ({ email, confirmButton }) => {
-  const [password, setPassword] = useState("");
+function FindPasswordStepTwoComponent({ email, confirmButton }) {
+  const navigate = useNavigate();
+  const [newPassword, setNewPassword] = useState("");
+  const [newPasswordCheck, setNewPasswordCheck] = useState("");
+  const [validText, setValidText] = useState("");
   const [strength, setStrength] = useState("");
-  const [passwordErrorText, setPasswordErrorText] = useState(
-    "영문, 숫자, 특수문자 혼용 12~20자로 입력해 주세요"
-  );
-  const [confirmPasswordError, setConfirmPasswordError] = useState(""); // 비밀번호 확인 에러 메시지 상태
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [buttonDisableCondition, setButtonDisableCondition] = useState(true);
+  const [isValidPassword, setIsValidPassword] = useState(false);
 
-  const confirmButtonHandler = () => {
-    if (password !== confirmPassword || strength === "불가") {
-      setButtonDisableCondition(true);
-    } else if (
-      (strength === "안전" || strength === "보통") &&
-      password === confirmPassword
-    ) {
-      setButtonDisableCondition(false);
-    }
-  };
+  const validatePassword = (password) => {
+    const allowedSpecialChars = /[~!@#$%^&*]/;
+    const disallowedSpecialChars = /[^a-zA-Z0-9~!@#$%^&*]/;
 
-  const handleRegister = async () => {
-    try {
-      confirmButton(password);
-    } catch (err) {
-      console.log("비밀번호 재설정 실패");
-    }
-  };
-
-  useEffect(() => {
-    confirmButtonHandler();
-  }, [password, confirmPassword, strength]);
-
-  const evaluateStrength = (password) => {
-    // 길이 체크
-    const isValidLength = password.length >= 12 && password.length <= 20;
-
-    // 영문, 숫자, 특수문자 체크
     const hasLetters = /[a-zA-Z]/.test(password);
     const hasNumbers = /\d/.test(password);
-    const hasSpecialChars = /[~!@#$%^&*]/.test(password);
+    const hasSpecialChars = allowedSpecialChars.test(password);
+    const hasDisallowedChars = disallowedSpecialChars.test(password);
 
-    // 조합 개수 계산
+    if (hasDisallowedChars) {
+      return {
+        strength: "사용 불가",
+        error: "특수문자는 ~ ! @ # $ % ^ & * 만 사용 가능합니다",
+      };
+    }
+
+    const isValidLength = password.length >= 12 && password.length <= 20;
     const count = [hasLetters, hasNumbers, hasSpecialChars].filter(
       Boolean
     ).length;
 
-    // 길이 조건을 만족하지 않으면 "불가"
     if (!isValidLength) {
-      return "불가"; // 12자 미만 또는 20자 초과
+      return {
+        strength: "사용 불가",
+        error: "영문, 숫자, 특수문자 혼용 12~20자로 입력해 주세요",
+      };
     }
 
-    // 길이 조건을 만족하는 경우에만 조합 검사
-    if (count >= 3) {
-      return "안전"; // 3가지 조합 + 12~20자
-    } else if (count === 2) {
-      return "보통"; // 2가지 조합 + 12~20자
-    } else if (count === 1) {
-      return "불가"; // 1가지 조합 또는 길이 조건 미달
-    } else {
-      return ""; // 비밀번호가 비어있을 때
-    }
+    if (count >= 3) return { strength: "안전", error: "" };
+    if (count === 2) return { strength: "보통", error: "" };
+    return {
+      strength: "사용 불가",
+      error: "영문, 숫자, 특수문자 혼용 12~20자로 입력해 주세요",
+    };
   };
 
-  // 비밀번호 확인 입력 핸들러
-  const handleConfirmPasswordChange = (e) => {
+  const handleNewPasswordChange = (e) => {
     const value = e.target.value;
-    setConfirmPassword(value);
+    setNewPassword(value);
 
-    if (value === "") {
-      setConfirmPasswordError("");
-    } else if (password !== value) {
-      setConfirmPasswordError("비밀번호가 일치하지 않습니다");
-    } else {
-      setConfirmPasswordError("");
+    const validation = validatePassword(value);
+    setStrength(validation.strength);
+    setValidText(validation.error);
+    setIsValidPassword(validation.strength !== "사용 불가");
+
+    // 비밀번호 확인란과 일치 여부 체크
+    if (newPasswordCheck && value !== newPasswordCheck) {
+      setValidText("비밀번호가 일치하지 않습니다");
+      setIsValidPassword(false);
     }
   };
 
-  // 비밀번호 강도 평가
-  const handleChange = (e) => {
-    const newPassword = e.target.value;
-    const newStrength = evaluateStrength(newPassword);
-    setPassword(newPassword);
-    setStrength(newStrength);
+  const handleNewPasswordCheckChange = (e) => {
+    const value = e.target.value;
+    setNewPasswordCheck(value);
 
-    if (newStrength === "안전" || newStrength === "보통") {
-      setPasswordErrorText("사용 가능한 패스워드 입니다.");
+    if (value !== newPassword) {
+      setValidText("비밀번호가 일치하지 않습니다");
+      setIsValidPassword(false);
     } else {
-      setPasswordErrorText("영문, 숫자, 특수문자 혼용 12~20자로 입력해 주세요");
+      setValidText("");
+      setIsValidPassword(true);
+    }
+  };
+
+  const handleSubmit = () => {
+    if (isValidPassword && newPassword === newPasswordCheck) {
+      confirmButton(newPassword);
+      navigate("/member/login", { replace: true });
     }
   };
 
   return (
-    <div className="flex flex-col justify-between h-full w-full">
-      <div className="flex flex-col gap-4">
-        <div>
-          <Input
-            className="border border-undtextgray w-full rounded-full"
-            labeltext="아이디"
-            readonly={true}
-            value={email}
-          />
-        </div>
+    <div className="flex flex-col justify-between h-full items-center">
+      <div className="w-full flex flex-col gap-4">
         <div>
           <Input
             className="border border-undtextgray w-full"
             type="password"
             name="password"
-            value={password}
-            onChange={handleChange}
-            labeltext="비밀번호"
-            placeholder="비밀번호를 입력해 주세요"
+            value={newPassword}
+            onChange={handleNewPasswordChange}
+            labeltext="새 비밀번호"
+            placeholder="새로운 비밀번호를 입력해 주세요"
           >
             {strength && (
               <p
@@ -133,51 +112,42 @@ const SignupStepTwo = ({ email, confirmButton }) => {
               </p>
             )}
           </Input>
-          <span
-            className={`text-xs text-undtextgray flex justify-start mt-1`}
-            style={{
-              color:
-                strength === "안전" || strength === "보통"
-                  ? "gray"
-                  : strength === "불가"
-                  ? "red"
-                  : "gray",
-            }}
-          >
-            {passwordErrorText}
-          </span>
+          {validText && (
+            <span className="text-xs text-red-500 flex justify-start mt-1">
+              {validText}
+            </span>
+          )}
         </div>
+
         <div>
           <Input
             className="border border-undtextgray w-full"
             type="password"
-            labeltext="비밀번호 확인"
-            value={confirmPassword}
-            onChange={handleConfirmPasswordChange}
-            placeholder="비밀번호를 입력해 주세요"
-          ></Input>
-          <span className="text-xs text-red-500 flex justify-start mt-1">
-            {confirmPasswordError}
-          </span>
+            labeltext="새 비밀번호 확인"
+            value={newPasswordCheck}
+            onChange={handleNewPasswordCheckChange}
+            placeholder="비밀번호를 다시 입력해 주세요"
+          />
         </div>
       </div>
-      <div className="flex items-center mb-5">
+
+      <div className="w-full mt-4">
         <Button
           className="py-2.5 rounded-full w-full"
-          color={`${buttonDisableCondition ? "unddisabled" : "undpoint"}`}
-          buttonDisabled={buttonDisableCondition}
-          onClick={handleRegister}
+          color={!isValidPassword ? "unddisabled" : "undpoint"}
+          buttonDisabled={!isValidPassword}
+          onClick={handleSubmit}
         >
-          확인
+          비밀번호 변경
         </Button>
       </div>
     </div>
   );
-};
+}
 
-SignupStepTwo.propTypes = {
+FindPasswordStepTwoComponent.propTypes = {
   email: PropTypes.string.isRequired,
   confirmButton: PropTypes.func.isRequired,
 };
 
-export default SignupStepTwo;
+export default FindPasswordStepTwoComponent;
