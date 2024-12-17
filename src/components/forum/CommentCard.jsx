@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { PiArrowElbowDownRight, PiSiren, PiThumbsUpFill } from "react-icons/pi";
+import {
+  PiArrowElbowDownRight,
+  PiSiren,
+  PiThumbsUpFill,
+  PiThumbsUpDuotone,
+  PiThumbsDownFill,
+  PiThumbsDownDuotone,
+} from "react-icons/pi";
 import useDateDiff from "../../hooks/useDateDiff";
 import PortraitPlaceholder from "../commons/PortraitPlaceholder";
 import useCustomLogin from "../../hooks/useCustomLogin.js";
@@ -105,13 +112,13 @@ const CommentCard = ({
             </p>
           </div>
         </div>
-        <div className="flex text-und14 text-left gap-1">
+        <div className="text-und14 text-left">
           {comment?.parentNickname && (
-            <p className="font-bold text-undtextgray">
+            <span className="font-bold text-undtextgray mr-1.5">
               @{comment.parentNickname}
-            </p>
+            </span>
           )}
-          <p className="text-undtextdark">{comment.content}</p>
+          <span className="text-undtextdark">{comment.content}</span>
         </div>
         <div className="flex justify-between">
           <div className="flex gap-4 text-undtextgray text-und12 h-4 text-left">
@@ -128,7 +135,7 @@ const CommentCard = ({
               className="flex gap-0.5 justify-center items-center"
               onClick={handleDislikeClick}
             >
-              <PiThumbsUpFill size={18} color="DFA0B5" />
+              <PiThumbsDownFill size={18} color="DFA0B5" />
               {comment.dislike}
             </div>
           </div>

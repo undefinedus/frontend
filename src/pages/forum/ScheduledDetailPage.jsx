@@ -92,7 +92,7 @@ const ScheduledDetailPage = () => {
           />
         )}
       </div>
-      <div className="flex flex-col pt-16 px-6 gap-4">
+      <div className="flex flex-col pt-16 pb-20 px-6 gap-4">
         <ForumTitle forum={forum} />
         <ForumContent forum={forum}>
           <ParticipantsCount forum={forum} forumGuide={false} />

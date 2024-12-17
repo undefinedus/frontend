@@ -36,6 +36,9 @@ export const addReportComment = async (commentId, reason) => {
     const res = await jwtAxios.post(`${host}/comment/${commentId}`, data, {
       headers: { "Content-Type": "application/json" },
     });
+
+    console.log("res at api: ", res);
+
     return res;
   } catch (error) {
     console.error("Error response from server:", error.response);
