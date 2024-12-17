@@ -136,7 +136,6 @@ export const verifyEmailCode = async (email, code) => {
   }
 };
 
-
 export const updatePassword = async (email, newPassword) => {
   try {
     const res = await axios.patch(`${host}/updatePassword`, {
@@ -152,6 +151,7 @@ export const updatePassword = async (email, newPassword) => {
       error.response?.data?.message || "비밀번호 변경 중 오류가 발생하였습니다."
     );
   }
+};
 
 export const unregister = async () => {
   const res = await jwtAxios.delete(`${host}`);
@@ -159,5 +159,4 @@ export const unregister = async () => {
   console.log("res at api: ", res);
 
   return res.data.result;
-
 };
