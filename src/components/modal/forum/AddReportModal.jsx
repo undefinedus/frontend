@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import TwoButtonModal from "../commons/TwoButtonModal";
 import { PiCircle, PiRadioButtonFill } from "react-icons/pi";
-import { addReport } from "../../../api/forum/reportApi";
+import {
+  addReportForum,
+  addReportComment,
+} from "../../../api/forum/forumReportApi";
 
-const AddReportModal = ({ forum, comment, onCancel, onConfirm }) => {
+const AddReportModal = ({ forum, comment, onCancel }) => {
   // 신고 사유 목록
   const reasons = [
     "욕설, 비방, 차별, 혐오",
@@ -14,51 +17,63 @@ const AddReportModal = ({ forum, comment, onCancel, onConfirm }) => {
     "도배, 스팸",
   ];
 
+  const forumId = forum?.discussionId;
+  const commentId = comment?.commentId;
   const [selectedReason, setSelectedReason] = useState(""); // 선택된 사유 상태
-  const [customReason, setCustomReason] = useState(""); // 기타 입력값 상태
 
   const handleReasonChange = (reason) => {
     setSelectedReason(reason);
-    if (reason !== "기타") {
-      setCustomReason(""); // "기타" 외에는 입력값 초기화
+  };
+
+  // 토론글 신고 API
+  const fetchReportForum = async () => {
+    try {
+      const res = await addReportForum(forumId, selectedReason);
+      return res;
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  const handleCustomReasonChange = (event) => {
-    setCustomReason(event.target.value);
+  // 토론 댓글 신고 API
+  const fetchReportComment = async () => {
+    try {
+      const res = await addReportComment(commentId, selectedReason);
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  // const fetchAddReport = async () => {
-  //   const reportData = {
-  //     ReportRequestDTO: {
-  //       reportedId: forum.isbn13, // 신고당한 사람 id
-  //       targetType: "DISCUSSION", // DISCUSSION / COMMENT
-  //       reason: selectedReason, //신고 사유
-  //       discussionId: forum.link, //토론/댓글 id 둘 중 하나 입력 시, 나머지 하나는 null값
-  //       commentId: null,
-  //     },
-  //     // bookStatusRequestDTO: bookInput,
-  //   };
+  // 토론 글 또는 댓글 신고 핸들러
+  const handleReportSubmit = async () => {
+    console.log("handleReportSubmit 실행됨");
+    console.log("댓글ID", commentId);
+    console.log("댓글ID", comment);
+    console.log("신고 내용", selectedReason);
 
-  //   try {
-  //     // 성공 토스트메세지
-  //     const res = await addReport(reportData);
-  //     console.log(res);
-  //     if (res.data.result === "success") onClose();
-  //     return "success";
-  //   } catch (err) {
-  //     console.error(err);
-  //     // 실패 토스트메세지
-  //     return "error";
-  //   }
-  // };
+    try {
+      let res;
+      if (comment && commentId) {
+        // 댓글 신고 API 호출
+        res = await fetchReportComment(commentId, selectedReason);
+      } else if (forumId) {
+        // 토론글 신고 API 호출
+        res = await fetchReportForum(forumId, selectedReason);
+      } else {
+        throw new Error("신고 대상을 찾을 수 없습니다."); // 예외 처리
+      }
+      onCancel(); // 모달 닫기
+      return res;
+    } catch (error) {
+      console.error("신고 작성 실패:", error);
+    }
+  };
 
   return (
     <TwoButtonModal
       onCancel={onCancel}
-      onConfirm={() =>
-        onConfirm(selectedReason === "기타" ? customReason : selectedReason)
-      }
+      onConfirm={handleReportSubmit}
       confirmText="제출"
     >
       <div className="px-4">
