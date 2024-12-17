@@ -64,6 +64,7 @@ const ForumOpinionsPage = () => {
     }
   };
 
+  // 댓글 싫어요 API
   const fetchAddDislike = async (commentId) => {
     try {
       const res = await addDislike(commentId);

@@ -17,19 +17,21 @@ const RecordPage = () => {
   return (
     <BasicLayout>
       <div className="bg-undbgmain">
-        <div className="fixed left-0 top-0 right-0 bottom-0">
+        <div className="fixed h-28 left-0 top-0 right-0 bottom-0 z-50">
           <PrevTitleInfo
             title={"통계"}
             showLine={false}
             onClickInfo={() => setInfoTooltip((prev) => !prev)}
             onClick={() => navigete("/settings")}
           />
-          <TabCondition
-            tabs={tabList}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            showLine={true}
-          />
+          <div className="bg-undbgmain">
+            <TabCondition
+              tabs={tabList}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              showLine={true}
+            />
+          </div>
         </div>
 
         <div
@@ -53,7 +55,7 @@ const RecordPage = () => {
           </div>
         </div>
 
-        <div className="px-6 pt-3 pb-20 w-full">
+        <div className="px-6 pt-28 pb-20 w-full">
           <div
             className={`
           transition-opacity duration-300 ease-in-out
