@@ -30,7 +30,7 @@ export const getForumDetail = async (discussionId) => {
 
 // 찬성 참석
 export const addJoinAgree = async (discussionId) => {
-  const res = await jwtAxios.get(
+  const res = await jwtAxios.post(
     `${host}/joinAgree?discussionId=${discussionId}`
   );
   console.log("=========postJoinAgree from api: ", res);
@@ -39,7 +39,7 @@ export const addJoinAgree = async (discussionId) => {
 
 // 반대 참석
 export const addJoinDisagree = async (discussionId) => {
-  const res = await jwtAxios.get(
+  const res = await jwtAxios.post(
     `${host}/joinDisagree?discussionId=${discussionId}`
   );
   console.log("=========postJoinDisagree from api: ", res);
