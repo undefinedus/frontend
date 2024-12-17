@@ -90,8 +90,7 @@ const SignupStepFour = ({ registerData, isSocial = false }) => {
 
   useEffect(() => {
     setButtonDisableCondition(
-      selectedCategories.length >= 1 &&
-        selectedCategories.length <= maxSelections
+      selectedCategories.length < 1 || selectedCategories.length > maxSelections
     );
   }, [selectedCategories]);
 

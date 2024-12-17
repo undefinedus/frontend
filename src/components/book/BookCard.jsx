@@ -7,7 +7,13 @@ import DrawMyRating from "./DrawMyRating";
 import useBookStatus from "../../hooks/useBookStatus";
 
 // 책 카드형 목록
-const BookCard = ({ book, onClick, infoOnly = false, withIcon = false }) => {
+const BookCard = ({
+  book,
+  onClick,
+  infoOnly = false,
+  withIcon = false,
+  isSocial = false,
+}) => {
   const { diffToday } = useDateDiff();
   const { getIconByStatus } = useBookStatus();
 
@@ -20,7 +26,7 @@ const BookCard = ({ book, onClick, infoOnly = false, withIcon = false }) => {
       className="w-full py-5 border-b border-unddisabled first:pt-0 last:border-none last:pb-0"
       onClick={onClick} // 클릭 이벤트 적용
     >
-      <div className="flex items-start w-80 h-24 justify-between">
+      <div className="flex items-start w-full h-24 justify-start gap-5">
         {/* 책 표지 */}
         <div className="w-16 h-24 object-contain flex-shrink-0">
           <img src={book.cover} alt={book.title} className="w-full h-full" />
@@ -29,7 +35,7 @@ const BookCard = ({ book, onClick, infoOnly = false, withIcon = false }) => {
         {/* 책 정보 */}
         <div className="flex flex-col h-full justify-between">
           {/* 제목 */}
-          <p className="text-undtextdark text-und14 font-bold w-56 h-5 text-left truncate">
+          <p className="text-undtextdark text-und14 font-bold w-56 md:w-full h-5 text-left truncate">
             {book.title}
           </p>
           {/* 저자 */}
@@ -37,11 +43,13 @@ const BookCard = ({ book, onClick, infoOnly = false, withIcon = false }) => {
             {book.author}
           </p>
           {(state === "WISH" || infoOnly) && (
-            <div>
-              {/* 출판사 */}
-              <p className="text-undtextgray text-und14 w-56 h-5 text-left truncate">
-                {book.publisher}
-              </p>
+            <>
+              <div>
+                {/* 출판사 */}
+                <p className="text-undtextgray text-und14 w-56 h-5 text-left truncate">
+                  {book.publisher}
+                </p>
+              </div>
               {/* 평점 */}
               <div
                 className={`flex items-center ${
@@ -54,13 +62,13 @@ const BookCard = ({ book, onClick, infoOnly = false, withIcon = false }) => {
                     {Number(book.customerReviewRank) / 2}
                   </p>
                 </div>
-                <div>{getIconByStatus(book.status)}</div>
+                {withIcon && <div>{getIconByStatus(book.status)}</div>}
               </div>
-            </div>
+            </>
           )}
           {!infoOnly && (state === "COMPLETED" || state === "STOPPED") && (
             <p className="text-undtextgray text-und14 w-56 h-5 text-left truncate">
-              {book.oneLineReview}
+              {book.oneLineReview || "-"}
             </p>
           )}
           {!infoOnly && (state === "READING" || state === "STOPPED") && (
@@ -76,11 +84,27 @@ const BookCard = ({ book, onClick, infoOnly = false, withIcon = false }) => {
               <div className="text-und14 text-undpoint">{`${Math.floor(
                 (book.currentPage / book.itemPage) * 100
               )}%`}</div>
+              {state === "STOPPED" && withIcon && (
+                <div>
+                  {getIconByStatus(
+                    isSocial ? book.existingStatus : book.status
+                  )}
+                </div>
+              )}
             </div>
           )}
           {!infoOnly && state === "COMPLETED" && (
-            <div className="flex gap-0.5">
-              <DrawMyRating myRating={book.myRating} />
+            <div className="w-full flex justify-between">
+              <div className="flex gap-0.5">
+                <DrawMyRating myRating={book.myRating} />
+              </div>
+              {withIcon && (
+                <div>
+                  {getIconByStatus(
+                    isSocial ? book.existingStatus : book.status
+                  )}
+                </div>
+              )}
             </div>
           )}
           {!infoOnly && state === "READING" && (
@@ -89,10 +113,16 @@ const BookCard = ({ book, onClick, infoOnly = false, withIcon = false }) => {
                 withIcon ? "justify-between" : "justify-start"
               }`}
             >
-              <p className="text-undtextgray text-und14 w-56 h-5 text-left truncate">
+              <p className="text-undtextgray text-und14 w-full h-5 text-left truncate">
                 {differenceInDays}일 동안 {book.updateCount}회 읽었어요!
               </p>
-              {withIcon && <p>{getIconByStatus(book.status)}</p>}
+              {withIcon && (
+                <div>
+                  {getIconByStatus(
+                    isSocial ? book.existingStatus : book.status
+                  )}
+                </div>
+              )}
             </div>
           )}
         </div>

@@ -124,7 +124,7 @@ export const socializeMember = async (data) => {
 
   console.log("res at api: ", res);
 
-  return res;
+  return res.data;
 };
 
 export const checkKakaoMessagePermission = async () => {
@@ -145,14 +145,6 @@ export const modifyKakaoMessage = async () => {
 
 export const modifyIsPublic = async () => {
   const res = await jwtAxios.post(`${host}/public`);
-
-  console.log("res at api: ", res);
-
-  return res;
-};
-
-export const unregister = async () => {
-  const res = await jwtAxios.delete(`${host}`);
 
   console.log("res at api: ", res);
 

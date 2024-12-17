@@ -18,7 +18,7 @@ const BookmarkPageInput = ({ mode, page, setPage, totalPage }) => {
 
   return (
     <div className="flex gap-0.5 items-center">
-      {mode === "READ" ? (
+      {mode === "SOCIAL" || mode === "READ" ? (
         <p className="w-16 h-6 text-center text-und14 flex justify-center items-center text-undtextgray rounded-s-full rounded-e-full bg-undbgsub">
           {page === 0 ? "-" : page}
         </p>

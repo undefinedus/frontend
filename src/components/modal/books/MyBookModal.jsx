@@ -4,6 +4,7 @@ import StateBox from "../../myBook/StateBox";
 import { addBook, modifyBook } from "../../../api/book/bookApi";
 import TwoButtonModal from "../commons/TwoButtonModal";
 import MyBookInputs from "../../myBook/MyBookInputs";
+import { useNavigate } from "react-router-dom";
 
 const initData = {
   title: "",
@@ -13,11 +14,13 @@ const initData = {
 };
 
 const MyBookModal = ({ mode, onClose, state = "READING", book = initData }) => {
+  const navigate = useNavigate();
   const [boxState, setBoxState] = useState(state);
   const [isReady, setIsReady] = useState(false);
   const [bookInput, setBookInput] = useState({}); // api로 보낼 데이터 값
   const [bookInfo, setBookInfo] = useState({}); // 화면에 뿌려줄 기본값 ADD 면 빈 값, MODIFY 면 기존 값
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [id, setId] = useState();
 
   useEffect(() => {
     setBookInfo(initializeBookInfo(mode, book));
@@ -82,8 +85,7 @@ const MyBookModal = ({ mode, onClose, state = "READING", book = initData }) => {
       // 성공 토스트메세지
       const res = await addBook(data);
       console.log(res);
-      if (res.data.result === "success") onClose();
-      return "success";
+      if (res.data.result === "success") return res;
     } catch (err) {
       console.error(err);
       // 실패 토스트메세지
@@ -106,24 +108,33 @@ const MyBookModal = ({ mode, onClose, state = "READING", book = initData }) => {
     setIsReady(false);
   };
 
-  const handleConfirmModalOpen = () => {
-    setConfirmModalOpen(true);
-  };
-
-  const handleConfirmModalClose = () => {
-    setConfirmModalOpen(false);
-  };
-
   const handleSubmit = async () => {
     try {
       const result =
         mode === "ADD" ? await fetchAddBook() : await fetchModifyBook();
-      if (result === "success") {
-        onClose(); // 모달 닫기
+      console.log("result: ", result);
+
+      if (result.data.result === "success") {
+        handleConfirmModalOpen();
+        setId(result.data.data.id);
       }
     } catch (error) {
       console.error("Error while handling click:", error);
     }
+  };
+
+  const handleConfirmModalClose = () => {
+    setConfirmModalOpen(false);
+    onClose();
+  };
+
+  const handleConfirmModalOpen = () => {
+    setConfirmModalOpen(true);
+  };
+
+  const handleMoveToBookList = () => {
+    handleConfirmModalClose();
+    navigate(`/myBook/detail/${id}`, { replace: true });
   };
 
   const getModalMessage = () => {
@@ -181,7 +192,7 @@ const MyBookModal = ({ mode, onClose, state = "READING", book = initData }) => {
                 : "bg-unddisabled text-undtextgray"
             } font-bold`}
             disabled={!isReady}
-            onClick={handleConfirmModalOpen}
+            onClick={handleSubmit}
           >
             {mode === "ADD" ? "책 담기" : "수정하기"}
           </button>
@@ -190,7 +201,7 @@ const MyBookModal = ({ mode, onClose, state = "READING", book = initData }) => {
       {confirmModalOpen && (
         <TwoButtonModal
           onCancel={handleConfirmModalClose}
-          onConfirm={handleSubmit}
+          onConfirm={handleMoveToBookList}
         >
           {getModalMessage().map((message, index) => (
             <p className="text-und16 text-undclickbrown font-bold" key={index}>

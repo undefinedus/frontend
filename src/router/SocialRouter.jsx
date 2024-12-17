@@ -38,15 +38,6 @@ const SocialRouter = () => {
           </Suspense>
         }
       />
-      {/* 유저 소셜 책장 */}
-      <Route
-        path="bookshelf/:id"
-        element={
-          <Suspense fallback={<LoadingPage />}>
-            <SocialBookList />
-          </Suspense>
-        }
-      />
       {/* 유저 소셜 팔로워/팔로잉 리스트 */}
       <Route
         path="list/:id"
@@ -56,9 +47,18 @@ const SocialRouter = () => {
           </Suspense>
         }
       />
+      {/* 유저 소셜 책장 */}
+      <Route
+        path="bookshelf/:targetMemberId"
+        element={
+          <Suspense fallback={<LoadingPage />}>
+            <SocialBookList />
+          </Suspense>
+        }
+      />
       {/* 유저 소셜 책장 상세 */}
       <Route
-        path="bookshelf/book/:id/:bookId"
+        path="bookshelf/:targetMemberId/book/:bookId"
         element={
           <Suspense fallback={<LoadingPage />}>
             <SocialBookDetail />

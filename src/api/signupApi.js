@@ -1,4 +1,5 @@
 import axios from "axios";
+import jwtAxios from "../util/jwtUtil";
 import { API_SERVER_HOST } from "./commonApi";
 
 const host = `${API_SERVER_HOST}/api/member`;
@@ -135,6 +136,7 @@ export const verifyEmailCode = async (email, code) => {
   }
 };
 
+
 export const updatePassword = async (email, newPassword) => {
   try {
     const res = await axios.patch(`${host}/updatePassword`, {
@@ -150,4 +152,12 @@ export const updatePassword = async (email, newPassword) => {
       error.response?.data?.message || "비밀번호 변경 중 오류가 발생하였습니다."
     );
   }
+
+export const unregister = async () => {
+  const res = await jwtAxios.delete(`${host}`);
+
+  console.log("res at api: ", res);
+
+  return res.data.result;
+
 };

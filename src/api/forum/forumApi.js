@@ -3,7 +3,7 @@ import jwtAxios from "../../util/jwtUtil";
 
 // 토론 API - DiscussionCommentController / ChatGPTController
 const host = `${API_SERVER_HOST}/api/discussion`;
-const gptHost = `${API_SERVER_HOST}/api/chatGpt`; // AI 토론 결과 분석
+const gptHost = `${API_SERVER_HOST}/api/ai`; // AI 토론 결과 분석
 
 // 토론 목록
 export const getForums = async (status, sort, search, lastId = null) => {
@@ -29,20 +29,20 @@ export const getForumDetail = async (discussionId) => {
 };
 
 // 찬성 참석
-export const postJoinAgree = async (discussionId) => {
-  const res = await jwtAxios.get(
+export const addJoinAgree = async (discussionId) => {
+  const res = await jwtAxios.post(
     `${host}/joinAgree?discussionId=${discussionId}`
   );
-  console.log("=========postJoinAgree from api: ", res.data.data);
+  console.log("=========postJoinAgree from api: ", res);
   return res;
 };
 
 // 반대 참석
-export const postJoinDisagree = async (discussionId) => {
-  const res = await jwtAxios.get(
+export const addJoinDisagree = async (discussionId) => {
+  const res = await jwtAxios.post(
     `${host}/joinDisagree?discussionId=${discussionId}`
   );
-  console.log("=========postJoinDisagree from api: ", res.data.data);
+  console.log("=========postJoinDisagree from api: ", res);
   return res;
 };
 
@@ -86,4 +86,11 @@ export const deleteForum = async (discussionId) => {
   const res = await jwtAxios.delete(`${host}/${discussionId}`);
   console.log("=========deleteForum 삭제 완료", res);
   return res;
+};
+
+// AI 토론 결과 분석
+export const getAIResult = async (discussionId) => {
+  const res = await jwtAxios.get(`${gptHost}/discussion/${discussionId}`);
+  console.log("=========getAIResult from api: ", res.data.data);
+  return res.data.data;
 };

@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { PiMagnifyingGlass, PiBarcode } from "react-icons/pi";
 import ISBNScanner from "./ISBNScanner";
 import ISBNReader from "./ISBNReader";
+import { useNavigate } from "react-router-dom";
 
 // 책 제목, 작가명, ISBN으로 검색
 const ISBNBookSearch = ({ onSearchSubmit, searchHistory = null }) => {
+  const navigate = useNavigate();
   const [searchKeyword, setSearchKeyword] = useState(""); // 검색어 상태 관리
   const [isScannerActive, setIsScannerActive] = useState(false); // ISBN 스캔 활성화
   const [isReaderActive, setIsReaderActive] = useState(false); // ISBN 촬영 활성화
@@ -43,9 +45,9 @@ const ISBNBookSearch = ({ onSearchSubmit, searchHistory = null }) => {
   };
 
   const handleSuccessToGetISBN = (code) => {
-    // setIsbn(code);
     setIsReaderActive(false);
     setIsScannerActive(false);
+    navigate(`detail/${code}`, { replace: true });
   };
 
   return (
@@ -80,6 +82,7 @@ const ISBNBookSearch = ({ onSearchSubmit, searchHistory = null }) => {
           onSuccessScan={handleSuccessToGetISBN}
         />
       )}
+      {isReaderActive && <ISBNReader onSuccessRead={handleSuccessToGetISBN} />}
     </div>
   );
 };

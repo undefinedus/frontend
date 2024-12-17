@@ -51,8 +51,12 @@ const SocializeRedirectPage = () => {
         };
 
         console.log("data to update: ", data);
-        //const finalResult = await socializeMember(data);
-        //console.log("finalResult: ", finalResult);
+        const finalResult = await socializeMember(data);
+        console.log("finalResult: ", finalResult);
+        if (finalResult.includes("success")) {
+          await checkKakaoMessagePermission();
+          navigate("/", { replace: true });
+        }
       }
     }
   };
@@ -84,8 +88,6 @@ const SocializeRedirectPage = () => {
           "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
         },
       });
-
-      // const response = await getMemberWithToken(accessToken, refreshToken);
 
       console.log("사용자 정보 응답:", response.data);
       return response.data; // 사용자 정보 반환

@@ -16,8 +16,8 @@ const ISBNScanner = ({ onSwitchToCapture, onCloseScannner, onSuccessScan }) => {
           target: document.querySelector("#isbn-scanner"), // HTML 요소
           constraints: {
             facingMode: "environment", // 후면 카메라
-            width: "100%",
-            height: "100%",
+            width: { ideal: 1280 }, // 원하는 해상도의 가로 크기
+            height: { ideal: 720 }, // 원하는 해상도의 세로 크기
           },
         },
         decoder: {

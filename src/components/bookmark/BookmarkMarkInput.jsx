@@ -24,7 +24,7 @@ const BookmarkMarkInput = ({ mode, mark, setMark }) => {
         onChange={handleChange}
         onFocus={() => handleActivatePlaceholder(false)}
         onBlur={() => handleActivatePlaceholder(mark === "")}
-        readOnly={mode === "READ"}
+        readOnly={mode === "READ" || mode === "SOCIAL"}
       />
       {activatePlaceholder && (
         <div
