@@ -87,31 +87,31 @@ const ForumForm = ({ forum, onSubmit, children }) => {
   }, [date]);
 
   // (글 작성)
-  // useEffect(() => {
-  //   if (date === "일자 선택") {
-  //     return; // 일자가 선택되지 않았다면 설정하지 않음
-  //   }
+  useEffect(() => {
+    if (date === "일자 선택") {
+      return; // 일자가 선택되지 않았다면 설정하지 않음
+    }
 
-  //   if (minDate && maxDate) {
-  //     const isMinDate = new Date(date).getDate() === minDate.getDate();
-  //     const isMaxDate = new Date(date).getDate() === maxDate.getDate();
+    if (minDate && maxDate) {
+      const isMinDate = new Date(date).getDate() === minDate.getDate();
+      const isMaxDate = new Date(date).getDate() === maxDate.getDate();
 
-  //     if (!isMinDate) {
-  //       setMinDate((date) => {
-  //         const updatedDate = new Date(date);
-  //         updatedDate.setHours(0, 0, 0, 0); // 시간 부분을 00:00:00으로 변경
-  //         return updatedDate;
-  //       });
-  //     }
-  //     if (!isMaxDate) {
-  //       setMaxDate((date) => {
-  //         const updatedDate = new Date(date);
-  //         updatedDate.setHours(23, 59, 59, 99); // 시간 부분을 23:59:59:99으로 변경
-  //         return updatedDate;
-  //       });
-  //     }
-  //   }
-  // }, [date, minDate, maxDate]);
+      if (!isMinDate) {
+        setMinDate((date) => {
+          const updatedDate = new Date(date);
+          updatedDate.setHours(0, 0, 0, 0); // 시간 부분을 00:00:00으로 변경
+          return updatedDate;
+        });
+      }
+      if (!isMaxDate) {
+        setMaxDate((date) => {
+          const updatedDate = new Date(date);
+          updatedDate.setHours(23, 59, 59, 99); // 시간 부분을 23:59:59:99으로 변경
+          return updatedDate;
+        });
+      }
+    }
+  }, [date, minDate, maxDate]);
 
   // 일자 - 현재 시간을 기준으로 24시간 후와 7일 후 계산(최소일, 최대일)
   const getFormattedDate = (hoursToAdd) => {
