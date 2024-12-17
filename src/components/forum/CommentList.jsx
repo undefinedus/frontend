@@ -2,7 +2,14 @@ import React, { useState } from "react";
 import CommentCard from "./CommentCard";
 import WriteComment from "./WriteComment";
 
-const CommentList = ({ comments, forum, handleReplySubmit }) => {
+const CommentList = ({
+  comments,
+  forum,
+  handleReplySubmit,
+  onClickReport,
+  onClickLike,
+  onClickDislike,
+}) => {
   const [activeComment, setActiveComment] = useState(null); // 활성화된 댓글 ID
 
   // 댓글 달기 클릭 핸들러
@@ -26,7 +33,10 @@ const CommentList = ({ comments, forum, handleReplySubmit }) => {
                 comment.groupId,
                 comment.groupOrder
               )
-            } // 댓글 달기 핸들러
+            } // 대댓글 작성
+            onClickReport={(comment) => onClickReport(comment)} // 신고
+            onClickLike={(commentId) => onClickLike(commentId)} // 좋아요
+            onClickDislike={(commentId) => onClickDislike(commentId)} // 싫어요
             isReplyActive={activeComment?.commentId === comment.commentId} // 활성화 상태 전달
           />
           {/* WriteComment를 동적으로 표시 */}

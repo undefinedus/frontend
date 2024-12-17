@@ -57,3 +57,29 @@ export const writeReply = async (
   console.log("=========writeReply from api: ", res);
   return res;
 };
+
+// 댓글 좋아요
+export const addLike = async (commentId) => {
+  console.log("addLike의 댓글ID:", commentId);
+  try {
+    const res = await jwtAxios.patch(`${host}/addLike/${commentId}`);
+    console.log("addLike", res);
+    return res;
+  } catch (error) {
+    console.error("addLike error from server:", error.response);
+    throw error;
+  }
+};
+
+// 댓글 싫어요
+export const addDislike = async (commentId) => {
+  console.log("addDislike 댓글ID:", commentId);
+  try {
+    const res = await jwtAxios.patch(`${host}/addDislike/${commentId}`);
+    console.log("addDislike", res);
+    return res;
+  } catch (error) {
+    console.error("addDislike error from server:", error.response);
+    throw error;
+  }
+};
