@@ -6,7 +6,7 @@ import {
   addReportComment,
 } from "../../../api/forum/forumReportApi";
 
-const AddReportModal = ({ forum, comment, onCancel }) => {
+const AddReportModal = ({ forum, comment, onCancel, refresh = null }) => {
   // 신고 사유 목록
   const reasons = [
     "욕설, 비방, 차별, 혐오",
@@ -63,6 +63,7 @@ const AddReportModal = ({ forum, comment, onCancel }) => {
       } else {
         throw new Error("신고 대상을 찾을 수 없습니다."); // 예외 처리
       }
+      if (refresh) refresh();
       onCancel(); // 모달 닫기
       return res;
     } catch (error) {
