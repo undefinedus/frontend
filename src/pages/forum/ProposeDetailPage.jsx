@@ -8,6 +8,7 @@ import {
 import {
   getForumDetail,
   addJoinAgree,
+  addJoinDisagree,
   deleteForum,
 } from "../../api/forum/forumApi.js";
 import ForumTitle from "../../components/forum/ForumTitle.jsx";
@@ -16,6 +17,7 @@ import useCustomLogin from "../../hooks/useCustomLogin.js";
 import AddReportModal from "../../components/modal/forum/AddReportModal.jsx";
 import ParticipantsCount from "../../components/forum/ParticipantsCount.jsx";
 import TwoButtonModal from "../../components/modal/commons/TwoButtonModal.jsx";
+import { setRef } from "@fullcalendar/core/internal.js";
 
 // 발의글 상세
 const ProposeDetailPage = () => {
@@ -29,6 +31,7 @@ const ProposeDetailPage = () => {
   const [isAuthor, setIsAuthor] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false); // 신고 모달 상태
   const [isDeletetModalOpen, setIsDeleteModalOpen] = useState(false); // 삭제 모달 상태
+  const [refresh, setRefresh] = useState(false);
 
   const { prevActiveTab, prevSearch, prevSort, prevScrollLeft } =
     location.state;
@@ -40,9 +43,9 @@ const ProposeDetailPage = () => {
 
   // 토론 상세 API 호출
   useEffect(() => {
-    console.log("*****discussionId:", discussionId); // 값을 확인
+    if (!discussionId) return;
     fetchForumDetail(discussionId); // API 호출
-  }, [discussionId]);
+  }, [discussionId, refresh]);
 
   // 상세 API
   const fetchForumDetail = async (discussionId) => {
@@ -98,8 +101,34 @@ const ProposeDetailPage = () => {
   };
 
   // 찬성 참석 핸들러
-  const handleFollowClick = async (discussionId) => {
-    await postJoinAgree(discussionId);
+  const handleAgree = async () => {
+    const res = await fetchJoinAgree();
+  };
+
+  const handleDisagree = async () => {
+    const res = await fetchJoinDisagree();
+  };
+
+  const fetchJoinAgree = async () => {
+    if (!discussionId) return;
+    try {
+      const res = await addJoinAgree(discussionId);
+      console.log("res : ", res);
+      setRefresh((prev) => !prev);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const fetchJoinDisagree = async () => {
+    if (!discussionId) return;
+    try {
+      const res = await addJoinDisagree(discussionId);
+      console.log("res: ", res);
+      setRefresh((prev) => !prev);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // 신고 모달 취소
@@ -157,8 +186,8 @@ const ProposeDetailPage = () => {
         <ForumContent forum={forum}>
           <ParticipantsCount
             forum={forum}
-            onFollowClick={async () => handleFollowClick(forum.discussionId)}
-            // onClickDisagree={}
+            onClickAgree={handleAgree}
+            onClickDisagree={handleDisagree}
           />
         </ForumContent>
       </div>
