@@ -32,9 +32,11 @@ export const getCategoryBest = async () => {
 };
 
 // AI 맞춤 목록 출력
-export const getAIRecommend = async () => {
+export const getAIRecommend = async (signal) => {
   try {
-    const res = await jwtAxios.get(`${gptHost}/recommended`);
+    const res = await jwtAxios.get(`${gptHost}/recommended`, {
+      signal: signal,
+    });
     console.log("**********res", res);
     return res.data;
   } catch (error) {

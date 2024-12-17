@@ -393,7 +393,12 @@ const SocialBookListPage = () => {
                 !isScrolled ? "pt-80" : "pt-52"
               }`}
             >
-              <BookList books={books} onCardClick={moveToDetail} />
+              <BookList
+                books={books}
+                onCardClick={moveToDetail}
+                withIcon={true}
+                isSocial={true}
+              />
             </div>
             <div className="h-8"></div>
           </>
