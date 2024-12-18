@@ -73,6 +73,8 @@ const LoginComponent = () => {
     });
   };
 
+  const navigate = useNavigate();
+
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       handleClickLogin();
@@ -162,7 +164,7 @@ const LoginComponent = () => {
         <KakaoLoginComponent />
       </div>
 
-      <div className="flex fixed bottom-11 justify-center gap-4 ">
+      <div className="flex gap-2 mt-5">
         <div className=" text-undpoint">
           <Link to="/member/findPassword" className="underline">
             비밀번호 찾기
@@ -175,6 +177,8 @@ const LoginComponent = () => {
         >
           회원가입
         </div>
+      </div>
+      <div className="flex fixed bottom-11 justify-center gap-4 ">
         {isModalOpen && (
           <SignupModal
             isOpen={isModalOpen}
@@ -193,12 +197,14 @@ const LoginComponent = () => {
               onChange={(checked) => handleSingleCheck("serviceAgree", checked)}
               value={"(필수) 서비스 이용약관 동의"}
               showMessage={true}
+              onClick={() => navigate("/member/TermsOfUse")}
             />
             <CheckBox
               checked={checkboxStates.privacyAgree}
               onChange={(checked) => handleSingleCheck("privacyAgree", checked)}
               value={"(필수) 개인정보 수집 및 이용 동의"}
               showMessage={true}
+              onClick={() => navigate("/member/privacyPolicy")}
             />
             <div className="border border-undpoint opacity-80 my-2"></div>
             <div className="flex flex-col items-start">

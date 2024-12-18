@@ -7,19 +7,24 @@ import ForumRouter from "./ForumRouter";
 import SettingsRouter from "./SettingsRouter";
 import AdminRouter from "./AdminRouter";
 import MainPage from "../pages/MainPage";
+import { AuthContainer } from "../components/auth/AuthenticationWrapperComponent";
 
 const AppRouter = () => {
   return (
     <BrowserRouter>
+      <AuthContainer>
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/home/*" element={<HomeRouter />} />
+          <Route path="/social/*" element={<SocialRouter />} />
+          <Route path="/myBook/*" element={<MyBookRouter />} />
+          <Route path="/forum/*" element={<ForumRouter />} />
+          <Route path="/settings/*" element={<SettingsRouter />} />
+          <Route path="/admin/*" element={<AdminRouter />} />
+        </Routes>
+      </AuthContainer>
       <Routes>
-        <Route path="/" element={<MainPage />} />
         <Route path="/member/*" element={<MemberRouter />} />
-        <Route path="/home/*" element={<HomeRouter />} />
-        <Route path="/social/*" element={<SocialRouter />} />
-        <Route path="/myBook/*" element={<MyBookRouter />} />
-        <Route path="/forum/*" element={<ForumRouter />} />
-        <Route path="/settings/*" element={<SettingsRouter />} />
-        <Route path="/admin/*" element={<AdminRouter />} />
       </Routes>
     </BrowserRouter>
   );
