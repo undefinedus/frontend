@@ -162,7 +162,7 @@ const LoginComponent = () => {
         <KakaoLoginComponent />
       </div>
 
-      <div className="flex fixed bottom-11 justify-center gap-4 ">
+      <div className="flex gap-2 mt-5">
         <div className=" text-undpoint">
           <Link to="/member/findPassword" className="underline">
             비밀번호 찾기
@@ -175,6 +175,8 @@ const LoginComponent = () => {
         >
           회원가입
         </div>
+      </div>
+      <div className="flex fixed bottom-11 justify-center gap-4 ">
         {isModalOpen && (
           <SignupModal
             isOpen={isModalOpen}
