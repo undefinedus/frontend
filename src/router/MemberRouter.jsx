@@ -7,7 +7,7 @@ import FindPasswordPage from "../pages/member/FindPasswordPage";
 import KakaoRedirectPage from "../pages/member/KakaoRedirectPage";
 import SocialSignupPage from "../pages/member/SocialSignupPage";
 import PrivacyPolicyPage from "../pages/terms/PrivacyPolicy";
-import TermsOfUsePage from "../pages/terms/termsOfUse";
+import TermsOfUsePage from "../pages/terms/TermsOfUse";
 import Loading from "../components/commons/Loading";
 
 // 로그인, 회원가입, 추가정보입력, 비밀번호 찾기 라우터
