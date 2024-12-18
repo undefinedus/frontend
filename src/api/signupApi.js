@@ -1,4 +1,5 @@
 import axios from "axios";
+import jwtAxios from "../util/jwtUtil";
 import { API_SERVER_HOST } from "./commonApi";
 
 const host = `${API_SERVER_HOST}/api/member`;
@@ -100,7 +101,7 @@ export const registMember = async (registerData) => {
 export const socialRegistMember = async (registerData) => {
   try {
     console.log("data at api: ", registerData);
-    
+
     const res = await axios.post(`${host}/social-register`, registerData);
     if (res.data.result === "success") {
       return {
@@ -119,7 +120,7 @@ export const socialRegistMember = async (registerData) => {
       throw new Error("회원가입 처리 중 오류가 발생했습니다.");
     }
   }
-}
+};
 
 export const verifyEmailCode = async (email, code) => {
   try {
@@ -133,4 +134,29 @@ export const verifyEmailCode = async (email, code) => {
   } catch (error) {
     handleError(error, "인증번호 확인 중 오류가 발생했습니다.");
   }
+};
+
+export const updatePassword = async (email, newPassword) => {
+  try {
+    const res = await axios.patch(`${host}/updatePassword`, {
+      email: email,
+      newPassword: newPassword,
+    });
+    return {
+      result: res.data.result === "success",
+      message: res.data.message || "비밀번호가 변경 되었습니다",
+    };
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || "비밀번호 변경 중 오류가 발생하였습니다."
+    );
+  }
+};
+
+export const unregister = async () => {
+  const res = await jwtAxios.delete(`${host}`);
+
+  console.log("res at api: ", res);
+
+  return res.data.result;
 };

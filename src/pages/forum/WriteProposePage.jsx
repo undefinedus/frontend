@@ -38,22 +38,22 @@ const WriteProposePage = () => {
       },
     });
   };
-  // 모달
-  // const handleModalCancel = () => {
-  //   setIsModalOpen(false); // 취소
-  //   navigate("/forum/list", {
-  //     state: {
-  //       prevActiveTab: "주제 발의",
-  //     },
-  //   });
-  // };
 
-  // const handleModalConfirm = () => {
-  //   setIsModalOpen(false); // 확인
-  //   if (discussionId) {
-  //     navigate(`/forum/propose/${discussionId}`);
-  //   }
-  // };
+  const handleModalCancel = () => {
+    setIsModalOpen(false); // 취소
+    navigate("/forum/list", {
+      state: {
+        prevActiveTab: "주제 발의",
+      },
+    });
+  };
+
+  const handleModalConfirm = () => {
+    setIsModalOpen(false); // 확인
+    if (discussionId) {
+      navigate(`/forum/propose/${discussionId}`);
+    }
+  };
 
   return (
     <BasicLayout>

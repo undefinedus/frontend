@@ -39,6 +39,8 @@ const MyBookListPage = () => {
   const [isBookmarkOpen, setIsBookmarkOpen] = useState(false);
   const [activeBookmark, setActiveBookmark] = useState({});
   const [refresh, setRefresh] = useState(false);
+  const [noResult, setNoResult] = useState(null);
+  const [noSearchResult, setNoSearchResult] = useState(null);
 
   const observer = useRef(null);
   const sentinelRef = useRef(null);
@@ -52,7 +54,7 @@ const MyBookListPage = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      setIsScrolled(scrollTop > 100); // 100px 이상 스크롤 시 버튼 전환
+      setIsScrolled(scrollTop > 120); // 100px 이상 스크롤 시 버튼 전환
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -105,6 +107,13 @@ const MyBookListPage = () => {
       setLastId(res.lastId);
       setHasNext(res.hasNext);
       setTotalElements(res.totalElements);
+      if (!search && res.totalElements === 0) {
+        setNoResult(true);
+        setNoSearchResult(null);
+      } else if (search && res.totalElements === 0) {
+        setNoSearchResult(true);
+        setNoResult(null);
+      }
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -117,10 +126,6 @@ const MyBookListPage = () => {
       setLoading(true);
       const sorts = sort === "최신순" ? "desc" : "asc";
       const res = await getBookmarkList(search, sorts, lastId);
-      console.log("책갈피 목록: ", res.content);
-      console.log("lastId: ", res.lastId);
-      console.log("hasNext: ", res.hasNext);
-      console.log("totalElements: ", res.totalElements);
 
       if (lastId) {
         setBookmarks((prevBookmarks) => [...prevBookmarks, ...res.content]);
@@ -130,6 +135,13 @@ const MyBookListPage = () => {
       setLastId(res.lastId);
       setHasNext(res.hasNext);
       setTotalElements(res.totalElements);
+      if (!search && res.totalElements === 0) {
+        setNoResult(true);
+        setNoSearchResult(null);
+      } else if (search && res.totalElements === 0) {
+        setNoSearchResult(true);
+        setNoResult(null);
+      }
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -144,12 +156,16 @@ const MyBookListPage = () => {
       setHasNext(false);
       setTotalElements(0);
       setSearch("");
+      setNoResult(null);
+      setNoSearchResult(null);
     } else if (activeTab !== "책갈피" && tab === "책갈피") {
       setBooks([]);
       setLastId(null);
       setHasNext(false);
       setTotalElements(0);
       setSearch("");
+      setNoResult(null);
+      setNoSearchResult(null);
     }
     setSort("최신순");
     setActiveTab(tab);
@@ -171,18 +187,15 @@ const MyBookListPage = () => {
 
   const moveToDetail = (book) => {
     const bookId = book.id;
-    navigate(
-      { pathname: `../detail/${bookId}` },
-      {
-        replace: true,
-        state: {
-          prevActiveTab: activeTab,
-          prevSearch: search,
-          prevSort: sort,
-          prevScrollLeft: tabScrollLeft,
-        },
-      }
-    );
+    navigate(`../detail/${bookId}`, {
+      replace: true,
+      state: {
+        prevActiveTab: activeTab,
+        prevSearch: search,
+        prevSort: sort,
+        prevScrollLeft: tabScrollLeft,
+      },
+    });
   };
 
   const handleOpenBookmarkDetail = (bookmark) => {
@@ -204,7 +217,11 @@ const MyBookListPage = () => {
           {!isScrolled && (
             <div className="py-4 px-6">
               <SearchBar
-                placeholder={"책 제목, 저자로 검색"}
+                placeholder={
+                  activeTab !== "책갈피"
+                    ? "책 제목, 저자로 검색"
+                    : "책 제목, 구절로 검색"
+                }
                 onChange={handleSearch}
                 searchHistory={search}
               />
@@ -246,7 +263,8 @@ const MyBookListPage = () => {
         {/* 검색 결과가 없을 때 공지 표시 */}
         {activeTab !== "책갈피" && totalElements === 0 && (
           <div className="w-full h-screen flex justify-center items-center">
-            <ListNotice type={"emptyBook"} />
+            {noResult && <ListNotice type={"emptyBook"} />}
+            {noSearchResult && <ListNotice type={"noResult"} />}
           </div>
         )}
 
@@ -258,8 +276,9 @@ const MyBookListPage = () => {
         )}
 
         {activeTab === "책갈피" && totalElements === 0 && (
-          <div className="w-full h-full flex justify-center items-center">
-            <ListNotice type={"emptyBookMark"} />
+          <div className="w-full h-screen flex justify-center items-center">
+            {noResult && <ListNotice type={"emptyBookMark"} />}
+            {noSearchResult && <ListNotice type={"noResult"} />}
           </div>
         )}
 
@@ -291,14 +310,25 @@ const MyBookListPage = () => {
           mainLabel={activeTab === "책갈피" ? "책갈피" : "책 담기"}
           mainAction={() =>
             activeTab === "책갈피"
-              ? navigate(
-                  { pathname: "../search" },
-                  {
-                    replace: true,
-                    state: { title: "책갈피 추가", prevActiveTab: activeTab },
-                  }
-                )
-              : navigate({ pathname: "/home/searchbook" }, { replace: true })
+              ? navigate("../search", {
+                  replace: true,
+                  state: {
+                    title: "책갈피 추가",
+                    prevActiveTab: activeTab,
+                    prevSearch: search,
+                    prevSort: sort,
+                    prevScrollLeft: tabScrollLeft,
+                  },
+                })
+              : navigate("/home/searchbook", {
+                  replace: true,
+                  state: {
+                    prevActiveTab: activeTab,
+                    prevSearch: search,
+                    prevSort: sort,
+                    prevScrollLeft: tabScrollLeft,
+                  },
+                })
           }
         />
       </div>

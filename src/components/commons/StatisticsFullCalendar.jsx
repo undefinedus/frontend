@@ -22,13 +22,15 @@ const StatisticsFullCalendar = () => {
     const formattedDate = date.toLocaleDateString("fr-CA");
     setSelectedDate(formattedDate);
 
-    // 선택된 날짜의 도서 정보 가져오기
     const dayEvents = bookEvents[formattedDate];
     if (dayEvents && dayEvents.books) {
-      // 각 책의 상세 정보를 API로 조회
       try {
+        // 중복 제거된 myBookId 배열 생성
+        const uniqueBookIds = [
+          ...new Set(dayEvents.books.map((book) => book.myBookId)),
+        ];
         const detailedBooks = await Promise.all(
-          dayEvents.books.map((book) => getBookDetail(book.myBookId))
+          uniqueBookIds.map((bookId) => getBookDetail(bookId))
         );
         setSelectedBooks(detailedBooks);
       } catch (error) {
@@ -61,40 +63,67 @@ const StatisticsFullCalendar = () => {
   const fetchBookData = async () => {
     try {
       const response = await getBookList("COMPLETED", "latest", "");
-      console.log("Book API Response:", response); // API 응답 전체를 확인
 
       if (response?.content) {
-        // data.content인지 content인지 확인 필요
         const eventsByDate = {};
 
         response.content.forEach((book) => {
-          console.log("Processing book:", book); // 각 책의 데이터 구조 확인
           const startDate = book.startDate;
           const endDate = book.endDate;
 
-          // startDate와 endDate에만 이벤트 추가
-          if (startDate) {
+          // 시작일과 종료일이 같은 경우 한 번만 추가
+          if (startDate === endDate) {
             if (!eventsByDate[startDate]) {
               eventsByDate[startDate] = { books: [] };
             }
-            eventsByDate[startDate].books.push({
-              bookCover: book.cover,
-              bookTitle: book.title,
-              myBookId: book.id,
-              recordedAt: startDate,
-            });
-          }
-
-          if (endDate) {
-            if (!eventsByDate[endDate]) {
-              eventsByDate[endDate] = { books: [] };
+            // 중복 체크
+            if (
+              !eventsByDate[startDate].books.some((b) => b.myBookId === book.id)
+            ) {
+              eventsByDate[startDate].books.push({
+                bookCover: book.cover,
+                bookTitle: book.title,
+                myBookId: book.id,
+                recordedAt: startDate,
+              });
             }
-            eventsByDate[endDate].books.push({
-              bookCover: book.cover,
-              bookTitle: book.title,
-              myBookId: book.id,
-              recordedAt: endDate,
-            });
+          } else {
+            // 시작일과 종료일이 다른 경우 각각 추가
+            if (startDate) {
+              if (!eventsByDate[startDate]) {
+                eventsByDate[startDate] = { books: [] };
+              }
+              // 중복 체크
+              if (
+                !eventsByDate[startDate].books.some(
+                  (b) => b.myBookId === book.id
+                )
+              ) {
+                eventsByDate[startDate].books.push({
+                  bookCover: book.cover,
+                  bookTitle: book.title,
+                  myBookId: book.id,
+                  recordedAt: startDate,
+                });
+              }
+            }
+
+            if (endDate) {
+              if (!eventsByDate[endDate]) {
+                eventsByDate[endDate] = { books: [] };
+              }
+              // 중복 체크
+              if (
+                !eventsByDate[endDate].books.some((b) => b.myBookId === book.id)
+              ) {
+                eventsByDate[endDate].books.push({
+                  bookCover: book.cover,
+                  bookTitle: book.title,
+                  myBookId: book.id,
+                  recordedAt: endDate,
+                });
+              }
+            }
           }
         });
 

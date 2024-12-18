@@ -28,9 +28,10 @@ const MyBookDetailPage = () => {
   const [book, setBook] = useState([]);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [modifyModalOpen, setModifyModalOpen] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   const { prevActiveTab, prevSearch, prevSort, prevScrollLeft } =
-    location.state;
+    location?.state || {};
 
   useEffect(() => {
     console.log("prevScrollLeft: ", prevScrollLeft);
@@ -51,7 +52,7 @@ const MyBookDetailPage = () => {
     return () => {
       isMounted = false;
     };
-  }, [bookId]);
+  }, [bookId, refresh]);
 
   const fetchDeleteBook = async () => {
     try {
@@ -65,18 +66,15 @@ const MyBookDetailPage = () => {
 
   const handleClick = async (option) => {
     if (option === "back") {
-      navigate(
-        { pathname: "../list" },
-        {
-          replace: true,
-          state: {
-            prevActiveTab,
-            prevSearch,
-            prevSort,
-            prevScrollLeft,
-          },
-        }
-      );
+      navigate("../list", {
+        replace: true,
+        state: {
+          prevActiveTab,
+          prevSearch,
+          prevSort,
+          prevScrollLeft,
+        },
+      });
     } else if (option === "modify") {
       setModifyModalOpen(true);
     } else if (option === "delete") {
@@ -87,8 +85,13 @@ const MyBookDetailPage = () => {
   const handleConfirmDelete = async () => {
     const res = await fetchDeleteBook();
     if (res === "success") {
-      navigate({ pathname: "../list" });
+      navigate("../list");
     }
+  };
+
+  const handleCloseModifyModal = () => {
+    setModifyModalOpen(false);
+    setRefresh((prev) => !prev);
   };
 
   return (
@@ -150,7 +153,7 @@ const MyBookDetailPage = () => {
         <MyBookModal
           mode={"MODIFY"}
           book={book}
-          onClose={() => setModifyModalOpen(false)}
+          onClose={handleCloseModifyModal}
         />
       )}
     </BasicLayout>

@@ -61,8 +61,6 @@ const ForumMainPage = () => {
 
   // API 호출
   useEffect(() => {
-    console.log("이석현");
-
     fetchForums(); // 초기 데이터 로드
   }, [activeTab, sort, search, location]);
 
@@ -89,11 +87,6 @@ const ForumMainPage = () => {
     };
   }, [loading, hasNext]);
 
-  useEffect(() => {
-    // console.log("****location.state", location.state);
-    // console.log("****state", state);
-  }, [location]);
-
   // 토론 목록 API 호출
   const fetchForums = async (lastId = null) => {
     try {
@@ -102,7 +95,7 @@ const ForumMainPage = () => {
       const sorts = sort === "최신순" ? "desc" : "asc";
       const res = await getForums(status, sorts, search, lastId);
       if (lastId) {
-        setForums((prevForums) => [...prevForums, ...res]);
+        setForums((prevForums) => [...prevForums, ...res.content]);
       } else {
         setForums(res.content);
       }
@@ -166,6 +159,7 @@ const ForumMainPage = () => {
     } else if (forumStatus === "COMPLETED") {
       path = `../completed/${forumId}`;
     }
+
     // 페이지 이동
     navigate(path, {
       replace: true,
@@ -180,8 +174,8 @@ const ForumMainPage = () => {
 
   return (
     <BasicLayout>
-      <div className="w-full fixed top-0 bg-undbgmain">
-        <OnlyTitle title={"토론"} showLine={isScrolled ? true : false} />
+      <div className="w-full fixed top-0 bg-undbgmain z-20">
+        <OnlyTitle title={"토론"} showLine={false} />
 
         {!isScrolled && (
           <div className="px-6">
@@ -192,7 +186,7 @@ const ForumMainPage = () => {
             />
           </div>
         )}
-        <div className={isScrolled ? "pt-16" : "pt-4"}>
+        <div className={`pt-${isScrolled ? "0" : "4"}`}>
           <TabCondition
             ref={tabRef}
             tabs={["주제 발의", "토론 예정", "진행 중", "종료된 토론"]}
@@ -236,6 +230,10 @@ const ForumMainPage = () => {
           {activeTab === "진행 중" && <ListNotice type="noInProgress" />}
           {activeTab === "종료된 토론" && <ListNotice type="noCompleted" />}
         </div>
+      )}
+      {/* Sentinel item - 마지막 아이템을 감지하는 요소 */}
+      {totalElements > 0 && !loading && (
+        <div ref={sentinelRef} className="h-1"></div>
       )}
     </BasicLayout>
   );

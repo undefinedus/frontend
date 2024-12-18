@@ -6,6 +6,7 @@ import {
   PiXCircleDuotone,
   PiChatCenteredSlash,
   PiChatCenteredSlashLight,
+  PiBookmarksDuotone,
 } from "react-icons/pi";
 
 const ListNotice = ({ type }) => {
@@ -25,6 +26,16 @@ const ListNotice = ({ type }) => {
     emptyBook: {
       icon: <PiBookOpenDuotone size={32} color="#51392F" />,
       message: "책장이 비어 있어요",
+    },
+    emptyBookMark: {
+      icon: <PiBookmarksDuotone size={32} color="#51392F" />,
+      message: (
+        <>
+          책을 읽다 발견한 소중한 한 줄로
+          <br />
+          나만의 책갈피를 채워보세요
+        </>
+      ),
     },
     socialSearch: {
       icon: <PiEyesFill size={32} color="#51392F" />,
@@ -53,6 +64,10 @@ const ListNotice = ({ type }) => {
     noInProgress: {
       icon: <PiXCircleDuotone size={32} color="#51392F" />,
       message: "아직 진행 중인 토론이 없어요",
+    },
+    noCategoryChartData: {
+      icon: <PiXCircleDuotone size={32} color="#51392F" />,
+      message: "아직 다 읽은 책이 없어요",
     },
     noCompleted: {
       icon: <PiXCircleDuotone size={32} color="#51392F" />,

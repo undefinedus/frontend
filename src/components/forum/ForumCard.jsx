@@ -14,11 +14,6 @@ import useDateDiff from "../../hooks/useDateDiff";
 const ForumCard = ({ forum, onClick }) => {
   const { diffFromNow } = useDateDiff();
 
-  useEffect(() => {
-    // console.log(`forum, ${forum}`);
-    // console.log(`forum 시작 시간, ${forum.startDateTime}`);
-    // console.log(`forum 끝 시간, ${forum.closedAt}`);
-  }, [forum]);
   return (
     <div
       className="w-full py-5 border-b border-unddisabled first:pt-0 last:border-none last:pb-0"
@@ -34,7 +29,9 @@ const ForumCard = ({ forum, onClick }) => {
         <div className="flex flex-col h-full justify-between">
           {/* 글 제목 */}
           <p className="text-undtextdark text-und14 font-bold w-full h-10 text-left line-clamp-2">
-            {forum.title}
+            {forum.viewStatus === "BLOCKED"
+              ? "관리자에 의해 차단된 글입니다"
+              : forum.title}
           </p>
           {/* 찬반 수 */}
           {forum.status !== "COMPLETED" && (

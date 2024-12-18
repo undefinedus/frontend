@@ -165,6 +165,7 @@ const SearchBookPage = () => {
         sortOption, // 정렬 옵션
         isSearchExecuted,
         scrollPosition: scrollPositionRef.current, // 스크롤 위치 저장
+        state,
       },
     });
   };
@@ -172,7 +173,8 @@ const SearchBookPage = () => {
   // 이전 버튼 클릭 관리
   const handleBackClick = () => {
     // 기존 검색 상태를 함께 navigate로 전달
-    navigate("/home", { replace: true });
+    if (!location.state) navigate("/home", { replace: true });
+    else navigate("/myBook/list", { replace: true, state: state });
   };
 
   // 무한 스크롤 관리
@@ -225,7 +227,12 @@ const SearchBookPage = () => {
         {/* 검색 목록 출력 */}
         {isSearchExecuted && totalResults > 0 && (
           <div className="pt-32 pb-16 px-6 flex justify-center">
-            <BookList books={books} onCardClick={handleCardClick} />
+            <BookList
+              books={books}
+              onCardClick={handleCardClick}
+              infoOnly={true}
+              withIcon={true}
+            />
           </div>
         )}
       </div>

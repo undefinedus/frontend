@@ -11,6 +11,7 @@ const DatePickerSlider = ({
   minDate,
   maxDate,
   disabled,
+  setModalOpen,
 }) => {
   const parsedMinDate = minDate ? new Date(minDate) : new Date("1900-01-01");
   const parsedMaxDate =
@@ -33,7 +34,14 @@ const DatePickerSlider = ({
 
   return (
     <div className="w-full">
-      <span onClick={() => setIsOpen(true)}>{children}</span>
+      <span
+        onClick={() => {
+          setIsOpen(true);
+          setModalOpen(true);
+        }}
+      >
+        {children}
+      </span>
       {!disabled && (
         <MobileDatePicker
           isOpen={isOpen}
@@ -45,7 +53,10 @@ const DatePickerSlider = ({
           confirmText="확인"
           cancelText="취소"
           onSelect={handleSelect}
-          onCancel={() => setIsOpen(false)}
+          onCancel={() => {
+            setIsOpen(false);
+            setModalOpen(false);
+          }}
         />
       )}
     </div>

@@ -8,6 +8,7 @@ const SocialProfile = ({
   onFollowingClick, // 팔로잉 목록 버튼
   onFollowClick, // 팔로우 버튼
   onUnfollowClick, // 언팔로우 버튼
+  myself = false,
 }) => {
   const [isFollowing, setIsFollowing] = useState(socialProfile.isFollowing); // 상태로 관리
 
@@ -57,22 +58,26 @@ const SocialProfile = ({
             )}
           </div>
         </div>
-        {/* 팔로우/팔로잉 버튼 */}
-        {socialProfile.isFollowing === false && (
-          <button
-            className="w-16 h-7 py-1 px-1 bg-undpoint text-white rounded-full font-bold text-und12 mt-2"
-            onClick={handleFollowClick}
-          >
-            팔로우
-          </button>
-        )}
-        {socialProfile.isFollowing === true && (
-          <button
-            className="w-16 h-7 py-1 px-1 border border-undpoint text-undpoint rounded-full font-bold text-und12 mt-2"
-            onClick={handleUnfollowClick}
-          >
-            팔로잉
-          </button>
+
+        {!myself && (
+          <>
+            {socialProfile.isFollowing === false && (
+              <button
+                className="w-16 h-7 py-1 px-1 bg-undpoint text-white rounded-full font-bold text-und12 mt-2"
+                onClick={handleFollowClick}
+              >
+                팔로우
+              </button>
+            )}{" "}
+            {socialProfile.isFollowing === true && (
+              <button
+                className="w-16 h-7 py-1 px-1 border border-undpoint text-undpoint rounded-full font-bold text-und12 mt-2"
+                onClick={handleUnfollowClick}
+              >
+                팔로잉
+              </button>
+            )}
+          </>
         )}
       </div>
       {/* 사용자 정보 */}

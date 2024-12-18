@@ -14,8 +14,8 @@ const useCustomLogin = () => {
     return action.payload;
   };
 
-  const doLogout = () => {
-    dispatch(logout());
+  const doLogout = (social = false) => {
+    dispatch(logout(social));
   };
 
   const isAdmin = () => {

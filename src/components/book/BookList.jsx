@@ -7,6 +7,7 @@ const BookList = ({
   onCardClick,
   infoOnly = false,
   withIcon = false,
+  isSocial = false,
 }) => {
   return (
     <div className="py-4 w-full">
@@ -17,6 +18,7 @@ const BookList = ({
           onClick={() => onCardClick(book)} // 클릭 이벤트 전달
           infoOnly={infoOnly}
           withIcon={withIcon}
+          isSocial={isSocial}
         />
       ))}
     </div>

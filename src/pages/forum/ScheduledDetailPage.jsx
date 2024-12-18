@@ -19,6 +19,7 @@ const ScheduledDetailPage = () => {
   const [forum, setForum] = useState({});
   const [isAuthor, setIsAuthor] = useState(false); // 작성자 일치
   const [isReportModalOpen, setIsReportModalOpen] = useState(false); // 신고 모달 상태
+  const [refresh, setRefresh] = useState(false);
 
   const { prevActiveTab, prevSearch, prevSort, prevScrollLeft } =
     location.state;
@@ -30,9 +31,8 @@ const ScheduledDetailPage = () => {
 
   // 토론 상세 API 호출
   useEffect(() => {
-    console.log("*****discussionId:", discussionId); // 값을 확인
     fetchForum(discussionId); // API 호출
-  }, [discussionId]);
+  }, [discussionId, refresh]);
 
   // 상세 API
   const fetchForum = async (discussionId) => {
@@ -78,7 +78,7 @@ const ScheduledDetailPage = () => {
   return (
     <BasicLayout>
       <div className="w-full fixed top-0 bg-undbgmain">
-        {isAuthor ? (
+        {isAuthor || forum.viewStatus === "BLOCKED" ? (
           <PrevTitle
             title={"토론 예정"}
             onClick={() => handleActionClick("back")} // 뒤로 가기 버튼
@@ -89,14 +89,21 @@ const ScheduledDetailPage = () => {
             title={"토론 예정"}
             onClick={handleActionClick} // 뒤로 가기, 신고 버튼
             showLine={false}
+            isReport={forum.isReport}
           />
         )}
       </div>
-      <div className="flex flex-col pt-16 px-6 gap-4">
+      <div className="flex flex-col pt-16 pb-20 px-6 gap-4">
         <ForumTitle forum={forum} />
-        <ForumContent forum={forum}>
-          <ParticipantsCount forum={forum} forumGuide={false} />
-        </ForumContent>
+        {forum.viewStatus === "BLOCKED" ? (
+          <div className="text-start text-undtextgray font-bold">
+            관리자에 의해 차단된 글입니다
+          </div>
+        ) : (
+          <ForumContent forum={forum}>
+            <ParticipantsCount forum={forum} forumGuide={false} />
+          </ForumContent>
+        )}
       </div>
       {/* 신고 모달 */}
       {isReportModalOpen && (
@@ -106,6 +113,7 @@ const ScheduledDetailPage = () => {
             handleReportConfirm(reason); // 확인 클릭 시 처리
           }}
           forum={forum}
+          refresh={() => setRefresh((prev) => !prev)}
         />
       )}
     </BasicLayout>

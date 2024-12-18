@@ -1,6 +1,6 @@
 import React from "react";
 
-const LoginSpinner = ({ size = "sm", className = "" }) => {
+const LoadingSpinner = ({ size = "sm", className = "" }) => {
   const sizeClasses = {
     sm: "w-4 h-4",
     md: "w-6 h-6",
@@ -14,4 +14,4 @@ const LoginSpinner = ({ size = "sm", className = "" }) => {
   );
 };
 
-export default LoginSpinner;
+export default LoadingSpinner;

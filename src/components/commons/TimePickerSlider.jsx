@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import DatePicker from "react-mobile-datepicker";
 
 const TimePickerSlider = ({
@@ -8,6 +8,7 @@ const TimePickerSlider = ({
   minTime,
   maxTime,
   disabled,
+  setModalOpen,
 }) => {
   const [isOpen, setIsOpen] = useState(false); // DatePicker 열기/닫기 상태
   const [selectedTime, setSelectedTime] = useState(() =>
@@ -17,6 +18,8 @@ const TimePickerSlider = ({
     const [year, month, day] = newDateString.split("-").map(Number); // time의 yyyy-mm-dd를 분해
     const updatedDate = new Date(dateObject); // 기존 dateObject 복사
     updatedDate.setFullYear(year, month - 1, day); // 년, 월, 일 업데이트
+    console.log("updatedDate: ", updatedDate);
+
     return updatedDate;
   };
 
@@ -46,7 +49,14 @@ const TimePickerSlider = ({
 
   return (
     <div className="w-full">
-      <span onClick={() => setIsOpen(true)}>{children}</span>
+      <span
+        onClick={() => {
+          setIsOpen(true);
+          setModalOpen(true);
+        }}
+      >
+        {children}
+      </span>
       {!disabled && (
         <DatePicker
           isOpen={isOpen}
@@ -61,7 +71,10 @@ const TimePickerSlider = ({
           confirmText="확인"
           cancelText="취소"
           onSelect={handleSelect}
-          onCancel={() => setIsOpen(false)}
+          onCancel={() => {
+            setIsOpen(false);
+            setModalOpen(false);
+          }}
         />
       )}
     </div>

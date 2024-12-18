@@ -72,46 +72,52 @@ const ForumForm = ({ forum, onSubmit, children }) => {
 
   // (글 작성) 최초 렌더링시 현재시간 기준으로 minDate, maxDate 의 날짜정보 setting
   useEffect(() => {
-    if (!forum) {
-      const now = new Date();
+    const now = new Date();
 
-      // 현재 시간 기준 24시간 후
-      const min = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+    // 현재 시간 기준 24시간 후
+    const min = new Date(now.getTime() + 24 * 60 * 60 * 1000);
 
-      // 현재 시간 기준 168시간(7일) 후
-      const max = new Date(now.getTime() + 168 * 60 * 60 * 1000);
-      setMinDate(min);
-      setMaxDate(max);
-      setTime("시간 선택");
-    }
+    // 현재 시간 기준 168시간(7일) 후
+    const max = new Date(now.getTime() + 168 * 60 * 60 * 1000);
+    setMinDate(min);
+    setMaxDate(max);
+    setTime("시간 선택");
   }, [date]);
 
   // (글 작성)
-  // useEffect(() => {
-  //   if (date === "일자 선택") {
-  //     return; // 일자가 선택되지 않았다면 설정하지 않음
-  //   }
+  useEffect(() => {
+    console.log("시간선택 유즈이펙트 진입");
+    console.log("minDate: ", minDate);
+    console.log("maxDate: ", maxDate);
+    console.log("date: ", date);
 
-  //   if (minDate && maxDate) {
-  //     const isMinDate = new Date(date).getDate() === minDate.getDate();
-  //     const isMaxDate = new Date(date).getDate() === maxDate.getDate();
+    if (date === "일자 선택") {
+      return; // 일자가 선택되지 않았다면 설정하지 않음
+    }
 
-  //     if (!isMinDate) {
-  //       setMinDate((date) => {
-  //         const updatedDate = new Date(date);
-  //         updatedDate.setHours(0, 0, 0, 0); // 시간 부분을 00:00:00으로 변경
-  //         return updatedDate;
-  //       });
-  //     }
-  //     if (!isMaxDate) {
-  //       setMaxDate((date) => {
-  //         const updatedDate = new Date(date);
-  //         updatedDate.setHours(23, 59, 59, 99); // 시간 부분을 23:59:59:99으로 변경
-  //         return updatedDate;
-  //       });
-  //     }
-  //   }
-  // }, [date, minDate, maxDate]);
+    if (minDate && maxDate) {
+      const isMinDate = new Date(date).getDate() === minDate.getDate();
+      const isMaxDate = new Date(date).getDate() === maxDate.getDate();
+
+      if (!isMinDate) {
+        setMinDate((date) => {
+          const updatedDate = new Date(date);
+          updatedDate.setHours(0, 0, 0, 0); // 시간 부분을 00:00:00으로 변경
+          return updatedDate;
+        });
+      }
+      if (!isMaxDate) {
+        setMaxDate((date) => {
+          const updatedDate = new Date(date);
+          updatedDate.setHours(23, 59, 59, 99); // 시간 부분을 23:59:59:99으로 변경
+          return updatedDate;
+        });
+      }
+
+      console.log("minDate: ", minDate);
+      console.log("maxDate: ", maxDate);
+    }
+  }, [date]);
 
   // 일자 - 현재 시간을 기준으로 24시간 후와 7일 후 계산(최소일, 최대일)
   const getFormattedDate = (hoursToAdd) => {
@@ -162,6 +168,20 @@ const ForumForm = ({ forum, onSubmit, children }) => {
         book: "",
       },
     });
+  };
+
+  const handleModal = (boolean) => {
+    if (boolean) {
+      // 스크롤을 최하단으로 이동
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "instant" });
+
+      // 스크롤 막기
+      document.body.style.overflow = "hidden";
+      document.body.style.height = "auto";
+    } else {
+      // 스크롤 복구
+      document.body.style.overflow = "auto";
+    }
   };
 
   return (
@@ -223,6 +243,7 @@ const ForumForm = ({ forum, onSubmit, children }) => {
               minDate={minDate}
               maxDate={maxDate}
               disabled={!content}
+              setModalOpen={handleModal}
             >
               <div
                 className={`flex w-full h-12 p-2 justify-center text-und14 border border-unddisabled rounded-[10px] items-center bg-white ${
@@ -231,11 +252,7 @@ const ForumForm = ({ forum, onSubmit, children }) => {
                     : "text-undtextdark"
                 }`}
               >
-                {forum?.startDate
-                  ? forum.startDate.split("T")[0] // "T" 이전의 날짜 부분 추출
-                  : date === "일자 선택"
-                  ? "일자 선택"
-                  : date}
+                {date === "일자 선택" ? "일자 선택" : date}
               </div>
             </DatePickerSlider>
             <TimePickerSlider
@@ -246,6 +263,7 @@ const ForumForm = ({ forum, onSubmit, children }) => {
               minTime={minDate}
               maxTime={maxDate}
               disabled={date === "일자 선택"} // 추가적인 보호
+              setModalOpen={handleModal}
             >
               <div
                 className={`flex w-full h-12 p-2 justify-center text-und14 border border-unddisabled rounded-[10px] items-center bg-white ${
@@ -254,9 +272,7 @@ const ForumForm = ({ forum, onSubmit, children }) => {
                     : "text-undtextdark bg-white"
                 }`}
               >
-                {forum?.startDate
-                  ? forum.startDate.split("T")[1].slice(0, 5)
-                  : time}
+                {time}
               </div>
             </TimePickerSlider>
           </div>

@@ -16,13 +16,15 @@ import {
   PiPencilSimple,
   PiSirenBold,
   PiSiren,
+  PiSirenFill,
+  PiSirenDuotone,
 } from "react-icons/pi";
 
 // 제목만
 export const OnlyTitle = ({ title, showLine = true }) => {
   return (
     <div
-      className={`h-16 flex items-center relative px-6 ${
+      className={`h-16 flex items-center relative px-6 bg-undbgmain ${
         showLine && "border-unddisabled border-b"
       }`}
     >
@@ -65,8 +67,8 @@ export const PrevAddBook = ({
   });
   return (
     <div
-      className={`h-16 flex items-center justify-between relative ${
-        showLine && "border-unddisabled border-b px-6"
+      className={`h-16 flex items-center justify-between relative px-6 ${
+        showLine && "border-unddisabled border-b"
       }`}
     >
       {/* 이전 버튼 */}
@@ -221,7 +223,13 @@ export const TitleSearch = ({ title, showLine = true }) => {
 };
 
 // 이전 버튼 + 제목 + 툴팁
-export const PrevTitleInfo = ({ title, showLine, onClick, chlidren,onClickInfo }) => {
+export const PrevTitleInfo = ({
+  title,
+  showLine,
+  onClick,
+  chlidren,
+  onClickInfo,
+}) => {
   return (
     <div
       className={`h-16 flex justify-between items-center w-full ${
@@ -247,10 +255,7 @@ export const PrevTitleInfo = ({ title, showLine, onClick, chlidren,onClickInfo }
 };
 
 // 이전 버튼 + 제목 + 신고버튼
-export const PrevTitleReport = ({ onClick, onReport, title, status }) => {
-  useEffect(() => {
-    console.log("*****book.status", status);
-  });
+export const PrevTitleReport = ({ onClick, isReport, title }) => {
   return (
     <div className="h-16 flex items-center justify-between relative px-6">
       {/* 이전 버튼 */}
@@ -262,8 +267,16 @@ export const PrevTitleReport = ({ onClick, onReport, title, status }) => {
         {title}
       </div>
       {/* 신고 버튼 */}
-      <button className="absolute right-6" onClick={() => onClick("report")}>
-        <PiSiren size={28} color="#51392F" />
+      <button className="absolute right-6">
+        {isReport ? (
+          <PiSiren size={28} color="#78716c" />
+        ) : (
+          <PiSiren
+            size={28}
+            color="#51392F"
+            onClick={() => onClick("report")}
+          />
+        )}
       </button>
     </div>
   );

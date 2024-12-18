@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import he from "he";
 
 // 책 표지와 제목을 보여주는 컴포넌트
 const BookCoverTitle = ({ book }) => {
@@ -29,7 +30,15 @@ const BookCoverTitle = ({ book }) => {
           isMultiline && "h-auto" // 줄바꿈 시 폰트 크기 16
         } font-bold`}
       >
-        {title}
+        {he
+          .decode(title || "")
+          .split(/<br\s*\/?>/i)
+          .map((line, index) => (
+            <React.Fragment key={index}>
+              {line}
+              <br />
+            </React.Fragment>
+          ))}
       </p>
     </div>
   );
