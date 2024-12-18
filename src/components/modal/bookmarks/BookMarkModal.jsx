@@ -9,6 +9,7 @@ import {
   modifyBookmark,
 } from "../../../api/book/bookMarkApi";
 import TwoButtonModal from "../commons/TwoButtonModal";
+import { useNavigate } from "react-router-dom";
 
 const BookMarkModal = ({
   modes,
@@ -18,6 +19,7 @@ const BookMarkModal = ({
   setRefresh = null,
   socialAdd = null,
 }) => {
+  const navigate = useNavigate();
   const [isReady, setIsReady] = useState(false);
   const [page, setPage] = useState(bookmark?.pageNumber || 0);
   const [mark, setMark] = useState(bookmark?.phrase || "");
@@ -45,6 +47,10 @@ const BookMarkModal = ({
       console.log("result: ", res.data.result);
       if (res.data.result === "success") {
         onClose();
+        navigate("/myBook", {
+          replace: true,
+          state: { prevActiveTab: "책갈피" },
+        });
       }
     } catch (error) {
       console.error(error);
@@ -150,7 +156,7 @@ const BookMarkModal = ({
       </div>
 
       {mode !== "READ" ? (
-        <div className="fixed px-6 w-full bottom-8 start-0 end-0 mt-4 flex justify-center items-center">
+        <div className="fixed px-6 w-full bottom-6 start-0 end-0 mt-4 flex justify-center items-center">
           <div className="w-full ">
             <button
               className={`w-full h-12 rounded-full text-und18 ${
@@ -176,7 +182,7 @@ const BookMarkModal = ({
           </div>
         </div>
       ) : (
-        <div className="fixed px-6 w-full bottom-8 start-0 end-0 mt-4 flex justify-center items-center">
+        <div className="fixed px-6 w-full bottom-6 start-0 end-0 mt-4 flex justify-center items-center">
           <div className="w-full flex gap-5">
             <button
               className={`w-full h-12 rounded-lg text-und18 bg-unddisabled text-undtextgray font-bold`}

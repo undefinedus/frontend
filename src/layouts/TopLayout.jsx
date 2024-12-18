@@ -16,6 +16,8 @@ import {
   PiPencilSimple,
   PiSirenBold,
   PiSiren,
+  PiSirenFill,
+  PiSirenDuotone,
 } from "react-icons/pi";
 
 // 제목만
@@ -253,10 +255,7 @@ export const PrevTitleInfo = ({
 };
 
 // 이전 버튼 + 제목 + 신고버튼
-export const PrevTitleReport = ({ onClick, onReport, title, status }) => {
-  useEffect(() => {
-    console.log("*****book.status", status);
-  });
+export const PrevTitleReport = ({ onClick, isReport, title }) => {
   return (
     <div className="h-16 flex items-center justify-between relative px-6">
       {/* 이전 버튼 */}
@@ -268,8 +267,16 @@ export const PrevTitleReport = ({ onClick, onReport, title, status }) => {
         {title}
       </div>
       {/* 신고 버튼 */}
-      <button className="absolute right-6" onClick={() => onClick("report")}>
-        <PiSiren size={28} color="#51392F" />
+      <button className="absolute right-6">
+        {isReport ? (
+          <PiSiren size={28} color="#78716c" />
+        ) : (
+          <PiSiren
+            size={28}
+            color="#51392F"
+            onClick={() => onClick("report")}
+          />
+        )}
       </button>
     </div>
   );

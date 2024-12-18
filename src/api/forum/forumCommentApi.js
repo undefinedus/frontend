@@ -68,7 +68,7 @@ export const addLike = async (commentId) => {
   try {
     const res = await jwtAxios.patch(`${host}/addLike/${commentId}`);
     console.log("addLike", res);
-    return res;
+    return res.data;
   } catch (error) {
     console.error("addLike error from server:", error.response);
     throw error;
@@ -81,7 +81,7 @@ export const addDislike = async (commentId) => {
   try {
     const res = await jwtAxios.patch(`${host}/addDislike/${commentId}`);
     console.log("addDislike", res);
-    return res;
+    return res.data;
   } catch (error) {
     console.error("addDislike error from server:", error.response);
     throw error;

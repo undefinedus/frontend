@@ -7,6 +7,11 @@ body,
   height: 100vh;
 }
 
+.datepicker-modal {
+  position: fixed !important;
+  bottom: 0px !important; /* 원하는 위치로 조정 */
+}
+
 /* Datepicker 전체 스타일 커스터마이징 */
 .datepicker {
   border-radius: 1.5rem 1.5rem 0px 0px !important; /* 둥근 모서리 */

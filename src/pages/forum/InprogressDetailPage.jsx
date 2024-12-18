@@ -33,6 +33,8 @@ const InprogressDetailPage = () => {
   const [isAuthor, setIsAuthor] = useState(false);
   const [selectedComment, setSelectedComment] = useState(null); // 선택된 댓글
   const [isReportModalOpen, setIsReportModalOpen] = useState(false); // 신고 모달 상태
+  const [refreshReport, setRefreshReport] = useState(false);
+  const [refreshBest, setRefreshBest] = useState(false);
 
   const { prevActiveTab, prevSearch, prevSort, prevScrollLeft } =
     location.state;
@@ -45,13 +47,13 @@ const InprogressDetailPage = () => {
   // 토론 상세 API 호출
   useEffect(() => {
     fetchForum(discussionId); // API 호출
-  }, [discussionId]);
+  }, [discussionId, refreshReport]);
 
   // 베스트댓글 상세 API 호출
   useEffect(() => {
     console.log("*****베스트댓글 discussionId:", discussionId);
     fetchBestComment(discussionId); // API 호출
-  }, [discussionId]);
+  }, [discussionId, refreshBest]);
 
   // 토론 상세 API
   const fetchForum = async (discussionId) => {
@@ -89,6 +91,7 @@ const InprogressDetailPage = () => {
   const fetchAddLike = async (commentId) => {
     try {
       const res = await addLike(commentId);
+      setRefreshBest((prev) => !prev);
       return res;
     } catch (err) {
       console.error("API 호출 중 오류:", err);
@@ -99,6 +102,7 @@ const InprogressDetailPage = () => {
   const fetchAddDislike = async (commentId) => {
     try {
       const res = await addDislike(commentId);
+      setRefreshBest((prev) => !prev);
       return res;
     } catch (err) {
       console.error("API 호출 중 오류:", err);
@@ -121,6 +125,8 @@ const InprogressDetailPage = () => {
     } else if (action === "report" && comment) {
       console.log("신고할 댓글: ", comment); // 선택된 댓글 정보 출력
       setSelectedComment(comment); // 선택된 댓글 설정
+      setIsReportModalOpen(true); // 신고 모달 열기
+    } else if (action === "report") {
       setIsReportModalOpen(true); // 신고 모달 열기
     }
   };
@@ -199,7 +205,7 @@ const InprogressDetailPage = () => {
   return (
     <BasicLayout>
       <div className="w-full fixed top-0 bg-undbgmain">
-        {isAuthor ? (
+        {isAuthor || forum.viewStatus === "BLOCKED" ? (
           <PrevTitle
             title={"토론 진행 중"}
             onClick={() => handleActionClick("back")} // 뒤로 가기 버튼
@@ -210,54 +216,67 @@ const InprogressDetailPage = () => {
             title={"토론 진행 중"}
             onClick={handleActionClick} // 뒤로 가기, 신고 버튼
             showLine={false}
+            isReport={forum.isReport}
           />
         )}
       </div>
       <div className="flex flex-col pt-16 pb-20 px-6">
         <ForumTitle forum={forum} />
-        <ForumContent forum={forum} />
-        <div className="flex flex-col border-t border-unddisabled text-und14 text-left pt-4">
-          <div className="flex w-full justify-between pb-4">
-            <div className="flex gap-0.5 font-extrabold items-center">
-              {bestComments.length !== 0 ? (
-                <div className="flex text-center items-center text-und16 font-extrabold text-undred justify-start gap-1">
-                  <div>
-                    <PiMedalMilitaryFill size={20} color="#D55636" />
-                  </div>
-                  <p className="flex w-full">BEST 의견</p>
+        {forum.viewStatus === "BLOCKED" ? (
+          <div className="mt-4 text-start text-undtextgray font-bold">
+            관리자에 의해 차단된 글입니다
+          </div>
+        ) : (
+          <>
+            <ForumContent forum={forum} />
+            <div className="flex flex-col border-t border-unddisabled text-und14 text-left pt-4">
+              <div className="flex w-full justify-between pb-4">
+                <div className="flex gap-0.5 font-extrabold items-center">
+                  {bestComments.length !== 0 ? (
+                    <div className="flex text-center items-center text-und16 font-extrabold text-undred justify-start gap-1">
+                      <div>
+                        <PiMedalMilitaryFill size={20} color="#D55636" />
+                      </div>
+                      <p className="flex w-full">BEST 의견</p>
+                    </div>
+                  ) : (
+                    <p className="flex w-full font-extrabold text-und16">
+                      의견
+                    </p>
+                  )}
                 </div>
-              ) : (
-                <p className="flex w-full font-extrabold text-und16">의견</p>
-              )}
-            </div>
-            <div
-              className="flex gap-1 items-center text-undtextgray"
-              onClick={handleMoreComment}
-            >
-              <div className="flex text-center items-center font-bold gap-0.5">
-                {" "}
-                <PiChatCenteredDots size={18} color="78716C" />
-                <div className="flex gap-1 text-und14">
-                  <p className="text-undtextgray">전체 보기</p>
-                  <p className="text-undtextdark font-extrabold">
-                    {forum.commentCount}
-                  </p>
+                <div
+                  className="flex gap-1 items-center text-undtextgray"
+                  onClick={handleMoreComment}
+                >
+                  <div className="flex text-center items-center font-bold gap-0.5">
+                    {" "}
+                    <PiChatCenteredDots size={18} color="78716C" />
+                    <div className="flex gap-1 text-und14">
+                      <p className="text-undtextgray">전체 보기</p>
+                      <p className="text-undtextdark font-extrabold">
+                        {forum.commentCount}
+                      </p>
+                    </div>
+                  </div>
+                  <PiCaretRightBold />
                 </div>
               </div>
-              <PiCaretRightBold />
+              {bestComments && (
+                <CommentList
+                  comments={bestComments}
+                  forum={forum}
+                  onClickReport={(comment) =>
+                    handleActionClick("report", comment)
+                  } // 클릭된 댓글 전달
+                  onClickLike={handleAddLike} // 좋아요
+                  onClickDislike={handleAddDislike} // 좋아요
+                />
+              )}
+              <WriteComment onClick={handleCommentSubmit} />
             </div>
-          </div>
-          {bestComments && (
-            <CommentList
-              comments={bestComments}
-              forum={forum}
-              onClickReport={(comment) => handleActionClick("report", comment)} // 클릭된 댓글 전달
-              onClickLike={handleAddLike} // 좋아요
-              onClickDislike={handleAddDislike} // 좋아요
-            />
-          )}
-          <WriteComment onClick={handleCommentSubmit} />
-        </div>
+          </>
+        )}
       </div>
       {/* 신고 모달 */}
       {isReportModalOpen && (
@@ -268,6 +287,7 @@ const InprogressDetailPage = () => {
           }}
           forum={forum}
           comment={selectedComment}
+          refresh={() => setRefreshReport((prev) => !prev)}
         />
       )}
     </BasicLayout>

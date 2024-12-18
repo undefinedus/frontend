@@ -97,13 +97,15 @@ const CommentCard = ({
                 {/* 작성시간 */}
                 <p>{diffFromNow(comment.createTime)} 전</p>
                 {/* 신고하기 */}
-                {comment.nickname !== "탈퇴한 회원" && !isAuthor && (
-                  <PiSiren
-                    size={16}
-                    color={isReported ? "#78716C" : "#D55636"} // 상태에 따라 색상 변경
-                    onClick={handleReportClick} // 신고 클릭 핸들러
-                  />
-                )}
+                {comment.nickname !== "탈퇴한 회원" &&
+                  !isAuthor &&
+                  comment.viewStatus !== "BLOCKED" && (
+                    <PiSiren
+                      size={16}
+                      color={isReported ? "#78716C" : "#D55636"} // 상태에 따라 색상 변경
+                      onClick={handleReportClick} // 신고 클릭 핸들러
+                    />
+                  )}
               </div>
             </div>
             {/* 칭호 */}
@@ -112,52 +114,60 @@ const CommentCard = ({
             </p>
           </div>
         </div>
-        <div className="text-und14 text-left">
-          {comment?.parentNickname && (
-            <span className="font-bold text-undtextgray mr-1.5">
-              @{comment.parentNickname}
-            </span>
-          )}
-          <span className="text-undtextdark">{comment.content}</span>
-        </div>
-        <div className="flex justify-between">
-          <div className="flex gap-4 text-undtextgray text-und12 h-4 text-left">
-            {/* 좋아요 */}
-            <div
-              className="flex gap-0.5 justify-center items-center"
-              onClick={handleLikeClick}
-            >
-              {comment?.isLike === true ? (
-                <PiThumbsUpFill size={18} color="A0CDDF" />
-              ) : (
-                <PiThumbsUpDuotone size={18} color="A0CDDF" />
-              )}
-
-              {comment.like}
-            </div>
-            {/* 싫어요 */}
-            <div
-              className="flex gap-0.5 justify-center items-center"
-              onClick={handleDislikeClick}
-            >
-              {comment?.isLike === false ? (
-                <PiThumbsDownFill size={18} color="DFA0B5" />
-              ) : (
-                <PiThumbsDownDuotone size={18} color="DFA0B5" />
-              )}
-              {comment.dislike}
-            </div>
+        {comment.viewStatus === "BLOCKED" ? (
+          <div className="text-undtextdark text-und14 text-left">
+            관리자에 의해 차단된 댓글입니다
           </div>
-          {/* 댓글 달기 */}
-          {comment?.isSelected === false && forum?.status !== "COMPLETED" && (
-            <p
-              className="text-undtextgray font-bold text-und12"
-              onClick={onReply} // 댓글 달기 핸들러 호출
-            >
-              {isReplyActive ? "작성 취소" : "의견 작성"}
-            </p>
-          )}
-        </div>
+        ) : (
+          <div className="text-und14 text-left">
+            {comment?.parentNickname && (
+              <span className="font-bold text-undtextgray mr-1.5">
+                @{comment.parentNickname}
+              </span>
+            )}
+            <span className="text-undtextdark">{comment.content}</span>
+          </div>
+        )}
+        {comment.viewStatus !== "BLOCKED" && (
+          <div className="flex justify-between">
+            <div className="flex gap-4 text-undtextgray text-und12 h-4 text-left">
+              {/* 좋아요 */}
+              <div
+                className="flex gap-0.5 justify-center items-center"
+                onClick={handleLikeClick}
+              >
+                {comment?.isLike === true ? (
+                  <PiThumbsUpFill size={18} color="A0CDDF" />
+                ) : (
+                  <PiThumbsUpDuotone size={18} color="A0CDDF" />
+                )}
+
+                {comment.like}
+              </div>
+              {/* 싫어요 */}
+              <div
+                className="flex gap-0.5 justify-center items-center"
+                onClick={handleDislikeClick}
+              >
+                {comment?.isLike === false ? (
+                  <PiThumbsDownFill size={18} color="DFA0B5" />
+                ) : (
+                  <PiThumbsDownDuotone size={18} color="DFA0B5" />
+                )}
+                {comment.dislike}
+              </div>
+            </div>
+            {/* 댓글 달기 */}
+            {comment?.isSelected === false && forum?.status !== "COMPLETED" && (
+              <p
+                className="text-undtextgray font-bold text-und12"
+                onClick={onReply} // 댓글 달기 핸들러 호출
+              >
+                {isReplyActive ? "작성 취소" : "의견 작성"}
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

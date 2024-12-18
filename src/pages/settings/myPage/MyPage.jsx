@@ -73,7 +73,7 @@ const MyPage = () => {
   };
 
   const handleLogout = () => {
-    doLogout();
+    doLogout(myInfo.social);
     setOpenLogoutModal(false);
     navigate({ pathname: "/" }, { replace: true });
   };

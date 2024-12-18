@@ -13,24 +13,13 @@ const ForumInfo = ({ forum }) => {
     <div className="flex flex-col items-start w-full pb-4 justify-start gap-2 border-unddisabled border-b">
       {/* 글 제목 */}
       <p className="text-undtextdark text-und18 font-bold w-full text-left">
-        {forum.title}
+        {forum.viewStatus === "BLOCKED"
+          ? "관리자에 의해 차단된 글입니다"
+          : forum.title}
       </p>
 
       {/* 작성자 및 글 정보 */}
       <div className="flex w-full items-center h-9 gap-3">
-        {/* 프로필 사진 */}
-        {/* <div className="w-8 h-8">
-          {forum.profileImage &&
-          forum.profileImage !== "defaultProfileImage.jpg" ? (
-            <img
-              src={forum.profileImage}
-              alt={`${forum.nickname}의 프로필`}
-              className="w-full h-full object-cover flex-shrink-0 rounded-full overflow-hidden"
-            />
-          ) : (
-            <PortraitPlaceholder iconSize={20} circleSize={9} />
-          )}
-        </div> */}
         <div className="w-9 h-9 flex justify-center items-center">
           {forum.profileImage &&
           forum.profileImage === "defaultProfileImage.jpg" ? (

@@ -71,7 +71,7 @@ const ModifyProposePage = () => {
             onClick={handleBackClick}
           />
         </div>
-        <div className="flex flex-col w-full h-full">
+        <div className="flex flex-col w-full h-full overflow-hidden">
           <ForumForm onSubmit={handleSubmit} forum={forum}>
             수정하기
           </ForumForm>

@@ -72,24 +72,16 @@ const ForumForm = ({ forum, onSubmit, children }) => {
 
   // (글 작성) 최초 렌더링시 현재시간 기준으로 minDate, maxDate 의 날짜정보 setting
   useEffect(() => {
-    if (!forum) {
-      const now = new Date();
+    const now = new Date();
 
-      // 현재 시간 기준 24시간 후
-      const min = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+    // 현재 시간 기준 24시간 후
+    const min = new Date(now.getTime() + 24 * 60 * 60 * 1000);
 
-      // 현재 시간 기준 168시간(7일) 후
-      const max = new Date(now.getTime() + 168 * 60 * 60 * 1000);
-      setMinDate(min);
-      setMaxDate(max);
-      setTime("시간 선택");
-    } else {
-      const now = new Date(forum.createdDate);
-      const min = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-      const max = new Date(now.getTime() + 168 * 60 * 60 * 1000);
-      setMinDate(min);
-      setMaxDate(max);
-    }
+    // 현재 시간 기준 168시간(7일) 후
+    const max = new Date(now.getTime() + 168 * 60 * 60 * 1000);
+    setMinDate(min);
+    setMaxDate(max);
+    setTime("시간 선택");
   }, [date]);
 
   // (글 작성)
@@ -178,6 +170,20 @@ const ForumForm = ({ forum, onSubmit, children }) => {
     });
   };
 
+  const handleModal = (boolean) => {
+    if (boolean) {
+      // 스크롤을 최하단으로 이동
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "instant" });
+
+      // 스크롤 막기
+      document.body.style.overflow = "hidden";
+      document.body.style.height = "auto";
+    } else {
+      // 스크롤 복구
+      document.body.style.overflow = "auto";
+    }
+  };
+
   return (
     <div>
       <div className="flex flex-col w-full h-full px-6 pt-20 pb-20 gap-4">
@@ -237,6 +243,7 @@ const ForumForm = ({ forum, onSubmit, children }) => {
               minDate={minDate}
               maxDate={maxDate}
               disabled={!content}
+              setModalOpen={handleModal}
             >
               <div
                 className={`flex w-full h-12 p-2 justify-center text-und14 border border-unddisabled rounded-[10px] items-center bg-white ${
@@ -256,6 +263,7 @@ const ForumForm = ({ forum, onSubmit, children }) => {
               minTime={minDate}
               maxTime={maxDate}
               disabled={date === "일자 선택"} // 추가적인 보호
+              setModalOpen={handleModal}
             >
               <div
                 className={`flex w-full h-12 p-2 justify-center text-und14 border border-unddisabled rounded-[10px] items-center bg-white ${
