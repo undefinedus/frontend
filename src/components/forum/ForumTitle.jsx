@@ -17,18 +17,32 @@ const ForumInfo = ({ forum }) => {
       </p>
 
       {/* 작성자 및 글 정보 */}
-      <div className="flex w-full h-9 gap-3">
+      <div className="flex w-full items-center h-9 gap-3">
         {/* 프로필 사진 */}
-        <div className="w-8 h-8">
+        {/* <div className="w-8 h-8">
           {forum.profileImage &&
           forum.profileImage !== "defaultProfileImage.jpg" ? (
             <img
               src={forum.profileImage}
               alt={`${forum.nickname}의 프로필`}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover flex-shrink-0 rounded-full overflow-hidden"
             />
           ) : (
             <PortraitPlaceholder iconSize={20} circleSize={9} />
+          )}
+        </div> */}
+        <div className="w-9 h-9 flex justify-center items-center">
+          {forum.profileImage &&
+          forum.profileImage === "defaultProfileImage.jpg" ? (
+            <PortraitPlaceholder iconSize={20} circleSize={9} />
+          ) : (
+            <div className="w-9 h-9">
+              <img
+                alt="myProfileImage"
+                src={forum.profileImage}
+                className="w-full h-full object-cover flex-shrink-0 rounded-full overflow-hidden"
+              />
+            </div>
           )}
         </div>
         <div className="text-undtextgray flex-col w-full">

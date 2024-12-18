@@ -127,7 +127,12 @@ const CommentCard = ({
               className="flex gap-0.5 justify-center items-center"
               onClick={handleLikeClick}
             >
-              <PiThumbsUpFill size={18} color="A0CDDF" />
+              {comment?.isLike === true ? (
+                <PiThumbsUpFill size={18} color="A0CDDF" />
+              ) : (
+                <PiThumbsUpDuotone size={18} color="A0CDDF" />
+              )}
+
               {comment.like}
             </div>
             {/* 싫어요 */}
@@ -135,7 +140,11 @@ const CommentCard = ({
               className="flex gap-0.5 justify-center items-center"
               onClick={handleDislikeClick}
             >
-              <PiThumbsDownFill size={18} color="DFA0B5" />
+              {comment?.isLike === false ? (
+                <PiThumbsDownFill size={18} color="DFA0B5" />
+              ) : (
+                <PiThumbsDownDuotone size={18} color="DFA0B5" />
+              )}
               {comment.dislike}
             </div>
           </div>

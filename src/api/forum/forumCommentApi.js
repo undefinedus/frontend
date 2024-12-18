@@ -7,12 +7,16 @@ const host = `${API_SERVER_HOST}/api/discussionComment`;
 // 베스트 댓글 3개 목록
 export const getBestComment = async (discussionId) => {
   const res = await jwtAxios.get(`${host}/bestComment/${discussionId}`);
+  console.log("res at api: ", res);
+
   return res.data.data;
 };
 
 // 모든 댓글 목록
-export const getCommentList = async (discussionId) => {
-  const res = await jwtAxios.get(`${host}/${discussionId}`);
+export const getCommentList = async (discussionId, lastId = null) => {
+  let apiRoute = `${host}/${discussionId}?size=10`;
+  if (lastId) apiRoute += `&lastId=${lastId}`;
+  const res = await jwtAxios.get(apiRoute);
   return res.data.data;
 };
 

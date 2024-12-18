@@ -47,9 +47,58 @@ const MyBookModal = ({ mode, onClose, state = "READING", book = initData }) => {
     updateCount: mode === "ADD" ? 0 : book.updateCount,
   });
 
-  const initializeBookInput = (boxState) => ({
-    status: boxState,
-  });
+  const initializeBookInput = (boxState) => {
+    const today = new Date();
+    const formattedToday = `${today.getFullYear()}-${String(
+      today.getMonth() + 1
+    ).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+
+    const getToday = (day) => {
+      if (day === "today") return formattedToday;
+      else return day;
+    };
+
+    switch (boxState) {
+      case "READING":
+        return {
+          status: boxState,
+          startDate: getToday(bookInfo.startDate) ?? formattedToday,
+          currentPage: bookInfo.currentPage ?? 0,
+          updateCount: bookInfo.updateCount + 1,
+        };
+
+      case "WISH":
+        return {
+          status: boxState,
+          updateCount: 0,
+        };
+
+      case "COMPLETED":
+        return {
+          status: boxState,
+          startDate: getToday(bookInfo.startDate) ?? formattedToday,
+          endDate: getToday(bookInfo.endDate) ?? formattedToday,
+          myRating: bookInfo.myRating ?? 5,
+          oneLineReview: bookInfo.oneLineReview ?? "",
+          updateCount: bookInfo.updateCount + 1,
+        };
+
+      case "STOPPED":
+        return {
+          status: boxState,
+          startDate: getToday(bookInfo.startDate) ?? formattedToday,
+          endDate: getToday(bookInfo.endDate) ?? formattedToday,
+          currentPage: bookInfo.currentPage ?? 0,
+          oneLineReview: bookInfo.oneLineReview ?? "",
+          updateCount: bookInfo.updateCount + 1,
+        };
+
+      default:
+        return {
+          status: boxState,
+        };
+    }
+  };
 
   const fetchModifyBook = async () => {
     try {
@@ -106,6 +155,7 @@ const MyBookModal = ({ mode, onClose, state = "READING", book = initData }) => {
   const handleTabState = (tab) => {
     setBoxState(tab);
     setIsReady(false);
+    setBookInput(initializeBookInput(tab));
   };
 
   const handleSubmit = async () => {

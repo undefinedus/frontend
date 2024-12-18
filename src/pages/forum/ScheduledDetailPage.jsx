@@ -59,7 +59,8 @@ const ScheduledDetailPage = () => {
         },
       });
     } else if (action === "report") {
-      setIsReportModalOpen(true); // 신고 모달 열기
+      if (!forum?.isReport) setIsReportModalOpen(true); // 신고 모달 열기
+      else alert("이미 신고한 발의글입니다");
     }
   };
 

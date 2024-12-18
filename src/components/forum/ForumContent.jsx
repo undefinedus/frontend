@@ -84,7 +84,9 @@ const ForumContent = ({ forum, children }) => {
             <PiPushPinFill size={16} color="7D5C4D" />
             <p className="text-undpoint font-extrabold">토론 주제</p>
           </div>
-          <p className="text-undtextgray text-left">{forum.content}</p>
+          <p className="text-undtextgray text-left whitespace-pre-line">
+            {forum.content}
+          </p>
         </div>
       </div>
       {/* 찬반 수, 베스트 댓글 등 */}
