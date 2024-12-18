@@ -73,6 +73,8 @@ const LoginComponent = () => {
     });
   };
 
+  const navigate = useNavigate();
+
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       handleClickLogin();
@@ -195,12 +197,14 @@ const LoginComponent = () => {
               onChange={(checked) => handleSingleCheck("serviceAgree", checked)}
               value={"(필수) 서비스 이용약관 동의"}
               showMessage={true}
+              onClick={() => navigate("/member/TermsOfUse")}
             />
             <CheckBox
               checked={checkboxStates.privacyAgree}
               onChange={(checked) => handleSingleCheck("privacyAgree", checked)}
               value={"(필수) 개인정보 수집 및 이용 동의"}
               showMessage={true}
+              onClick={() => navigate("/member/privacyPolicy")}
             />
             <div className="border border-undpoint opacity-80 my-2"></div>
             <div className="flex flex-col items-start">

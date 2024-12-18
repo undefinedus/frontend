@@ -8,6 +8,7 @@ function CheckBox({
   peer,
   checkedPeer,
   showMessage = false,
+  onClick,
 }) {
   return (
     <div className="flex justify-between">
@@ -45,7 +46,7 @@ function CheckBox({
       </div>
       {showMessage && (
         <div className="flex items-center text-end">
-          <PiCaretRight size={20} />
+          <PiCaretRight size={20} onClick={onClick} />
         </div>
       )}
     </div>

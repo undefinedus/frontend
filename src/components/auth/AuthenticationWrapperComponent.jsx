@@ -33,6 +33,8 @@ export const AuthContainer = ({ children }) => {
     "/member/signup",
     "/member/kakao",
     "/member/findPassword",
+    "/member/privacyPolicy",
+    "/member/TermsOfUse",
     // 필요한 공개 경로 추가
   ];
 
