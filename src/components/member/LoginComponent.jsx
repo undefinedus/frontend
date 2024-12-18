@@ -47,7 +47,7 @@ const LoginComponent = () => {
   useEffect(() => {
     console.log("isLogin : " + isLogin);
     if (isLogin) {
-      moveToPath("/myBook");
+      moveToPath("/home");
     }
   }, [isLogin]);
 
@@ -67,7 +67,7 @@ const LoginComponent = () => {
         if (data.roles?.includes("ADMIN")) {
           moveToPath("/admin");
         } else {
-          moveToPath("/myBook");
+          moveToPath("/home");
         }
       }
     });

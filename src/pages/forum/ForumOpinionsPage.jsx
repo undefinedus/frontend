@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import BasicLayout from "../../layouts/BasicLayout.jsx";
 import { PrevTitle } from "../../layouts/TopLayout.jsx";
@@ -23,10 +23,17 @@ const ForumOpinionsPage = () => {
   const { discussionId } = useParams();
   // const [forum, setForum] = useState({});
   const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [hasNext, setHasNext] = useState();
+  const [lastId, setLastId] = useState();
+  const [totalElements, setTotalElements] = useState();
   const [isAuthor, setIsAuthor] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false); // 신고 모달 상태
   const [activeComment, setActiveComment] = useState(null); // 활성화된 댓글 관리
   const [selectedComment, setSelectedComment] = useState(null); // 선택된 댓글
+
+  const observer = useRef(null);
+  const sentinelRef = useRef(null);
 
   const { forum, prevActiveTab, prevSearch, prevSort, prevScrollLeft } =
     location.state;
@@ -38,19 +45,51 @@ const ForumOpinionsPage = () => {
 
   // 모든 댓글 상세 API 호출
   useEffect(() => {
-    fetchCommentList(discussionId); // API 호출
+    fetchCommentList(); // API 호출
   }, [discussionId]);
 
-  // 모든 댓글 API
-  const fetchCommentList = async (discussionId) => {
-    try {
-      const res = await getCommentList(discussionId);
-      setComments(res.content);
-      console.log("모든 댓글", res);
+  useEffect(() => {
+    if (sentinelRef.current) {
+      observer.current = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          if (entry.isIntersecting && !loading && hasNext) {
+            setLoading(true);
+            fetchCommentList(lastId);
+          }
+        },
+        { threshold: 1.0 }
+      );
+      observer.current.observe(sentinelRef.current);
+    }
 
+    return () => {
+      if (observer.current) {
+        observer.current.disconnect();
+      }
+    };
+  }, [loading, hasNext]);
+
+  // 모든 댓글 API
+  const fetchCommentList = async (lastId = null) => {
+    try {
+      setLoading(true);
+      const res = await getCommentList(discussionId, lastId);
+
+      if (lastId) {
+        setComments((prevComments) => [...prevComments, ...res.content]);
+      } else {
+        setComments(res.content);
+      }
+      console.log("모든 댓글", res);
+      setHasNext(res.hasNext);
+      setLastId(res.lastId);
+      setTotalElements(res.totalElements);
+      setLoading(false);
       return res;
     } catch (err) {
       console.error("API 호출 중 오류:", err);
+      setLoading(false);
     }
   };
 
@@ -197,7 +236,7 @@ const ForumOpinionsPage = () => {
         voteType,
         comment
       );
-      fetchCommentList(discussionId); // 대댓글 작성 후 댓글 목록 업데이트
+      fetchCommentList(); // 대댓글 작성 후 댓글 목록 업데이트
       setActiveComment(null); // 입력창 닫기
 
       return true; // 성공 시 true 반환
@@ -211,7 +250,7 @@ const ForumOpinionsPage = () => {
     <BasicLayout>
       <div className="w-full fixed top-0 bg-undbgmain">
         <PrevTitle
-          title={`의견(${forum.commentCount}개)`}
+          title={`의견(${totalElements}개)`}
           onClick={() => handleActionClick("back")} // 뒤로 가기 버튼
           showLine={false}
         />
@@ -225,6 +264,12 @@ const ForumOpinionsPage = () => {
           onClickLike={handleAddLike} // 좋아요
           onClickDislike={handleAddDislike} // 좋아요
         />
+
+        {/* Sentinel item - 마지막 아이템을 감지하는 요소 */}
+        {totalElements > 0 && !loading && (
+          <div ref={sentinelRef} className="h-1"></div>
+        )}
+
         {forum?.status !== "COMPLETED" && (
           <WriteComment onClick={handleCommentSubmit} />
         )}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import DatePicker from "react-mobile-datepicker";
 
 const TimePickerSlider = ({
@@ -17,6 +17,8 @@ const TimePickerSlider = ({
     const [year, month, day] = newDateString.split("-").map(Number); // time의 yyyy-mm-dd를 분해
     const updatedDate = new Date(dateObject); // 기존 dateObject 복사
     updatedDate.setFullYear(year, month - 1, day); // 년, 월, 일 업데이트
+    console.log("updatedDate: ", updatedDate);
+
     return updatedDate;
   };
 

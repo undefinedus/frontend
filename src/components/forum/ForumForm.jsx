@@ -83,11 +83,22 @@ const ForumForm = ({ forum, onSubmit, children }) => {
       setMinDate(min);
       setMaxDate(max);
       setTime("시간 선택");
+    } else {
+      const now = new Date(forum.createdDate);
+      const min = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+      const max = new Date(now.getTime() + 168 * 60 * 60 * 1000);
+      setMinDate(min);
+      setMaxDate(max);
     }
   }, [date]);
 
   // (글 작성)
   useEffect(() => {
+    console.log("시간선택 유즈이펙트 진입");
+    console.log("minDate: ", minDate);
+    console.log("maxDate: ", maxDate);
+    console.log("date: ", date);
+
     if (date === "일자 선택") {
       return; // 일자가 선택되지 않았다면 설정하지 않음
     }
@@ -110,8 +121,11 @@ const ForumForm = ({ forum, onSubmit, children }) => {
           return updatedDate;
         });
       }
+
+      console.log("minDate: ", minDate);
+      console.log("maxDate: ", maxDate);
     }
-  }, [date, minDate, maxDate]);
+  }, [date]);
 
   // 일자 - 현재 시간을 기준으로 24시간 후와 7일 후 계산(최소일, 최대일)
   const getFormattedDate = (hoursToAdd) => {
@@ -231,11 +245,7 @@ const ForumForm = ({ forum, onSubmit, children }) => {
                     : "text-undtextdark"
                 }`}
               >
-                {forum?.startDate
-                  ? forum.startDate.split("T")[0] // "T" 이전의 날짜 부분 추출
-                  : date === "일자 선택"
-                  ? "일자 선택"
-                  : date}
+                {date === "일자 선택" ? "일자 선택" : date}
               </div>
             </DatePickerSlider>
             <TimePickerSlider
@@ -254,9 +264,7 @@ const ForumForm = ({ forum, onSubmit, children }) => {
                     : "text-undtextdark bg-white"
                 }`}
               >
-                {forum?.startDate
-                  ? forum.startDate.split("T")[1].slice(0, 5)
-                  : time}
+                {time}
               </div>
             </TimePickerSlider>
           </div>
