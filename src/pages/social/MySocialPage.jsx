@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   getMySocialInfo,
@@ -23,7 +23,7 @@ const SocialMainPage = () => {
   }); // 모든 유저 검색 목록 상태
   const mySocialSearch = sessionStorage.getItem("mySocialSearch");
   const [search, setSearch] = useState(mySocialSearch ? mySocialSearch : ""); // 전체 검색 닉네임 검색어 상태
-
+  const [isLoading, setIsLoading] = useState(false);
   // 내 소셜 프로필 정보
   useEffect(() => {
     const fetchData = async () => {
@@ -53,11 +53,14 @@ const SocialMainPage = () => {
   // 내 소셜 정보 API
   const fetchMySocialInfo = async () => {
     try {
+      setIsLoading(true);
       const response = await getMySocialInfo();
       console.log("***** 내 소셜 정보 :", response.data); // 여기서 응답 데이터 출력
+      setIsLoading(false);
       return response.data; // 응답 반환
     } catch (error) {
       console.error(error, "내 소셜 정보를 불러오는 데 실패하였습니다");
+      setIsLoading(false);
       return error;
     }
   };
@@ -65,14 +68,17 @@ const SocialMainPage = () => {
   // 유저 검색 목록 API
   const fetchSearchUserList = async () => {
     try {
+      setIsLoading(true);
       const response = await getSearchUserList(search);
       console.log(
         "*****유저 검색 목록(response.data.data):",
         response.data.data
       ); // 여기서 응답 데이터 출력
+      setIsLoading(false);
       return response.data.data; // 응답 반환
     } catch (error) {
       console.error(error, "유저 검색 목록을 불러오는 데 실패하였습니다");
+      setIsLoading(false);
       return error;
     }
   };
@@ -133,8 +139,6 @@ const SocialMainPage = () => {
     // 현재 스크롤 위치 저장
     scrollPositionRef.current =
       window.scrollY || document.documentElement.scrollTop;
-    console.log("Navigating to bookshelf 프로필:", profile);
-    console.log("Navigating to bookshelf 프로필 아이디:", profile.id);
     navigate(`../bookshelf/${profile.id}`, {
       replace: true,
       state: {
@@ -181,7 +185,7 @@ const SocialMainPage = () => {
             search={search}
           />
         ) : (
-          <ListNotice type="socialSearch" />
+          !isLoading && <ListNotice type="socialSearch" />
         )}
       </div>
     </BasicLayout>

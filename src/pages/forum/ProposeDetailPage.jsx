@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import BasicLayout from "../../layouts/BasicLayout";
 import {
+  PrevTitle,
   PrevTitleModifyDelete,
   PrevTitleReport,
 } from "../../layouts/TopLayout";
@@ -96,8 +97,7 @@ const ProposeDetailPage = () => {
     } else if (action === "delete") {
       setIsDeleteModalOpen(true); // 삭제 확인 모달 열기
     } else if (action === "report") {
-      if (!forum?.isReport) setIsReportModalOpen(true); // 신고 모달 열기
-      else alert("이미 신고한 발의글입니다");
+      setIsReportModalOpen(true); // 신고 모달 열기
     }
   };
 
@@ -167,10 +167,16 @@ const ProposeDetailPage = () => {
   return (
     <BasicLayout>
       <div className="w-full fixed top-0 bg-undbgmain">
-        {isAuthor ? (
+        {isAuthor && forum.viewStatus !== "BLOCKED" ? (
           <PrevTitleModifyDelete
             title={"주제 발의"}
             onClick={handleActionClick} // 뒤로 가기, 수정, 삭제 버튼
+            showLine={false}
+          />
+        ) : isAuthor ? (
+          <PrevTitle
+            title={"토론 예정"}
+            onClick={() => handleActionClick("back")} // 뒤로 가기 버튼
             showLine={false}
           />
         ) : (
@@ -178,18 +184,25 @@ const ProposeDetailPage = () => {
             title={"주제 발의"}
             onClick={handleActionClick} // 뒤로 가기, 신고 버튼
             showLine={false}
+            isReport={forum.isReport}
           />
         )}
       </div>
       <div className="flex flex-col pt-16 pb-20 px-6 gap-4">
         <ForumTitle forum={forum} />
-        <ForumContent forum={forum}>
-          <ParticipantsCount
-            forum={forum}
-            onClickAgree={handleAgree}
-            onClickDisagree={handleDisagree}
-          />
-        </ForumContent>
+        {forum.viewStatus === "BLOCKED" ? (
+          <div className="text-start text-undtextgray font-bold">
+            관리자에 의해 차단된 글입니다
+          </div>
+        ) : (
+          <ForumContent forum={forum}>
+            <ParticipantsCount
+              forum={forum}
+              onClickAgree={handleAgree}
+              onClickDisagree={handleDisagree}
+            />
+          </ForumContent>
+        )}
       </div>
       {/* 신고 모달 */}
       {isReportModalOpen && (
@@ -199,6 +212,7 @@ const ProposeDetailPage = () => {
             handleReportConfirm(reason); // 확인 클릭 시 처리
           }}
           forum={forum}
+          refresh={() => setRefresh((prev) => !prev)}
         />
       )}
       {/* 신고 모달 */}
@@ -206,10 +220,6 @@ const ProposeDetailPage = () => {
         <TwoButtonModal
           onCancel={handleDeleteCancel} // 취소 클릭 시 모달 닫기
           onConfirm={() => handleDeleteConfirm(discussionId)} // 확인 클릭 시 글 삭제
-          forum={forum}
-          cancelText="취소"
-          confirmText="확인"
-          refresh={() => setRefresh((prev) => !prev)}
         >
           해당 발의글에 대한 내용이 모두 사라져요{"\n"}
           정말로 삭제하시겠습니까?

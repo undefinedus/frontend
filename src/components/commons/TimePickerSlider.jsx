@@ -8,6 +8,7 @@ const TimePickerSlider = ({
   minTime,
   maxTime,
   disabled,
+  setModalOpen,
 }) => {
   const [isOpen, setIsOpen] = useState(false); // DatePicker 열기/닫기 상태
   const [selectedTime, setSelectedTime] = useState(() =>
@@ -48,7 +49,14 @@ const TimePickerSlider = ({
 
   return (
     <div className="w-full">
-      <span onClick={() => setIsOpen(true)}>{children}</span>
+      <span
+        onClick={() => {
+          setIsOpen(true);
+          setModalOpen(true);
+        }}
+      >
+        {children}
+      </span>
       {!disabled && (
         <DatePicker
           isOpen={isOpen}
@@ -63,7 +71,10 @@ const TimePickerSlider = ({
           confirmText="확인"
           cancelText="취소"
           onSelect={handleSelect}
-          onCancel={() => setIsOpen(false)}
+          onCancel={() => {
+            setIsOpen(false);
+            setModalOpen(false);
+          }}
         />
       )}
     </div>

@@ -39,7 +39,7 @@ export const addReportComment = async (commentId, reason) => {
 
     console.log("res at api: ", res);
 
-    return res;
+    return res.data;
   } catch (error) {
     console.error("Error response from server:", error.response);
     throw error;

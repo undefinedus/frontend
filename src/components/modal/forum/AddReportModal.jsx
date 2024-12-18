@@ -39,6 +39,8 @@ const AddReportModal = ({ forum, comment, onCancel, refresh = null }) => {
   const fetchReportComment = async () => {
     try {
       const res = await addReportComment(commentId, selectedReason);
+      console.log("신고 res: ", res);
+
       return res;
     } catch (error) {
       console.log(error);

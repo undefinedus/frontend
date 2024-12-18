@@ -179,14 +179,6 @@ const ForumOpinionsPage = () => {
   // 신고 모달 확인
   const handleReportConfirm = (selectedReason) => {
     console.log("신고 사유:", selectedReason);
-    // 선택된 댓글 업데이트
-    setComments((prevComments) =>
-      prevComments.map((comment) =>
-        comment.commentId === selectedComment.commentId
-          ? { ...comment, isReport: true } // 신고 상태 업데이트
-          : comment
-      )
-    );
     setIsReportModalOpen(false); // 신고 모달 닫기
     // TODO: 신고 처리 로직 추가
   };
@@ -195,9 +187,15 @@ const ForumOpinionsPage = () => {
   const handleAddLike = async (commentId) => {
     try {
       const response = await fetchAddLike(commentId);
-      // 좋아요 성공 시 댓글 목록 업데이트
-      console.log("좋아요 성공:", response);
-      return response; // 성공 시 true 반환
+      if (response.result === "success") {
+        setComments((prevComments) =>
+          prevComments.map((comment) =>
+            comment.commentId === response.data.commentId
+              ? { ...comment, ...response.data }
+              : comment
+          )
+        );
+      }
     } catch (error) {
       console.error("댓글 좋아요 실패:", error);
     }
@@ -207,9 +205,15 @@ const ForumOpinionsPage = () => {
   const handleAddDislike = async (commentId) => {
     try {
       const response = await fetchAddDislike(commentId);
-      // 좋아요 성공 시 댓글 목록 업데이트
-      console.log("싫어요 성공:", response);
-      return response; // 성공 시 true 반환
+      if (response.result === "success") {
+        setComments((prevComments) =>
+          prevComments.map((comment) =>
+            comment.commentId === response.data.commentId
+              ? { ...comment, ...response.data }
+              : comment
+          )
+        );
+      }
     } catch (error) {
       console.error("댓글 싫어요 실패:", error);
     }

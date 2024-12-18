@@ -22,6 +22,7 @@ import ListNotice from "../../components/commons/ListNotice";
 import BookMarkList from "../../components/bookmark/BookMarkList";
 import ScrollActionButtons from "../../components/commons/ScrollActionButtons";
 import BookMarkModal from "../../components/modal/bookmarks/BookMarkModal";
+import useCustomLogin from "../../hooks/useCustomLogin";
 
 // 소셜 유저 책장
 const SocialBookListPage = () => {
@@ -31,6 +32,7 @@ const SocialBookListPage = () => {
   const navigate = useNavigate();
   const { getStatusInEnglish } = useBookStatus();
   const { targetMemberId } = useParams();
+  const { loginState } = useCustomLogin();
 
   const [search, setSearch] = useState(prevSearch || "");
   const [sort, setSort] = useState(prevSort || "최신순");
@@ -50,8 +52,10 @@ const SocialBookListPage = () => {
   const searchUserList = location?.state?.searchUserList; // state와 socialList 안전하게 접근
   const { state } = location; // 기존 검색 상태
   const [socialProfile, setSocialProfile] = useState([]); // 유저 소셜 프로필 정보 상태
+  const [myself, setMyself] = useState(false);
+  const [noResult, setNoResult] = useState(null);
+  const [noSearchResult, setNoSearchResult] = useState(null);
 
-  // 무한 스크롤 관련 ref
   const observer = useRef(null);
   const sentinelRef = useRef(null);
 
@@ -60,6 +64,7 @@ const SocialBookListPage = () => {
     const fetchData = async () => {
       const socialInfo = await fetchSocialInfo();
       setSocialProfile(socialInfo); // 가져온 데이터를 상태로 설정
+      setMyself(socialInfo.id === loginState.id);
     };
     fetchData();
   }, []);
@@ -160,6 +165,13 @@ const SocialBookListPage = () => {
       setLastId(response.lastId);
       setHasNext(response.hasNext);
       setTotalElements(response.totalElements);
+      if (!search && response.totalElements === 0) {
+        setNoResult(true);
+        setNoSearchResult(null);
+      } else if (search && response.totalElements === 0) {
+        setNoSearchResult(true);
+        setNoResult(null);
+      }
       setLoading(false);
     } catch (error) {
       console.error("소셜 책 리스트를 불러오는 데 실패하였습니다:", error);
@@ -189,6 +201,13 @@ const SocialBookListPage = () => {
       setLastId(response.lastId);
       setHasNext(response.hasNext);
       setTotalElements(response.totalElements);
+      if (!search && response.totalElements === 0) {
+        setNoResult(true);
+        setNoSearchResult(null);
+      } else if (search && response.totalElements === 0) {
+        setNoSearchResult(true);
+        setNoResult(null);
+      }
       setLoading(false);
     } catch (error) {
       console.error("소셜 책갈피 리스트를 불러오는 데 실패하였습니다:", error);
@@ -260,12 +279,16 @@ const SocialBookListPage = () => {
       setHasNext(false);
       setTotalElements(0);
       setSearch("");
+      setNoResult(null);
+      setNoSearchResult(null);
     } else if (activeTab !== "책갈피" && tab === "책갈피") {
       setBooks([]);
       setLastId(null);
       setHasNext(false);
       setTotalElements(0);
       setSearch("");
+      setNoResult(null);
+      setNoSearchResult(null);
     }
     setSort("최신순");
     setActiveTab(tab);
@@ -332,13 +355,18 @@ const SocialBookListPage = () => {
                 } // 언팔로우 버튼 클릭
                 onFollowerClick={() => handleSocialTabClick("팔로워")} // 팔로워 클릭
                 onFollowingClick={() => handleSocialTabClick("팔로잉")} // 팔로잉 클릭
+                myself={myself}
               />
             </div>
           )}
           {!isScrolled && (
             <div className="py-4 px-6">
               <SearchBar
-                placeholder={"책 제목, 저자로 검색"}
+                placeholder={
+                  activeTab !== "책갈피"
+                    ? "책 제목, 저자로 검색"
+                    : "책 제목, 구절로 검색"
+                }
                 onChange={handleSearch}
               />
             </div>
@@ -380,7 +408,8 @@ const SocialBookListPage = () => {
         {activeTab !== "책갈피" && totalElements === 0 && (
           <div className="w-full h-screen flex flex-col justify-center items-center">
             <div className="h-80"></div>
-            <ListNotice type={"emptyBook"} />
+            {noResult && <ListNotice type={"emptyBook"} />}
+            {noSearchResult && <ListNotice type={"noResult"} />}
           </div>
         )}
 
@@ -407,7 +436,8 @@ const SocialBookListPage = () => {
         {activeTab === "책갈피" && totalElements === 0 && (
           <div className="w-full h-screen flex flex-col justify-center items-center">
             <div className="h-80"></div>
-            <ListNotice type={"emptyBookMark"} />
+            {noResult && <ListNotice type={"emptyBookMark"} />}
+            {noSearchResult && <ListNotice type={"noResult"} />}
           </div>
         )}
 
