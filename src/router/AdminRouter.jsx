@@ -5,6 +5,11 @@ import LoadingPage from "../pages/LoadingPage";
 const Main = lazy(() => import("../pages/settings/AdminPage"));
 const Report = lazy(() => import("../pages/settings/ReportPage"));
 const ReportDetail = lazy(() => import("../pages/settings/ReportDetailPage")); // 추가
+const ChangePassword = lazy(() =>
+  import("../pages/settings/myPage/ChangePasswordPage")
+);
+import PrivacyPolicyPage from "../pages/terms/PrivacyPolicy";
+import TermsOfUsePage from "../pages/terms/TermsOfUse";
 
 const AdminRouter = () => {
   return (
@@ -35,6 +40,30 @@ const AdminRouter = () => {
           }
         />
       </Route>
+      <Route
+        path="changePassword"
+        element={
+          <Suspense fallback={<LoadingPage />}>
+            <ChangePassword />
+          </Suspense>
+        }
+      />
+      <Route
+        path="privacyPolicy"
+        element={
+          <Suspense fallback={<LoadingPage />}>
+            <PrivacyPolicyPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="termsOfUse"
+        element={
+          <Suspense fallback={<LoadingPage />}>
+            <TermsOfUsePage />
+          </Suspense>
+        }
+      />
     </Routes>
   );
 };

@@ -36,7 +36,7 @@ const ForumOpinionsPage = () => {
   const sentinelRef = useRef(null);
 
   const { forum, prevActiveTab, prevSearch, prevSort, prevScrollLeft } =
-    location.state;
+    location?.state || {};
 
   // 작성자와 로그인 유저 일치 여부
   useEffect(() => {
@@ -146,8 +146,6 @@ const ForumOpinionsPage = () => {
   // 뒤로가기, 신고 버튼
   const handleActionClick = async (action, comment = null) => {
     if (action === "back") {
-      console.log("댓글 discussionId : ", discussionId);
-
       const targetPath =
         forum?.status !== "COMPLETED"
           ? `../inprogress/${discussionId}`
@@ -164,7 +162,6 @@ const ForumOpinionsPage = () => {
         },
       });
     } else if (action === "report" && comment) {
-      console.log("신고할 댓글: ", comment); // 선택된 댓글 정보 출력
       setSelectedComment(comment); // 선택된 댓글 설정
       setIsReportModalOpen(true); // 신고 모달 열기
     }
@@ -178,7 +175,6 @@ const ForumOpinionsPage = () => {
 
   // 신고 모달 확인
   const handleReportConfirm = (selectedReason) => {
-    console.log("신고 사유:", selectedReason);
     setIsReportModalOpen(false); // 신고 모달 닫기
     // TODO: 신고 처리 로직 추가
   };
@@ -288,6 +284,7 @@ const ForumOpinionsPage = () => {
           }}
           // forum={forum}
           comment={selectedComment}
+          setComments={setComments}
         />
       )}
     </BasicLayout>

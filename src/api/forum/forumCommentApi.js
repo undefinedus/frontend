@@ -7,8 +7,6 @@ const host = `${API_SERVER_HOST}/api/discussionComment`;
 // 베스트 댓글 3개 목록
 export const getBestComment = async (discussionId) => {
   const res = await jwtAxios.get(`${host}/bestComment/${discussionId}`);
-  console.log("res at api: ", res);
-
   return res.data.data;
 };
 
@@ -34,7 +32,6 @@ export const writeComment = async (discussionId, voteType, content) => {
       headers: { "Content-Type": "application/json" },
     }
   );
-  console.log("=========writeComment from api: ", res);
   return res;
 };
 
@@ -58,32 +55,17 @@ export const writeReply = async (
       headers: { "Content-Type": "application/json" },
     }
   );
-  console.log("=========writeReply from api: ", res);
   return res;
 };
 
 // 댓글 좋아요
 export const addLike = async (commentId) => {
-  console.log("addLike의 댓글ID:", commentId);
-  try {
-    const res = await jwtAxios.patch(`${host}/addLike/${commentId}`);
-    console.log("addLike", res);
-    return res.data;
-  } catch (error) {
-    console.error("addLike error from server:", error.response);
-    throw error;
-  }
+  const res = await jwtAxios.patch(`${host}/addLike/${commentId}`);
+  return res.data;
 };
 
 // 댓글 싫어요
 export const addDislike = async (commentId) => {
-  console.log("addDislike 댓글ID:", commentId);
-  try {
-    const res = await jwtAxios.patch(`${host}/addDislike/${commentId}`);
-    console.log("addDislike", res);
-    return res.data;
-  } catch (error) {
-    console.error("addDislike error from server:", error.response);
-    throw error;
-  }
+  const res = await jwtAxios.patch(`${host}/addDislike/${commentId}`);
+  return res.data;
 };

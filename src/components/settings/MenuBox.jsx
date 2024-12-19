@@ -22,14 +22,11 @@ const MenuBox = ({
     }
     // link가 배열이고 해당 인덱스에 link가 있으면 네비게이션
     else if (Array.isArray(link) && link[index]) {
-      navigate(
-        { pathname: `./${link[index]}` },
-        { replace: true, state: { data } }
-      );
+      navigate({ pathname: `./${link[index]}` }, { state: { data } });
     }
     // 단일 link인 경우 (하위 메뉴가 없는 경우)
     else if (typeof link === "string") {
-      navigate({ pathname: `./${link}` }, { replace: true, state: { data } });
+      navigate({ pathname: `./${link}` }, { state: { data } });
     }
   };
 

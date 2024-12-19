@@ -9,6 +9,7 @@ function PrivacyPolicy() {
   const location = useLocation();
 
   const handleBack = () => {
+
     navigate(location.state?.from || "/settings", {
       state: {
         isModalOpen: location.state?.isModalOpen,
@@ -17,6 +18,7 @@ function PrivacyPolicy() {
       },
       replace: true,
     });
+
   };
 
   return (

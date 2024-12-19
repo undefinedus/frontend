@@ -29,6 +29,8 @@ const DatePickerSlider = ({
     const day = String(date.getDate()).padStart(2, "0");
     setSelectedDate(date);
     setDate(`${year}-${month}-${day}`); // YYYY-MM-DD 형식
+
+    setModalOpen(false);
     setIsOpen(false);
   };
 

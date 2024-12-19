@@ -19,7 +19,7 @@ const ForumMainPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { prevActiveTab, prevSearch, prevSort, prevScrollLeft } =
-    location.state || {}; // state 상태
+    location?.state || {}; // state 상태
   const { getStatusInEnglish } = useForumStatus();
   const { state } = location; // 기존 검색 상태
 

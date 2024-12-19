@@ -16,7 +16,7 @@ const SocialBookDetailPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { prevActiveTab, prevSearch, prevSort, prevScrollLeft } =
-    location.state;
+    location?.state || {};
   const { targetMemberId, bookId } = useParams();
 
   const [book, setBook] = useState({});

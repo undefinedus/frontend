@@ -20,7 +20,7 @@ import BookMarkModal from "../../components/modal/bookmarks/BookMarkModal";
 const MyBookListPage = () => {
   const location = useLocation();
   const { prevActiveTab, prevSearch, prevSort, prevScrollLeft } =
-    location.state || {};
+    location?.state || {};
   const navigate = useNavigate();
   const { getStatusInEnglish } = useBookStatus();
 

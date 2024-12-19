@@ -32,7 +32,7 @@ const BookDetail = () => {
 
   // 기존 검색 상태를 함께 navigate로 전달
   const handleBackClick = () => {
-    navigate(`${!state.AIBook ? "../searchbook" : "/home"}`, {
+    navigate(`${!state?.AIBook ? "../searchbook" : "/home"}`, {
       state: state,
       replace: true,
     });

@@ -10,7 +10,6 @@ const ImageSelectionModal = ({ source, onClose, onExtractedText }) => {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const preprocessImage = (image, selection) => {
-    console.log("Preprocess 시작");
     const croppedCanvas = document.createElement("canvas");
     croppedCanvas.width = selection.width;
     croppedCanvas.height = selection.height;
@@ -103,22 +102,16 @@ const ImageSelectionModal = ({ source, onClose, onExtractedText }) => {
       image.src = source;
 
       image.onload = async () => {
-        console.log("이미지 로드 완료");
         const processedCanvas = preprocessImage(image, selection);
-
-        console.log("Processed Canvas 생성 완료:", processedCanvas);
-
         setIsProcessing(true);
 
         try {
-          console.log("Worker recognize 호출 준비");
           const {
             data: { text },
           } = await Tesseract.recognize(processedCanvas, "kor", {
             logger: (m) => console.log("진행 상태:", m),
             //langPath: "/tessdata",
           });
-          console.log("OCR 결과:", text);
           onExtractedText(text);
         } catch (error) {
           console.error("텍스트 추출 오류:", error);

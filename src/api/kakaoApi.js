@@ -36,30 +36,16 @@ export const getToken = async (authCode) => {
   params.append("redirect_uri", redirect_uri);
   params.append("code", authCode);
 
-  try {
-    const res = await axios.post(access_token_url, params, header);
-    console.log("tokens: ", res);
-
-    return res.data; // 두 토큰 반환
-  } catch (error) {
-    console.error("Token Error:", error.response?.data || error);
-
-    throw error;
-  }
+  const res = await axios.post(access_token_url, params, header);
+  return res.data; // 두 토큰 반환
 };
 
 export const getMemberWithToken = async (accessToken, refreshToken) => {
-  try {
-    const res = await axios.get(`${API_SERVER_HOST}/api/member/kakao`, {
-      params: {
-        accessToken: accessToken, // 파라미터 이름을 정확히 일치시킴.
-        refreshToken: refreshToken,
-      },
-    });
-    console.log("------------------", res);
-    return res.data;
-  } catch (error) {
-    console.error("Member API Error Response:", error.response?.data);
-    throw error;
-  }
+  const res = await axios.get(`${API_SERVER_HOST}/api/member/kakao`, {
+    params: {
+      accessToken: accessToken, // 파라미터 이름을 정확히 일치시킴.
+      refreshToken: refreshToken,
+    },
+  });
+  return res.data;
 };

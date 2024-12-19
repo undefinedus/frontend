@@ -27,7 +27,6 @@ const BookMarkModal = ({
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
 
   useEffect(() => {
-    console.log("mark from modal: ", mark);
     if (mark !== "") setIsReady(true);
     else {
       setIsReady(false);
@@ -44,10 +43,9 @@ const BookMarkModal = ({
 
     try {
       const res = await addBookmark(data);
-      console.log("result: ", res.data.result);
       if (res.data.result === "success") {
         onClose();
-        navigate("/myBook", {
+        navigate("/myBook/list", {
           replace: true,
           state: { prevActiveTab: "책갈피" },
         });
@@ -64,11 +62,9 @@ const BookMarkModal = ({
       pageNumber: page,
       phrase: mark,
     };
-    console.log("data at modal: ", data);
 
     try {
       const res = await modifyBookmark(bookmark.id, data);
-      console.log("res at modify modal: ", res);
       if (res.data.result === "success") {
         setRefresh();
         onClose();
@@ -81,7 +77,6 @@ const BookMarkModal = ({
   const fetchDeleteBookmark = async () => {
     try {
       const res = await deleteBookmark(bookmark.id);
-      console.log("res at delete modal: ", res);
       if (res.data.result === "success") {
         setRefresh();
         onClose();
@@ -140,10 +135,11 @@ const BookMarkModal = ({
         {mode !== "SOCIAL" && mode !== "READ" && (
           <div
             className={`w-full flex ${
-              mode === "ADD" ? "justify-between" : "justify-end"
+              // mode === "ADD" ? "justify-between" :
+              "justify-end"
             } items-center`}
           >
-            {mode === "ADD" && <PiCamera color={"#0c0a09"} size={32} />}
+            {/* {mode === "ADD" && <PiCamera color={"#0c0a09"} size={32} />} */}
 
             <p className="text-und14 text-end text-undtextgray justify-end">
               {"("}

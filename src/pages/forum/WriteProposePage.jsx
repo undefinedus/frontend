@@ -36,6 +36,7 @@ const WriteProposePage = () => {
   };
 
   const handleSubmit = async (isbn13, subject, content, startDate) => {
+
     // 제목과 내용의 비속어 검사
     if (checkProfanity(subject) || checkProfanity(content)) {
       setIsProfanityModalOpen(true);
@@ -48,6 +49,7 @@ const WriteProposePage = () => {
       setDiscussionId(res.data.id);
       setIsSuccessModalOpen(true);
     }
+
   };
 
   const handleSuccessModalCancel = () => {
@@ -89,8 +91,10 @@ const WriteProposePage = () => {
         {/* 성공 시 모달 */}
         {isSuccessModalOpen && (
           <TwoButtonModal
+
             onCancel={handleSuccessModalCancel}
             onConfirm={handleSuccessModalConfirm}
+
             cancelText="취소"
             confirmText="확인"
           >

@@ -6,7 +6,13 @@ import {
   addReportComment,
 } from "../../../api/forum/forumReportApi";
 
-const AddReportModal = ({ forum, comment, onCancel, refresh = null }) => {
+const AddReportModal = ({
+  forum,
+  comment,
+  onCancel,
+  refresh = null,
+  setComments = null,
+}) => {
   // 신고 사유 목록
   const reasons = [
     "욕설, 비방, 차별, 혐오",
@@ -39,8 +45,16 @@ const AddReportModal = ({ forum, comment, onCancel, refresh = null }) => {
   const fetchReportComment = async () => {
     try {
       const res = await addReportComment(commentId, selectedReason);
-      console.log("신고 res: ", res);
 
+      if (setComments && res.result === "success") {
+        setComments((prevComments) =>
+          prevComments.map((comment) =>
+            commentId === res.data.commentId
+              ? { ...comment, ...res.data }
+              : comment
+          )
+        );
+      }
       return res;
     } catch (error) {
       console.log(error);
@@ -49,11 +63,6 @@ const AddReportModal = ({ forum, comment, onCancel, refresh = null }) => {
 
   // 토론 글 또는 댓글 신고 핸들러
   const handleReportSubmit = async () => {
-    console.log("handleReportSubmit 실행됨");
-    console.log("댓글ID", commentId);
-    console.log("댓글ID", comment);
-    console.log("신고 내용", selectedReason);
-
     try {
       let res;
       if (comment && commentId) {

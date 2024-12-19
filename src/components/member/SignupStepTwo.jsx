@@ -31,7 +31,7 @@ const SignupStepTwo = ({ email, nextButton, onPasswordSubmit }) => {
       onPasswordSubmit(password);
       nextButton();
     } catch (err) {
-      console.log("비밀번호 설정 실패");
+      console.error("비밀번호 설정 실패: ", err);
     }
   };
 
