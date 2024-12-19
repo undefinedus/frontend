@@ -46,14 +46,24 @@ const AddReportModal = ({
     try {
       const res = await addReportComment(commentId, selectedReason);
 
+      console.log(res);
+
+      // if (setComments && res.result === "success") {
+      //   setComments((prevComments) =>
+      //     prevComments.map((comment) =>
+      //       comment.commentId === res.data.commentId ? { ...res.data } : comment
+      //     )
+      //   );
+      // }
       if (setComments && res.result === "success") {
-        setComments((prevComments) =>
-          prevComments.map((comment) =>
-            commentId === res.data.commentId
-              ? { ...comment, ...res.data }
-              : comment
-          )
-        );
+        setComments((prevComments) => {
+          console.log("Previous comments:", prevComments); // 이전 댓글 상태
+          const newComments = prevComments.map((comment) =>
+            comment.commentId === res.data.commentId ? { ...res.data } : comment
+          );
+          console.log("New comments:", newComments); // 새로운 댓글 상태
+          return newComments;
+        });
       }
       return res;
     } catch (error) {
