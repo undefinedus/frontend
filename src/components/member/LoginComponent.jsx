@@ -204,7 +204,11 @@ const LoginComponent = () => {
               onChange={(checked) => handleSingleCheck("privacyAgree", checked)}
               value={"(필수) 개인정보 수집 및 이용 동의"}
               showMessage={true}
-              onClick={() => navigate("/member/privacyPolicy")}
+              onClick={() =>
+                navigate("/member/privacyPolicy", {
+                  state: { from: "/member/login" },
+                })
+              }
             />
             <div className="border border-undpoint opacity-80 my-2"></div>
             <div className="flex flex-col items-start">
