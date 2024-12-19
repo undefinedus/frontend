@@ -62,7 +62,11 @@ const BookCard = ({
                     {Number(book.customerReviewRank) / 2}
                   </p>
                 </div>
-                {withIcon && <div>{getIconByStatus(book.status)}</div>}
+                {withIcon && !isSocial ? (
+                  <div>{getIconByStatus(book.status)}</div>
+                ) : (
+                  <div>{getIconByStatus(book.existingStatus)}</div>
+                )}
               </div>
             </>
           )}

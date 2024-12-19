@@ -14,6 +14,22 @@ const MyBookDateInput = ({ state, startDate, endDate, setDate }) => {
     setDate(where, date);
   };
 
+  const handleModal = (boolean) => {
+    if (boolean) {
+      // 스크롤을 최하단으로 이동
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "instant" });
+
+      // 스크롤 막기
+      document.body.style.overflow = "hidden";
+      document.body.style.height = "auto";
+    } else {
+      // 스크롤 복구
+
+      document.body.style.overflow = "";
+      document.body.style.height = "";
+    }
+  };
+
   return (
     <div className="w-full flex flex-col">
       <div className="flex justify-start">
@@ -43,6 +59,7 @@ const MyBookDateInput = ({ state, startDate, endDate, setDate }) => {
               setDate={(date) => handleDate("start", date)}
               minDate={"1900-01-01"}
               maxDate={"today"}
+              setModalOpen={(boolean) => handleModal(boolean)}
             >
               <div className="w-full">
                 {startDate === "today" ? today : startDate}
@@ -60,6 +77,7 @@ const MyBookDateInput = ({ state, startDate, endDate, setDate }) => {
                 setDate={(date) => handleDate("end", date)}
                 minDate={startDate}
                 maxDate={"today"}
+                setModalOpen={(boolean) => handleModal(boolean)}
               >
                 <div className="w-full">
                   {endDate === "today" ? today : endDate}

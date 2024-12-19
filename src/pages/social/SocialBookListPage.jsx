@@ -162,6 +162,8 @@ const SocialBookListPage = () => {
       } else {
         setBooks(response.content);
       }
+      console.log(response.content);
+
       setLastId(response.lastId);
       setHasNext(response.hasNext);
       setTotalElements(response.totalElements);
