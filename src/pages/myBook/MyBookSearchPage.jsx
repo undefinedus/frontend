@@ -15,7 +15,7 @@ import BookMarkModal from "../../components/modal/bookmarks/BookMarkModal";
 
 const MyBookSearchPage = () => {
   const location = useLocation();
-  const { title, prevActiveTab, pathname = "../list" } = location.state;
+  const { title, prevActiveTab, pathname = "../list" } = location?.state || {};
   const navigate = useNavigate();
 
   const [search, setSearch] = useState("");

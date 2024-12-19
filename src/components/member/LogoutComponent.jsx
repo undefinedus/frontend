@@ -9,7 +9,6 @@ function LogoutComponent() {
 
   const handleClickLogout = () => {
     doLogout();
-    alert("로그아웃되었습니다.");
     moveToPath("/");
   };
 

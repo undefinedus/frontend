@@ -30,7 +30,7 @@ const CompletedDetailPage = () => {
   const [isReportModalOpen, setIsReportModalOpen] = useState(false); // 신고 모달 상태
 
   const { prevActiveTab, prevSearch, prevSort, prevScrollLeft } =
-    location.state;
+    location?.state || {};
 
   // 작성자와 로그인 유저 일치 여부
   useEffect(() => {

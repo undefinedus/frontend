@@ -11,7 +11,7 @@ import ScrollActionButtons from "../../components/commons/ScrollActionButtons";
 const ReportPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { prevSort, prevScrollLeft } = location.state || {};
+  const { prevSort, prevScrollLeft } = location?.state || {};
 
   // 상태 관리
   const [reports, setReports] = useState([]);

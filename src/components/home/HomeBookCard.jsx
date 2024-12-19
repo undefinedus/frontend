@@ -29,7 +29,6 @@ const HomeBookCard = ({ book, onClick }) => {
     <div
       className="w-full flex flex-col first:pt-0 last:border-none last:pb-0"
       onClick={() => {
-        console.log("HomeBookCard onClick triggered"); // 디버깅
         onClick();
       }} // 클릭 이벤트 적용
     >

@@ -11,7 +11,7 @@ const ForumForm = ({ forum, onSubmit, children }) => {
   const now = new Date();
 
   const bookTitleRef = useRef(null); // 책제목 textarea
-  const { book } = location.state || {}; // 검색한 책
+  const { book } = location?.state || {}; // 검색한 책
 
   const [bookTitle, setBookTitle] = useState(
     forum?.bookTitle || book?.title || ""
@@ -62,9 +62,6 @@ const ForumForm = ({ forum, onSubmit, children }) => {
   // (글 수정)토론 예정 일시 기존 값 설정
   useEffect(() => {
     if (forum?.startDate) {
-      console.log(time);
-      console.log(forum.startDate.split("T")[1].slice(0, 5));
-
       setDate(forum.startDate.split("T")[0]); // 날짜 부분만 설정
       setTime(forum.startDate.split("T")[1].slice(0, 5)); // 시간 부분만 설정
     }
@@ -86,11 +83,6 @@ const ForumForm = ({ forum, onSubmit, children }) => {
 
   // (글 작성)
   useEffect(() => {
-    console.log("시간선택 유즈이펙트 진입");
-    console.log("minDate: ", minDate);
-    console.log("maxDate: ", maxDate);
-    console.log("date: ", date);
-
     if (date === "일자 선택") {
       return; // 일자가 선택되지 않았다면 설정하지 않음
     }
@@ -113,9 +105,6 @@ const ForumForm = ({ forum, onSubmit, children }) => {
           return updatedDate;
         });
       }
-
-      console.log("minDate: ", minDate);
-      console.log("maxDate: ", maxDate);
     }
   }, [date]);
 
@@ -180,7 +169,9 @@ const ForumForm = ({ forum, onSubmit, children }) => {
       document.body.style.height = "auto";
     } else {
       // 스크롤 복구
-      document.body.style.overflow = "auto";
+
+      document.body.style.overflow = "";
+      document.body.style.height = "";
     }
   };
 
@@ -243,7 +234,7 @@ const ForumForm = ({ forum, onSubmit, children }) => {
               minDate={minDate}
               maxDate={maxDate}
               disabled={!content}
-              setModalOpen={handleModal}
+              setModalOpen={(boolean) => handleModal(boolean)}
             >
               <div
                 className={`flex w-full h-12 p-2 justify-center text-und14 border border-unddisabled rounded-[10px] items-center bg-white ${

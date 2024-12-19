@@ -16,7 +16,7 @@ const SocialListPage = () => {
   const location = useLocation();
 
   const [tabs] = useState(["팔로워", "팔로잉"]); // 탭 종류
-  const { tabCondition, prevSearch, socialProfile } = location.state || {};
+  const { tabCondition, prevSearch, socialProfile } = location?.state || {};
   // const [socialList, setSocialList] = useState({ content: [], hasNext: true }); // 팔로워or팔로잉 목록
   const [socialList, setSocialList] = useState([]); // 팔로워or팔로잉 목록
   const [activeTab, setActiveTab] = useState(tabCondition || tabs[0]); // 팔로워or팔로잉 탭 관리

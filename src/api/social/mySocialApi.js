@@ -21,8 +21,6 @@ export const getSearchUserList = async (search = "") => {
     const res = await jwtAxios.get(`${host}/main/search`, {
       params: { search },
     });
-    console.log("***res", res);
-
     return res;
   } catch (error) {
     console.error(error, "모든 유저 정보를 불러오는 데 실패하였습니다");
@@ -51,7 +49,6 @@ export const getMySocialList = async (tabCondition, search = "") => {
 export const patchFollow = async (targetMemberId) => {
   try {
     const res = await jwtAxios.patch(`${host}/follow/${targetMemberId}`);
-    console.log("******res", res);
     return res;
   } catch (error) {
     console.error(error, "팔로우 상태를 변경하는 데 실패하였습니다");

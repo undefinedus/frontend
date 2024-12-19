@@ -30,10 +30,6 @@ const MyBookModal = ({ mode, onClose, state = "READING", book = initData }) => {
     setBookInput(initializeBookInput(boxState));
   }, [boxState, mode, state, book]);
 
-  useEffect(() => {
-    console.log("api will take : ", bookInput);
-  }, [bookInput]);
-
   const initializeBookInfo = (mode, book) => ({
     title: book.title,
     author: book.author,
@@ -103,7 +99,6 @@ const MyBookModal = ({ mode, onClose, state = "READING", book = initData }) => {
   const fetchModifyBook = async () => {
     try {
       const res = await modifyBook(book.id, bookInput);
-      console.log(res);
       if (res.data.result === "success") onClose();
       return "success";
     } catch (err) {
@@ -133,7 +128,6 @@ const MyBookModal = ({ mode, onClose, state = "READING", book = initData }) => {
     try {
       // 성공 토스트메세지
       const res = await addBook(data);
-      console.log(res);
       if (res.data.result === "success") return res;
     } catch (err) {
       console.error(err);
@@ -162,7 +156,6 @@ const MyBookModal = ({ mode, onClose, state = "READING", book = initData }) => {
     try {
       const result =
         mode === "ADD" ? await fetchAddBook() : await fetchModifyBook();
-      console.log("result: ", result);
 
       if (result.data.result === "success") {
         handleConfirmModalOpen();

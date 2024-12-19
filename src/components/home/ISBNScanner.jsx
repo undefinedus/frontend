@@ -26,7 +26,6 @@ const ISBNScanner = ({ onSwitchToCapture, onCloseScannner, onSuccessScan }) => {
       },
       (err) => {
         if (err) {
-          console.log("Quagga 초기화 오류:", err);
           setError("카메라 초기화 오류가 발생했습니다.");
           return;
         }
