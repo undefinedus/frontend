@@ -4,11 +4,6 @@ import PortraitPlaceholder from "../commons/PortraitPlaceholder";
 
 // 토론 상세페이지 제목, 작성자 등 기본 정보
 const ForumInfo = ({ forum }) => {
-  // forum 값을 로그로 출력
-  useEffect(() => {
-    console.log("ForumInfo - forum 값:", forum);
-  }, [forum]);
-
   return (
     <div className="flex flex-col items-start w-full pb-4 justify-start gap-2 border-unddisabled border-b">
       {/* 글 제목 */}

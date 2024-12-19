@@ -25,57 +25,36 @@ export const getKakaoLoginLink = () => {
 
 export const getMyInformation = async () => {
   const res = await jwtAxios.get(`${host}`);
-
-  console.log("res at api: ", res);
-
   return res.data.data;
 };
 
 export const deleteProfileImage = async () => {
   const res = await jwtAxios.post(`${host}/profile/drop`);
-
-  console.log("res at api: ", res);
-
   return res;
 };
 
 export const modifyProfile = async (data) => {
-  console.log("data at api: ", data);
-
   const res = await jwtAxios.patch(`${host}/profile`, data, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
-
-  console.log("res at api: ", res);
-
   return res.data.result;
 };
 
 export const modifyUserInfo = async (birth, gender) => {
-  console.log("data at api: ", birth, ", ", gender);
-
   const res = await jwtAxios.patch(
     `${host}/userInfo?birth=${birth}&gender=${gender}`
   );
-
-  console.log("res at api: ", res);
-
   return res.data.result;
 };
 
 export const modifyPreferences = async (data) => {
-  console.log("data at api: ", data);
-
   const res = await jwtAxios.patch(`${host}/preferences`, data, {
     headers: {
       "Content-Type": "application/json",
     },
   });
-
-  console.log("res at api: ", res);
-
   return res.data.result;
 };
 
@@ -94,16 +73,8 @@ export const getKakaoTokens = async (authCode) => {
   params.append("redirect_uri", redirect_uri);
   params.append("code", authCode);
 
-  try {
-    const res = await axios.post(access_token_url, params, header);
-    console.log("tokens: ", res);
-
-    return res.data; // 두 토큰 반환
-  } catch (error) {
-    console.error("Token Error:", error.response?.data || error);
-
-    throw error;
-  }
+  const res = await axios.post(access_token_url, params, header);
+  return res.data; // 두 토큰 반환
 };
 
 export const getMember = async (accessToken, refreshToken) => {
@@ -113,60 +84,35 @@ export const getMember = async (accessToken, refreshToken) => {
       refreshToken: refreshToken,
     },
   });
-  console.log("res at api: ", res);
   return res.data;
 };
 
 export const socializeMember = async (data) => {
-  console.log("data at api: ", data);
-
   const res = await jwtAxios.patch(`${host}/socialize`, data);
-
-  console.log("res at api: ", res);
-
   return res.data;
 };
 
 export const checkKakaoMessagePermission = async () => {
   const res = await jwtAxios.get(`${host}/kakao/message`);
-
-  console.log("res at api: ", res);
-
   return res;
 };
 
 export const modifyKakaoMessage = async () => {
   const res = await jwtAxios.post(`${host}/kakao/update`);
-
-  console.log("res at api: ", res);
-
   return res;
 };
 
 export const modifyIsPublic = async () => {
   const res = await jwtAxios.post(`${host}/public`);
-
-  console.log("res at api: ", res);
-
   return res;
 };
 
 export const checkPassword = async (data) => {
-  console.log("data at api: ", data);
-
   const res = await jwtAxios.post(`${host}/checkPassword`, data);
-
-  console.log("res at api: ", res);
-
   return res.data.data.password;
 };
 
 export const modifyPassword = async (data) => {
-  console.log("data at api: ", data);
-
   const res = await jwtAxios.patch(`${host}/password`, data);
-
-  console.log("res at api: ", res);
-
   return res.data.data.password;
 };

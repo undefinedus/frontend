@@ -28,7 +28,7 @@ import useCustomLogin from "../../hooks/useCustomLogin";
 const SocialBookListPage = () => {
   const location = useLocation(); // 전달받은 state를 가져옴
   const { prevActiveTab, prevSearch, prevSort, prevScrollLeft } =
-    location.state || {};
+    location?.state || {};
   const navigate = useNavigate();
   const { getStatusInEnglish } = useBookStatus();
   const { targetMemberId } = useParams();
@@ -162,6 +162,8 @@ const SocialBookListPage = () => {
       } else {
         setBooks(response.content);
       }
+      console.log(response.content);
+
       setLastId(response.lastId);
       setHasNext(response.hasNext);
       setTotalElements(response.totalElements);

@@ -144,7 +144,7 @@ const SignupStepFour = ({ registerData, isSocial = false }) => {
       });
 
       if (!loginResult.error) {
-        navigate("/myBook", { replace: true });
+        navigate("/home", { replace: true });
       } else {
         console.error("자동 로그인 실패");
         navigate("/member/login", { replace: true });
