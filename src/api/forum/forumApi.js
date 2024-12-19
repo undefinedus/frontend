@@ -18,6 +18,8 @@ export const getForums = async (status, sort, search, lastId = null) => {
 // 토론 상세
 export const getForumDetail = async (discussionId) => {
   const res = await jwtAxios.get(`${host}/detail?discussionId=${discussionId}`);
+  console.log("res: ", res);
+
   return res.data.data;
 };
 
