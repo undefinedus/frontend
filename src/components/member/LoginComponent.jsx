@@ -45,7 +45,6 @@ const LoginComponent = () => {
   const modalBackground = useRef();
 
   useEffect(() => {
-    console.log("isLogin : " + isLogin);
     if (isLogin) {
       moveToPath("/home");
     }
@@ -60,7 +59,6 @@ const LoginComponent = () => {
   const handleClickLogin = () => {
     doLogin(loginParam).then((data) => {
       if (data.error) {
-        console.log("로그인 에러");
         setLoginError("아이디 또는 비밀번호가 일치하지 않습니다");
       } else {
         // ADMIN 역할이 포함되어 있는지 확인

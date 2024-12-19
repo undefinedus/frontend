@@ -37,7 +37,7 @@ const InprogressDetailPage = () => {
   const [refreshBest, setRefreshBest] = useState(false);
 
   const { prevActiveTab, prevSearch, prevSort, prevScrollLeft } =
-    location.state;
+    location?.state || {};
 
   // 작성자와 로그인 유저 일치 여부
   useEffect(() => {

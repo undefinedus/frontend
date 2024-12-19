@@ -63,18 +63,18 @@ const SearchBookPage = () => {
 
   // 책 상세에서 뒤로가기로 넘어왔을 때 검색어값 유지
   useEffect(() => {
-    if (!isSearchExecuted && location.state) {
+    if (!isSearchExecuted && location?.state) {
       console.log(
         "**********뒤로가기 클릭 -> 기존값 넘겨받음 : ",
-        location.state
+        location?.state
       );
       // location.state가 존재하면 검색어와 목록 복구
-      setSearchKeyword(location.state.searchKeyword || "");
-      setBooks(location.state.books || []);
-      setTotalResults(location.state.totalResults || 0);
+      setSearchKeyword(location?.state?.searchKeyword || "");
+      setBooks(location?.state?.books || []);
+      setTotalResults(location?.state?.totalResults || 0);
       setIsSearchExecuted(true);
     }
-  }, [location.state, location.key]);
+  }, [location?.state, location?.key]);
 
   // 검색어 또는 정렬 옵션 변경 시 데이터를 새로 가져옴
   useEffect(() => {
@@ -173,7 +173,7 @@ const SearchBookPage = () => {
   // 이전 버튼 클릭 관리
   const handleBackClick = () => {
     // 기존 검색 상태를 함께 navigate로 전달
-    if (!location.state) navigate("/home", { replace: true });
+    if (!location?.state) navigate("/home", { replace: true });
     else navigate("/myBook/list", { replace: true, state: state });
   };
 

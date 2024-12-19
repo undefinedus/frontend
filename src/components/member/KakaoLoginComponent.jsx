@@ -12,14 +12,6 @@ const KakaoLoginComponent = (props) => {
   };
 
   return (
-    // <button onClick={handleKakaoLogin} className="w-full">
-    //     <img
-    //         className="rounded-full"
-    //         src="/assets/img/kakao_login.png"
-    //         alt="카카오 로그인"
-    //       />
-    //       <Link to={link}></Link>
-    // </button>
     <button
       onClick={handleKakaoLogin}
       className="w-full py-2.5 flex justify-center bg-[#fae100] rounded-full"

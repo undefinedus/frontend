@@ -15,10 +15,7 @@ const WriteProposePage = () => {
     try {
       const res = await writePropose(isbn13, subject, content, startDate);
       console.log("작성 결과 :", res);
-      if (res?.data?.discussionId) {
-        // setDiscussionId(res.data.discussionId); // 새 글 ID 저장
-        // setIsModalOpen(true); // 모달 오픈
-      }
+      return res;
     } catch (error) {
       console.log(error);
     }
@@ -31,12 +28,22 @@ const WriteProposePage = () => {
 
   // 작성하기 버튼 클릭 핸들러
   const handleSubmit = async (isbn13, subject, content, startDate) => {
-    await fetchWritePropose(isbn13, subject, content, startDate);
-    navigate("/forum/list", {
-      state: {
-        prevActiveTab: "주제 발의",
-      },
-    });
+    const res = await fetchWritePropose(isbn13, subject, content, startDate);
+
+    console.log("res: ", res);
+    setDiscussionId(res.data.id);
+
+    handleModalOpen();
+
+    // navigate("/forum/list", {
+    //   state: {
+    //     prevActiveTab: "주제 발의",
+    //   },
+    // });
+  };
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
   };
 
   const handleModalCancel = () => {
@@ -72,8 +79,8 @@ const WriteProposePage = () => {
         </div>
         {isModalOpen && (
           <TwoButtonModal
-            // onCancel={handleModalCancel}
-            // onConfirm={handleModalConfirm}
+            onCancel={handleModalCancel}
+            onConfirm={handleModalConfirm}
             cancelText="취소"
             confirmText="확인"
           >

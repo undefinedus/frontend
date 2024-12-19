@@ -41,7 +41,6 @@ const MyPage = () => {
   const fetchMyInfo = async () => {
     try {
       const res = await getMyInformation();
-      console.log("res at page: ", res);
       if (res.social) {
         setDynamicMyAccountRoutes(["로그아웃"]);
         setDynamicMyAccountLinks(["logout"]);
@@ -75,35 +74,32 @@ const MyPage = () => {
   const handleLogout = () => {
     doLogout(myInfo.social);
     setOpenLogoutModal(false);
-    navigate({ pathname: "/" }, { replace: true });
+    navigate("/", { replace: true });
   };
 
   const handleUnregister = async () => {
-    console.log("unregister");
     const res = await fetchUnregister();
     if (res === "success") {
-      doLogout();
       setOpenUnregisterModal(false);
-      navigate({ pathname: "/" }, { replace: true });
+      doLogout(myInfo.social);
+      navigate("/", { replace: true });
     }
   };
 
   const handleSocialize = async () => {
-    console.log("socialize");
     await socializeAccount();
   };
 
   const fetchUnregister = async () => {
     try {
       const res = await unregister();
-      console.log("res: ", res);
+      return res;
     } catch (error) {
       console.error(error);
     }
   };
 
   const socializeAccount = async () => {
-    console.log("카카오 로그인 요청 시작");
     setOpenSocializeModal(false);
     const kakaoAuthUrl = getKakaoLoginLink();
     window.location.href = kakaoAuthUrl;
@@ -137,7 +133,7 @@ const MyPage = () => {
             data={myInfo}
           />
         </div>
-        <div className="w-full">
+        {/* <div className="w-full">
           <MenuBox
             text={"내 업적"}
             hasChild={true}
@@ -145,7 +141,7 @@ const MyPage = () => {
             link={["milestone", "setTitle"]}
             notToMove={["칭호 수정"]}
           />
-        </div>
+        </div> */}
         <div className="w-full">
           <MenuBox
             text={"내 계정"}

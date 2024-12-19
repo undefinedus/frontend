@@ -9,7 +9,7 @@ function PrivacyPolicy() {
   const location = useLocation();
 
   const handleBack = () => {
-    const previousPath = location.state?.from || "/settings";
+    const previousPath = location?.state?.from || "/settings";
     navigate(previousPath);
   };
 

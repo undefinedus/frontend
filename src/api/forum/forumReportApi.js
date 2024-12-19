@@ -9,20 +9,10 @@ export const addReportForum = async (discussionId, reason) => {
     discussionId,
     reason,
   };
-
-  try {
-    const res = await jwtAxios.post(
-      `${host}/discussion/${discussionId}`,
-      data,
-      {
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-    return res;
-  } catch (error) {
-    console.error("addReportForum error from server:", error.response);
-    throw error;
-  }
+  const res = await jwtAxios.post(`${host}/discussion/${discussionId}`, data, {
+    headers: { "Content-Type": "application/json" },
+  });
+  return res;
 };
 
 // 토론 댓글 신고
@@ -31,17 +21,8 @@ export const addReportComment = async (commentId, reason) => {
     commentId,
     reason,
   };
-
-  try {
-    const res = await jwtAxios.post(`${host}/comment/${commentId}`, data, {
-      headers: { "Content-Type": "application/json" },
-    });
-
-    console.log("res at api: ", res);
-
-    return res.data;
-  } catch (error) {
-    console.error("Error response from server:", error.response);
-    throw error;
-  }
+  const res = await jwtAxios.post(`${host}/comment/${commentId}`, data, {
+    headers: { "Content-Type": "application/json" },
+  });
+  return res.data;
 };

@@ -13,7 +13,7 @@ const ModifyProposePage = () => {
   // const [forum, setForum] = useState({});
 
   const { forum, prevActiveTab, prevSearch, prevSort, prevScrollLeft } =
-    location.state;
+    location?.state || {};
 
   const handleBackClick = () => {
     // `../propose/${forumId}`
