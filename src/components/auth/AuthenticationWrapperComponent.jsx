@@ -29,12 +29,15 @@ export const AuthContainer = ({ children }) => {
 
   // 로그인이 필요하지 않은 경로들
   const publicPaths = [
+    "/member/",
     "/member/login",
     "/member/signup",
     "/member/kakao",
     "/member/findPassword",
     "/member/privacyPolicy",
-    "/member/TermsOfUse",
+    "/member/termsOfUse",
+    "/member/socialSignup",
+
     // 필요한 공개 경로 추가
   ];
 

@@ -22,26 +22,25 @@ const SocialMainPage = () => {
     hasNext: true,
   }); // 모든 유저 검색 목록 상태
   const mySocialSearch = sessionStorage.getItem("mySocialSearch");
-  const [search, setSearch] = useState(mySocialSearch ? mySocialSearch : ""); // 전체 검색 닉네임 검색어 상태
+  const [search, setSearch] = useState(""); // 전체 검색 닉네임 검색어 상태
   const [isLoading, setIsLoading] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+
   // 내 소셜 프로필 정보
   useEffect(() => {
     const fetchData = async () => {
       const mysocialInfo = await fetchMySocialInfo();
       setMySocialProfile(mysocialInfo); // 가져온 데이터를 상태로 설정
+      setRefresh((prev) => !prev);
     };
     fetchData();
-  }, []);
+  }, [refresh]);
 
   // 검색어 입력 시 유저 검색 목록 API 호출
   useEffect(() => {
     const fetchData = async () => {
-      if (search) {
-        const searchUserList = await fetchSearchUserList(search);
-        setSearchUserList(searchUserList); // 가져온 데이터를 상태로 설정
-      } else {
-        setSearchUserList([]); // 검색어 없을 경우 목록 초기화
-      }
+      const searchUserList = await fetchSearchUserList(search);
+      setSearchUserList(searchUserList); // 가져온 데이터를 상태로 설정
     };
     fetchData();
     return () => {
@@ -176,7 +175,7 @@ const SocialMainPage = () => {
       </div>
       <div className="flex flex-col w-full h-full px-6 pt-60 pb-20">
         {/* 유저 목록 */}
-        {search ? (
+        {search !== null ? (
           <SocialList
             socialList={searchUserList}
             onFollowClick={handleFollowClick}
