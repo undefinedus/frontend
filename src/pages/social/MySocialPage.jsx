@@ -31,7 +31,6 @@ const SocialMainPage = () => {
     const fetchData = async () => {
       const mysocialInfo = await fetchMySocialInfo();
       setMySocialProfile(mysocialInfo); // 가져온 데이터를 상태로 설정
-      setRefresh((prev) => !prev);
     };
     fetchData();
   }, [refresh]);
@@ -87,7 +86,7 @@ const SocialMainPage = () => {
     try {
       const response = await patchFollow(targetMemberId);
       console.log("*****팔로우 patchFollow :", response.data);
-
+      setRefresh((prev) => !prev);
       // 소셜 리스트 업데이트
       setSearchUserList((prevList) => ({
         ...prevList,
@@ -173,7 +172,7 @@ const SocialMainPage = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col w-full h-full px-6 pt-60 pb-20">
+      <div className="flex flex-col w-full px-6 pt-60 pb-20">
         {/* 유저 목록 */}
         {search !== null ? (
           <SocialList

@@ -12,7 +12,7 @@ export const getBestComment = async (discussionId) => {
 
 // 모든 댓글 목록
 export const getCommentList = async (discussionId, lastId = null) => {
-  let apiRoute = `${host}/${discussionId}?size=10`;
+  let apiRoute = `${host}/${discussionId}?size=20`;
   if (lastId) apiRoute += `&lastId=${lastId}`;
   const res = await jwtAxios.get(apiRoute);
   return res.data.data;
