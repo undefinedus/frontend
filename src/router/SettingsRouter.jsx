@@ -14,6 +14,8 @@ const Preferences = lazy(() =>
   import("../pages/settings/myPage/PreferencesPage")
 );
 const Milestone = lazy(() => import("../pages/settings/myPage/MilestonePage"));
+const PrivacyPolicyPage = lazy(() => import("../pages/terms/PrivacyPolicy"));
+const TermsOfUse = lazy(() => import("../pages/terms/TermsOfUse"));
 const Redirect = lazy(() =>
   import("../pages/settings/myPage/SocializeRedirectPage")
 );
@@ -90,6 +92,22 @@ const SettingsRouter = () => {
         element={
           <Suspense fallback={<LoadingPage />}>
             <Redirect />
+          </Suspense>
+        }
+      />
+      <Route
+        path="privacyPolicy"
+        element={
+          <Suspense fallback={<LoadingPage />}>
+            <PrivacyPolicyPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="termsOfUse"
+        element={
+          <Suspense fallback={<LoadingPage />}>
+            <TermsOfUse />
           </Suspense>
         }
       />

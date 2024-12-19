@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Button from "../../components/commons/Button";
 import Input from "../../components/commons/Input";
 import useCustomLogin from "../../hooks/useCustomLogin";
@@ -14,9 +14,12 @@ const initState = {
 };
 
 const LoginComponent = () => {
+  const location = useLocation();
   const [loginParam, setLoginParam] = useState({ ...initState });
   const [loginError, setLoginError] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(
+    location.state?.isModalOpen || false
+  );
   const [checkboxStates, setCheckboxStates] = useState({
     allAgree: false,
     serviceAgree: false,
@@ -39,6 +42,7 @@ const LoginComponent = () => {
       under14: false,
       over14: false,
     });
+    navigate("/member/login", { replace: true });
   };
 
   const { doLogin, moveToPath, isLogin } = useCustomLogin();
@@ -112,6 +116,18 @@ const LoginComponent = () => {
       ...checkboxStates,
       under14: name === "under14" ? checked : false,
       over14: name === "over14" ? checked : false,
+    });
+  };
+
+  const navigateToTerms = () => {
+    navigate("/member/TermsOfUse", {
+      state: { from: "/member/login", isModalOpen: true },
+    });
+  };
+
+  const navigateToPrivacy = () => {
+    navigate("/member/privacyPolicy", {
+      state: { from: "/member/login", isModalOpen: true },
     });
   };
 
@@ -197,18 +213,14 @@ const LoginComponent = () => {
               onChange={(checked) => handleSingleCheck("serviceAgree", checked)}
               value={"(필수) 서비스 이용약관 동의"}
               showMessage={true}
-              onClick={() => navigate("/member/TermsOfUse")}
+              onClick={navigateToTerms}
             />
             <CheckBox
               checked={checkboxStates.privacyAgree}
               onChange={(checked) => handleSingleCheck("privacyAgree", checked)}
               value={"(필수) 개인정보 수집 및 이용 동의"}
               showMessage={true}
-              onClick={() =>
-                navigate("/member/privacyPolicy", {
-                  state: { from: "/member/login" },
-                })
-              }
+              onClick={navigateToPrivacy}
             />
             <div className="border border-undpoint opacity-80 my-2"></div>
             <div className="flex flex-col items-start">

@@ -80,7 +80,8 @@ const SettingsPage = () => {
           <MenuBox
             text={"고객 지원"}
             hasChild={true}
-            childList={["FAQ", "1:1 문의", "공지사항", "개인정보처리방침"]}
+            childList={["이용약관", "개인정보처리방침"]}
+            link={["termsOfUse", "privacyPolicy"]}
           />
         </div>
       </div>
