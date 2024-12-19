@@ -7,10 +7,13 @@ const gptHost = `${API_SERVER_HOST}/api/ai`; // AI 토론 결과 분석
 
 // 토론 목록
 export const getForums = async (status, sort, search, lastId = null) => {
-  let apiRoute = `${host}?status=${status}&sort=${sort}&search=${search}&size=5`;
+  let apiRoute = `${host}?status=${status}&sort=${sort}&search=${search}`;
   if (lastId) {
     apiRoute += `&lastId=${lastId}`;
   }
+  console.log("api route: ", apiRoute);
+  console.log("lastId: ", lastId);
+
   const res = await jwtAxios.get(apiRoute);
   return res.data.data;
 };
