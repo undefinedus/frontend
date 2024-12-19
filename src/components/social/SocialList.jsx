@@ -58,6 +58,7 @@ const SocialList = ({
   onFollowClick,
   onUnfollowClick,
   onCardClick,
+  sentinelRef = null,
 }) => {
   // 검색어가 있는 상태에서 `content`가 비어 있는지 확인
   const isSearchResultEmpty = search && socialList?.content?.length === 0;
@@ -93,6 +94,7 @@ const SocialList = ({
               onCardClick={onCardClick} // 클릭 이벤트 전달
             />
           ))}
+          <div ref={sentinelRef} className="h-1"></div>
         </div>
       )}
     </div>

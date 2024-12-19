@@ -38,11 +38,15 @@ const ForumCard = ({ forum, onClick }) => {
             <div className="flex gap-3 text-undtextgray font-extrabold text-und12 w-56 h-4 text-left ">
               <div className="flex gap-0.5 justify-center items-center">
                 <PiUserFill size={16} color="A0CDDF" />
-                {forum.agree}
+                {forum.status !== "IN_PROGRESS"
+                  ? forum.agree
+                  : forum.agreeCommentCount}
               </div>
               <div className="flex gap-0.5 justify-center items-center">
                 <PiUserFill size={16} color="DFA0B5" />
-                {forum.disagree}
+                {forum.status !== "IN_PROGRESS"
+                  ? forum.disagree
+                  : forum.disagreeCommentCount}
               </div>
             </div>
           )}

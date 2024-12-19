@@ -18,9 +18,8 @@ export const getMySocialInfo = async () => {
 // 내 소셜 - 모든 유저 검색
 export const getSearchUserList = async (search = "") => {
   try {
-    const res = await jwtAxios.get(`${host}/main/search`, {
-      params: { search },
-    });
+    let apiRoute = `${host}/main/search?search=${search}`;
+    const res = await jwtAxios.get(apiRoute);
     return res;
   } catch (error) {
     console.error(error, "모든 유저 정보를 불러오는 데 실패하였습니다");

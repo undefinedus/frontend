@@ -41,11 +41,11 @@ const ForumInfo = ({ forum }) => {
               <div className="flex gap-3 text-undtextgray text-und12 h-4 text-left">
                 <div className="flex gap-0.5 justify-center items-center">
                   <PiUserFill size={16} color="A0CDDF" />
-                  {forum.agreeCount}
+                  {forum.agreeCommentCount}
                 </div>
                 <div className="flex gap-0.5 justify-center items-center">
                   <PiUserFill size={16} color="DFA0B5" />
-                  {forum.disagreeCount}
+                  {forum.disagreeCommentCount}
                 </div>
               </div>
             )}
