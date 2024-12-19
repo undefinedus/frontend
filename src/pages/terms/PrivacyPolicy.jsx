@@ -9,8 +9,16 @@ function PrivacyPolicy() {
   const location = useLocation();
 
   const handleBack = () => {
-    const previousPath = location?.state?.from || "/settings";
-    navigate(previousPath);
+
+    navigate(location.state?.from || "/settings", {
+      state: {
+        isModalOpen: location.state?.isModalOpen,
+        checkboxStates: location.state?.checkboxStates,
+        ageCheck: location.state?.ageCheck,
+      },
+      replace: true,
+    });
+
   };
 
   return (

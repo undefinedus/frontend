@@ -1,19 +1,27 @@
 import React, { useState } from "react";
 import { PiXBold } from "react-icons/pi";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function TermsOfUse() {
   const [buttonPosition, setButtonPosition] = useState({ x: 300, y: 30 });
   const [clickCount, setClickCount] = useState(0);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleXClick = (e) => {
     e.stopPropagation(); // 이벤트 버블링 방지
     const newClickCount = clickCount + 1;
     setClickCount(newClickCount);
 
-    if (newClickCount === 5) {
-      navigate("/member/login");
+    if (newClickCount === 1) {
+      navigate(location.state?.from || "/settings", {
+        state: {
+          isModalOpen: location.state?.isModalOpen,
+          checkboxStates: location.state?.checkboxStates,
+          ageCheck: location.state?.ageCheck,
+        },
+        replace: true,
+      });
       return;
     }
 
@@ -32,7 +40,7 @@ function TermsOfUse() {
         size={30}
         className="cursor-pointer absolute"
         style={{
-          position: "fixed",
+          // position: "fixed",
           left: buttonPosition.x,
           top: buttonPosition.y,
           transition: "all 0.3s ease",
@@ -527,7 +535,7 @@ function TermsOfUse() {
           </p>
         </footer>
       </div>
-      <div className="flex flex-col opacity-10 absolute bottom-10 z-10 gap-10">
+      {/* <div className="flex flex-col opacity-10 absolute bottom-10 z-10 gap-10">
         <img
           className="h-auto w-auto"
           src="../../../public/assets/img/마참내!.jpg"
@@ -538,7 +546,7 @@ function TermsOfUse() {
           src="../../../public/assets/img/즐겁다.jpg"
           alt=""
         />
-      </div>
+      </div> */}
     </div>
   );
 }
