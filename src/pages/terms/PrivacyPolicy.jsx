@@ -1,21 +1,24 @@
 import React from "react";
 import { PiXBold } from "react-icons/pi";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const CompanyName = () => <span className="text-undtextdark">{"<공책>"}</span>;
 
 function PrivacyPolicy() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleBack = () => {
+    const previousPath = location.state?.from || "/settings";
+    navigate(previousPath);
+  };
+
   return (
     <div className="relative bg-undbgmain z-50">
       <div className="max-w-4xl mx-auto p-6 space-y-8 text-start">
         <div className="flex justify-between">
           <h1 className="text-3xl font-bold mb-8">개인정보처리방침</h1>
-          <PiXBold
-            size={30}
-            className="items-center"
-            onClick={() => navigate("/member/login")}
-          />
+          <PiXBold size={30} className="items-center" onClick={handleBack} />
         </div>
 
         <section>

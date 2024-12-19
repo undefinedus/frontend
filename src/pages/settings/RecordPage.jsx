@@ -18,6 +18,22 @@ const RecordPage = () => {
     <BasicLayout>
       <div className="bg-undbgmain">
         <div className="fixed h-28 left-0 top-0 right-0 bottom-0 z-50">
+          <div className="relative">
+            <div
+              className={`${
+                infoTooltip ? "opacity-100" : "opacity-0 pointer-events-none"
+              }`}
+            >
+              <div className={`${infoTooltip ? "opacity-100" : "opacity-0"}`}>
+                <ul className="list-disc absolute list-inside rounded-xl gap-2 bg-unddisabled text-undclickbrown font-bold text-xs flex flex-col items-start top-16 left-1/2 -translate-x-1/2 -translate-y-1/4 z-50 w-80 px-3.5 py-4">
+                  <li className="mb-2">
+                    카테고리별, 연/월별 통계는 '다 읽은 책'만 비교합니다
+                  </li>
+                  <li>연간 통계는 최근 3년간의 독서량을 비교합니다</li>
+                </ul>
+              </div>
+            </div>
+          </div>
           <PrevTitleInfo
             title={"통계"}
             showLine={false}
@@ -31,27 +47,6 @@ const RecordPage = () => {
               setActiveTab={setActiveTab}
               showLine={true}
             />
-          </div>
-        </div>
-
-        <div
-          className={`
-        
-        ${infoTooltip ? "opacity-100" : "opacity-0 pointer-events-none"}
-      `}
-        >
-          <div
-            className={`
-          relative
-          ${infoTooltip ? "opacity-100" : "opacity-0"}
-        `}
-          >
-            <ul className="list-disc absolute list-inside rounded-xl gap-2 bg-unddisabled text-undclickbrown font-bold text-xs flex flex-col items-start top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/4 z-50 w-80 px-3.5 py-4">
-              <li className="mb-2">
-                카테고리별, 연/월별 통계는 '다 읽은 책'만 비교합니다
-              </li>
-              <li>연간 통계는 최근 3년간의 독서량을 비교합니다</li>
-            </ul>
           </div>
         </div>
 
