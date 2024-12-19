@@ -102,7 +102,7 @@ const CommentCard = ({
                   comment.viewStatus !== "BLOCKED" && (
                     <PiSiren
                       size={16}
-                      color={isReported ? "#78716C" : "#D55636"} // 상태에 따라 색상 변경
+                      color={comment.isReport ? "#78716C" : "#D55636"} // 상태에 따라 색상 변경
                       onClick={handleReportClick} // 신고 클릭 핸들러
                     />
                   )}
