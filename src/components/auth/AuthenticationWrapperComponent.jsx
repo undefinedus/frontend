@@ -45,8 +45,14 @@ export const AuthContainer = ({ children }) => {
     location.pathname.startsWith(path)
   );
 
+  // 로그인 안된 상태에서 로그인 전용 경로에 접근 시 로그인 페이지로 이동동
   if (!isLogin && !isPublicPath) {
     return <Navigate to="/member/login" state={{ from: location }} replace />;
+  }
+
+  // 로그인된 상태에서 비로그인 전용 경로에 접근 시 홈 페이지로 이동
+  if (isLogin && isPublicPath) {
+    return <Navigate to="/home" replace />;
   }
 
   return children;

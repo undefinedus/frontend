@@ -21,11 +21,12 @@ const AppRouter = () => {
           <Route path="/forum/*" element={<ForumRouter />} />
           <Route path="/settings/*" element={<SettingsRouter />} />
           <Route path="/admin/*" element={<AdminRouter />} />
+          <Route path="/member/*" element={<MemberRouter />} />
         </Routes>
       </AuthContainer>
-      <Routes>
+      {/* <Routes>
         <Route path="/member/*" element={<MemberRouter />} />
-      </Routes>
+      </Routes> */}
     </BrowserRouter>
   );
 };

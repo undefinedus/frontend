@@ -24,7 +24,6 @@ const SignupModal = ({
     if (!buttonDisabled) {
       onConfirm?.(); // onConfirm이 있다면 실행
       navigate("/member/signup"); // 회원가입 페이지로 이동
-      onClose(); // 모달 닫기
     }
   };
   return (
