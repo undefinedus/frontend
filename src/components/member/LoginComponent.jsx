@@ -45,6 +45,10 @@ const LoginComponent = () => {
     navigate("/member/login", { replace: true });
   };
 
+  const handleConfirmSignup = () => {
+    setIsModalOpen(false);
+  };
+
   const { doLogin, moveToPath, isLogin } = useCustomLogin();
   const modalBackground = useRef();
 
@@ -200,6 +204,7 @@ const LoginComponent = () => {
             confirmText={"회원가입"}
             buttonDisabled={!signupButtonHandler()}
             Bottom={true}
+            onConfirm={handleConfirmSignup}
           >
             <BigCheckBox
               checked={checkboxStates.allAgree}
